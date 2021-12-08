@@ -124,7 +124,6 @@ CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.PaymentHistory (
     userId VARCHAR(12) NOT NULL,
     `date` TIMESTAMP NOT NULL,
     paymentAmount INT NOT NULL,
-    orderId INT NOT NULL,
 
     CONSTRAINT PK_PaymentHistory PRIMARY KEY (historyId)
 )
@@ -202,11 +201,24 @@ CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.Necessaries (
     necessariesId INT NOT NULL AUTO_INCREMENT,
     necessariesName NVARCHAR(50) NOT NULL,
     `limit` TINYINT,
-    expiredDate TIMESTAMP,
+    expiredDate DATE,
     duration TINYINT,
     price MEDIUMINT NOT NULL,
 
     CONSTRAINT PK_Necessaries PRIMARY KEY (necessariesId)
+)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+DEFAULT COLLATE = utf8mb4_bin;
+
+-- Table: SystemInfo
+CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.SystemInfo (
+    id INT NOT NULL AUTO_INCREMENT,
+    firstLoggedIn CHAR(50) NOT NULL,
+    bankAccountNumber CHAR(12) NOT NULL,
+    balance INT NOT NULL,
+
+    CONSTRAINT PK_SystemInfo PRIMARY KEY (id)
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -300,13 +312,6 @@ ALTER TABLE COVID_MANAGEMENT.PaymentHistory
 ADD CONSTRAINT FK_PaymentHistory_User
 FOREIGN KEY (userId)
 REFERENCES COVID_MANAGEMENT.`User`(identifierNumber);
-
--- Table: PaymentHistory
--- PaymentHistory(orderId) ==> Order(orderId)
-ALTER TABLE COVID_MANAGEMENT.PaymentHistory
-ADD CONSTRAINT FK_PaymentHistory_Order
-FOREIGN KEY (orderId)
-REFERENCES COVID_MANAGEMENT.`Order`(orderId);
 
 -- Table: Debt
 -- Debt(userId) ==> User(identifierNumber)

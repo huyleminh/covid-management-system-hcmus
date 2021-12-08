@@ -210,13 +210,14 @@ VALUES
     ('021234567', '2020-10-12 9:20:33', N'Thêm mới gói Combo 4 (Thịt, Cá, Rau Củ, Nước uống)', 1),
     ('021234567', '2020-10-13 8:00:15', N'Thêm mới gói Combo 5 (Thịt, Cá, Trứng, Rau củ, Nước uống)', 1);
 
-INSERT INTO COVID_MANAGEMENT.Debt (userId, debtDate, totalDebt)
+INSERT INTO COVID_MANAGEMENT.Debt (debtId, userId, debtDate, totalDebt)
 VALUES
-    ('021234569', '2020-10-14 12:31:20', 50000),
-    ('011234569', '2021-03-12 16:22:56', 30000),
-    ('011234571', '2021-06-10 12:31:20', 20000),
-    ('011234570', '2021-11-11 07:15:22', 100000),
-    ('011234570', '2021-11-15 06:30:39', 60000);
+	(1, '021234569', '2020-10-14 12:31:20', 300000),
+	(2, '011234568', '2020-12-01 07:33:43', 150000),
+	(3, '011234569', '2021-03-12 16:22:56', 330000),
+	(5, '011234571', '2021-06-10 12:31:20', 200000),
+	(6, '011234570', '2021-11-11 07:15:22', 250000),
+	(7, '011234570', '2021-11-15 06:30:39', 300000);
 
 INSERT INTO COVID_MANAGEMENT.Necessaries (necessariesName, `limit`, expiredDate, duration, price)
 VALUES
@@ -265,12 +266,10 @@ VALUES
     (4, '2021-11-11 07:15:22', 150000),
     (4, '2021-11-15 06:30:39', 240000);
 
-INSERT INTO COVID_MANAGEMENT.PaymentHistory (userId, `date`, paymentAmount, orderId)
+INSERT INTO COVID_MANAGEMENT.PaymentHistory (userId, `date`, paymentAmount)
 VALUES
-    ('021234569', '2020-10-14 12:31:20', 300000, 1),
-    ('011234568', '2020-12-01 07:33:43', 150000, 2),
-    ('011234569', '2021-03-12 16:22:56', 330000, 3),
-    ('011234568', '2021-05-21 18:20:15', 500000, 4),
-    ('011234571', '2021-06-10 12:31:20', 200000, 5),
-    ('011234570', '2021-11-11 07:15:22', 150000, 6),
-    ('011234570', '2021-11-15 06:30:39', 240000, 7);
+    ('011234568', '2021-05-21 18:20:15', 500000);
+
+INSERT INTO COVID_MANAGEMENT.SystemInfo (id, firstLoggedIn, bankAccountNumber, balance)
+VALUES
+    (1, 0, '129029974556', 500000);

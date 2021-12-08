@@ -1,4 +1,4 @@
-package shared;
+package com.utilities;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
