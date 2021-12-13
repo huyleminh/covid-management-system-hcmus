@@ -15,7 +15,7 @@ public class LoginView extends JPanel {
 	private static final int MAX_WIDTH = 250;
 
 
-	LoginView() {
+	public LoginView() {
 		super();
 
 		setLayout(null);

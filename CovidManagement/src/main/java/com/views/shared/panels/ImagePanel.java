@@ -1,4 +1,4 @@
-package com.views.shared;
+package com.views.shared.panels;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

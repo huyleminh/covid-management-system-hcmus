@@ -2,7 +2,7 @@ package com.views.admin;
 
 import com.models.table.NonEditableTableModel;
 import com.utilities.Constants;
-import com.views.shared.ScrollableTablePane;
+import com.views.shared.panels.ScrollableTablePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +31,7 @@ public class ViewActivityDialog extends JDialog {
 //	}
 
 	JLabel managerNameValueLabel;
-	ScrollableTablePane scrollableTable;
+	ScrollableTablePanel scrollableTable;
 
 	ViewActivityDialog(JFrame frame) {
 		super(frame);
@@ -67,7 +67,7 @@ public class ViewActivityDialog extends JDialog {
 		final String[] columnNames = {"Description", "Date"};
 
 		NonEditableTableModel tableModel = new NonEditableTableModel(columnNames, 0);
-		scrollableTable = new ScrollableTablePane(
+		scrollableTable = new ScrollableTablePanel(
 				new JTable(tableModel),
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
@@ -90,7 +90,7 @@ public class ViewActivityDialog extends JDialog {
 		return managerNameValueLabel;
 	}
 
-	public ScrollableTablePane getScrollableTable() {
+	public ScrollableTablePanel getScrollableTable() {
 		return scrollableTable;
 	}
 }
