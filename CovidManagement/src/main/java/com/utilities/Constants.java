@@ -19,8 +19,10 @@ public class Constants {
 	public static final int BUTTON_LARGE_HEIGHT = 40;
 
 	// App
-	//	public static final int APP_WIDTH = 1000;
+	public static final int APP_WIDTH = 1000;
 	public static final int APP_HEIGHT = 600;
+	public static final int LEFT_PANEL_WIDTH = 200;
+	public static final int RIGHT_PANEL_WIDTH = 800;
 	public static final int TOP_PADDING = 20;
 	//	public static final int BOTTOM_PADDING = 10;
 	public static final int HORIZONTAL_PADDING = 10;
@@ -47,6 +49,7 @@ public class Constants {
 	// File path
 	public static final String PROFILE_ICON_FILE_PATH = "src/main/resources/images/profile-128x128.png";
 	public static final String RIGHT_CHEVRON_ICON_FILE_PATH = "src/main/resources/images/right-chevron-24x24.png";
+	public static final String CALENDAR_ICON_FILE_PATH = "src/main/resources/images/calendar-24x24.png";
 
 	// Icon
 	public static final Icon RIGHT_CHEVRON_ICON = new ImageIcon(RIGHT_CHEVRON_ICON_FILE_PATH);

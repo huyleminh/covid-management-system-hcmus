@@ -1,4 +1,4 @@
-package com.views.shared;
+package com.views.shared.panels;
 
 import com.utilities.UtilityFunctions;
 
@@ -7,18 +7,18 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import java.awt.*;
 
-public class ScrollableTablePane extends JScrollPane {
+public class ScrollableTablePanel extends JScrollPane {
 	private final JTable table;
 	private int tableWidth = -1;
 
-	public ScrollableTablePane(JTable table) {
+	public ScrollableTablePanel(JTable table) {
 		super(table);
 		this.table = table;
 
 		this.table.setFillsViewportHeight(true);
 	}
 
-	public ScrollableTablePane(JTable table, int vsbPolicy, int hsbPolicy) {
+	public ScrollableTablePanel(JTable table, int vsbPolicy, int hsbPolicy) {
 		super(table, vsbPolicy, hsbPolicy);
 		this.table = table;
 

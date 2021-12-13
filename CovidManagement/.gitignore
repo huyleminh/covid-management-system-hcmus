@@ -12,7 +12,7 @@
 *.class
 
 # Log files and folder
-*logs
+*/logs
 *.log
 
 # BlueJ files

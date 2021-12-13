@@ -2,8 +2,8 @@ package com.views.admin;
 
 import com.models.table.NonEditableTableModel;
 import com.utilities.Constants;
-import com.views.shared.ImagePanel;
-import com.views.shared.ScrollableTablePane;
+import com.views.shared.panels.ImagePanel;
+import com.views.shared.panels.ScrollableTablePanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -62,7 +62,7 @@ public class ManagerManagementView extends JSplitPane {
 	JPanel rightPane;
 	JLabel selectingFeatureLabel;
 	JButton createButton;
-	ScrollableTablePane scrollableTable;
+	ScrollableTablePanel scrollableTable;
 
 	// Components for "Manage Manager" feature at the right pane.
 	JButton lockOrUnlockButton;
@@ -212,7 +212,7 @@ public class ManagerManagementView extends JSplitPane {
 		final String[] columnNames = {"id", "Username", "Status"};
 
 		manageManagerTableModel = new NonEditableTableModel(columnNames, 0);
-		scrollableTable = new ScrollableTablePane(
+		scrollableTable = new ScrollableTablePanel(
 				new JTable(manageManagerTableModel),
 				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
@@ -321,7 +321,7 @@ public class ManagerManagementView extends JSplitPane {
 		return createButton;
 	}
 
-	public ScrollableTablePane getScrollableTable() {
+	public ScrollableTablePanel getScrollableTable() {
 		return scrollableTable;
 	}
 
