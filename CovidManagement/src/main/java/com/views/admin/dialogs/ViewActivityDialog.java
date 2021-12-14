@@ -1,4 +1,4 @@
-package com.views.admin;
+package com.views.admin.dialogs;
 
 import com.models.table.NonEditableTableModel;
 import com.utilities.Constants;
@@ -8,32 +8,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ViewActivityDialog extends JDialog {
-//	public static void main(String[] args) {
-//		try {
-//			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		SwingUtilities.invokeLater(() -> {
-//			ManagerManagementView mainView = new ManagerManagementView();
-//			CreateAccountDialog createAccountDialog = new CreateAccountDialog(mainView.getFrame());
-//			ViewActivityDialog viewActivityDialog = new ViewActivityDialog(mainView.getFrame());
-//
-//			mainView.getCreateButton().addActionListener((event) -> {
-//				createAccountDialog.setVisible(true);
-//			});
-//			mainView.getViewActivityButton().addActionListener((event) -> {
-//				viewActivityDialog.setVisible(true);
-//			});
-//			mainView.display();
-//		});
-//	}
+	// Components
+	private JLabel managerNameValueLabel;
+	private ScrollableTablePanel scrollableTable;
 
-	JLabel managerNameValueLabel;
-	ScrollableTablePanel scrollableTable;
-
-	ViewActivityDialog(JFrame frame) {
+	public ViewActivityDialog(JFrame frame) {
 		super(frame);
 		this.setTitle("View Activity");
 
@@ -50,30 +29,32 @@ public class ViewActivityDialog extends JDialog {
 	}
 
 	private void initComponents(JPanel panel) {
+		// Manager name panel
 		JPanel managerNamePanel = new JPanel();
 		managerNamePanel.setLayout(null);
 		managerNamePanel.setBounds(10, 10, 645, 30);
 		managerNamePanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 		panel.add(managerNamePanel);
 
+		// Manager name label
 		JLabel managerNameLabel = new JLabel("Manager: ", SwingConstants.LEFT);
 		managerNameLabel.setBounds(5, 0, 60, 30);
 		managerNamePanel.add(managerNameLabel);
 
+		// Manager name value label
 		managerNameValueLabel = new JLabel("Lê Hoàng Anh", SwingConstants.LEFT);
 		managerNameValueLabel.setBounds(65, 0, 580, 30);
 		managerNamePanel.add(managerNameValueLabel);
 
+		// Scrollable table
 		final String[] columnNames = {"Description", "Date"};
+		final int[] columnWidths = {480, 149};
 
-		NonEditableTableModel tableModel = new NonEditableTableModel(columnNames, 0);
 		scrollableTable = new ScrollableTablePanel(
-				new JTable(tableModel),
-				JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+				new JTable(new NonEditableTableModel(columnNames, 0))
 		);
 		scrollableTable.setRowSelectionAllowed(false);
-		scrollableTable.setColumnWidths(new int[]{480, 150});
+		scrollableTable.setColumnWidths(columnWidths);
 		panel.add(scrollableTable);
 
 		final int tableWidth = scrollableTable.getTableWidth();

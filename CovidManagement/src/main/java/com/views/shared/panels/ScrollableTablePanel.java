@@ -5,6 +5,7 @@ import com.utilities.UtilityFunctions;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import java.awt.*;
 
 public class ScrollableTablePanel extends JScrollPane {
@@ -12,7 +13,7 @@ public class ScrollableTablePanel extends JScrollPane {
 	private int tableWidth = -1;
 
 	public ScrollableTablePanel(JTable table) {
-		super(table);
+		super(table, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		this.table = table;
 
 		this.table.setFillsViewportHeight(true);
@@ -91,5 +92,13 @@ public class ScrollableTablePanel extends JScrollPane {
 
 	public JTable getTable() {
 		return table;
+	}
+
+	public TableModel getTableModel() {
+		return table.getModel();
+	}
+
+	public void setTableModel(TableModel tableModel) {
+		table.setModel(tableModel);
 	}
 }

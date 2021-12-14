@@ -1,4 +1,4 @@
-package com.views.admin;
+package com.views.admin.dialogs;
 
 import com.utilities.Constants;
 
@@ -8,46 +8,18 @@ import java.awt.*;
 import java.text.NumberFormat;
 
 public class CreateQuarantineDialog extends JDialog {
-//	public static void main(String[] args) {
-//		try {
-//			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		SwingUtilities.invokeLater(() -> {
-//			ManagerManagementView mainView = new ManagerManagementView();
-//			CreateAccountDialog createAccountDialog = new CreateAccountDialog(mainView.getFrame());
-//			ViewActivityDialog viewActivityDialog = new ViewActivityDialog(mainView.getFrame());
-//			CreateQuarantineDialog createQuarantineDialog = new CreateQuarantineDialog(mainView.getFrame());
-//
-//			mainView.getCreateButton().addActionListener((event) -> {
-//				if (mainView.getSelectingFeature() == ManagerManagementView.MANAGE_MANAGER) {
-//					createQuarantineDialog.setVisible(false);
-//					createAccountDialog.setVisible(true);
-//				} else {
-//					createAccountDialog.setVisible(false);
-//					createQuarantineDialog.setVisible(true);
-//				}
-//			});
-//			mainView.getViewActivityButton().addActionListener((event) -> {
-//				viewActivityDialog.setVisible(true);
-//			});
-//			mainView.display();
-//		});
-//	}
-
+	// Constants
 	private static final int LEFT_PADDING = 45;
 	private static final int MIN_WIDTH = 100;
 	private static final int MAX_WIDTH = 270;
 
+	// Components
+	private JTextField locationNameField;
+	private JFormattedTextField capacityField;
+	private JButton cancelButton;
+	private JButton createButton;
 
-	JTextField locationNameField;
-	JFormattedTextField capacityField;
-	JButton cancelButton;
-	JButton createButton;
-
-	CreateQuarantineDialog(JFrame frame) {
+	public CreateQuarantineDialog(JFrame frame) {
 		super(frame);
 		this.setTitle("Create Quarantine Location");
 
@@ -64,37 +36,40 @@ public class CreateQuarantineDialog extends JDialog {
 	}
 
 	private void initComponents(JPanel panel) {
+		// Location name label
 		JLabel locationNameLabel = new JLabel("Location name");
 		locationNameLabel.setBounds(LEFT_PADDING, 20, MIN_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(locationNameLabel);
 
-		// locationName text field
+		// Location name text field
 		locationNameField = new JTextField();
 		locationNameField.setBounds(145, 20, MAX_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(locationNameField);
 
-		// positive integer formatter
+		// Number formatter without grouping separator
 		NumberFormat numberFormat = NumberFormat.getIntegerInstance();
 		numberFormat.setGroupingUsed(false);
 
+		// Positive integer formatter
 		NumberFormatter positiveIntegerFormatter = new NumberFormatter(NumberFormat.getIntegerInstance());
 		positiveIntegerFormatter.setMinimum(0);
 		positiveIntegerFormatter.setMaximum(Integer.MAX_VALUE);
 		positiveIntegerFormatter.setAllowsInvalid(false);
 		positiveIntegerFormatter.setCommitsOnValidEdit(true);
 
-		// capacity label
+		// Capacity label
 		JLabel capacityLabel = new JLabel("Capacity");
 		capacityLabel.setBounds(LEFT_PADDING, 60, MIN_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(capacityLabel);
 
-		// capacity input number field
+		// Capacity input number field
 		capacityField = new JFormattedTextField(positiveIntegerFormatter);
 		capacityField.setBounds(145, 60, 100, Constants.TEXT_HEIGHT);
 		capacityField.setValue(0);
 		capacityField.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel.add(capacityField);
 
+		// Cancel button
 		cancelButton = new JButton("Cancel");
 		cancelButton.setBounds(145, 100, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
 		cancelButton.setHorizontalTextPosition(JButton.CENTER);
@@ -111,6 +86,7 @@ public class CreateQuarantineDialog extends JDialog {
 				System.out.println("Cancel: No");
 		});
 
+		// Create button
 		createButton = new JButton("Create");
 		createButton.setBounds(235, 100, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
 		createButton.setHorizontalTextPosition(JButton.CENTER);
