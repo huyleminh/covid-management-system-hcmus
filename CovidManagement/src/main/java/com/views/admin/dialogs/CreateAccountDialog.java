@@ -1,4 +1,4 @@
-package com.views.admin;
+package com.views.admin.dialogs;
 
 import com.utilities.Constants;
 
@@ -6,39 +6,19 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CreateAccountDialog extends JDialog {
-//	public static void main(String[] args) {
-//		try {
-//			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		SwingUtilities.invokeLater(() -> {
-//			ManagerManagementView mainView = new ManagerManagementView();
-//			CreateAccountDialog createAccountDialog = new CreateAccountDialog(mainView.getFrame());
-//			ViewActivityDialog viewActivityDialog = new ViewActivityDialog(mainView.getFrame());
-//
-//			mainView.getCreateButton().addActionListener((event) -> {
-//				createAccountDialog.setVisible(true);
-//			});
-//			mainView.getViewActivityButton().addActionListener((event) -> {
-//				viewActivityDialog.setVisible(true);
-//			});
-//			mainView.display();
-//		});
-//	}
-
+	// Constants
 	private static final int LEFT_PADDING = 45;
 	private static final int MIN_WIDTH = 80;
 	private static final int MAX_WIDTH = 255;
 
-	JTextField usernameField;
-	JTextField passwordField;
-	JComboBox<String> roleComboBox;
-	JButton cancelButton;
-	JButton createButton;
+	// Components
+	private JTextField usernameField;
+	private JPasswordField passwordField;
+	private JComboBox<String> roleComboBox;
+	private JButton cancelButton;
+	private JButton createButton;
 
-	CreateAccountDialog(JFrame frame) {
+	public CreateAccountDialog(JFrame frame) {
 		super(frame);
 		this.setTitle("Create Manager Account");
 
@@ -55,33 +35,37 @@ public class CreateAccountDialog extends JDialog {
 	}
 
 	private void initComponents(JPanel panel) {
+		// Username label
 		JLabel usernameLabel = new JLabel("Username");
 		usernameLabel.setBounds(LEFT_PADDING, 20, MIN_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(usernameLabel);
 
-		// username text field
+		// Username text field
 		usernameField = new JTextField();
 		usernameField.setBounds(135, 20, MAX_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(usernameField);
 
-		// password label
+		// Password label
 		JLabel passwordLabel = new JLabel("Password");
 		passwordLabel.setBounds(LEFT_PADDING, 60, MIN_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(passwordLabel);
 
-		// password text field
-		passwordField = new JTextField();
+		// Password text field
+		passwordField = new JPasswordField();
 		passwordField.setBounds(135, 60, MAX_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(passwordField);
 
+		// Role label
 		JLabel roleLabel = new JLabel("Role");
 		roleLabel.setBounds(LEFT_PADDING, 100, MIN_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(roleLabel);
 
+		// Role combo box
 		roleComboBox = new JComboBox<>(new String[] {"Manager"});
 		roleComboBox.setBounds(135, 100, MAX_WIDTH / 2, Constants.TEXT_HEIGHT);
 		panel.add(roleComboBox);
 
+		// Cancel button
 		cancelButton = new JButton("Cancel");
 		cancelButton.setBounds(135, 140, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
 		cancelButton.setHorizontalTextPosition(JButton.CENTER);
@@ -98,6 +82,7 @@ public class CreateAccountDialog extends JDialog {
 				System.out.println("Cancel: No");
 		});
 
+		// Create button
 		createButton = new JButton("Create");
 		createButton.setBounds(225, 140, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
 		createButton.setHorizontalTextPosition(JButton.CENTER);
