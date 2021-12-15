@@ -62,7 +62,6 @@ public class UserView extends JPanel {
 		JPanel leftPane = new JPanel();
 		leftPane.setBounds(0, 0, 200, 600);
 		leftPane.setLayout(null);
-		leftPane.setPreferredSize(new Dimension(Constants.LEFT_PANEL_WIDTH, Constants.APP_HEIGHT));
 		add(leftPane);
 
 		Border lineBorderRightEdge = BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK);
