@@ -1,33 +1,32 @@
 package com.views.shared.dialogs;
 
-import com.toedter.calendar.JDateChooser;
 import com.utilities.Constants;
+import com.views.shared.panels.DateChooserPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.text.DateFormatter;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
-import java.text.DateFormat;
 import java.text.NumberFormat;
-import java.util.TimeZone;
 
 public class FilterNecessariesDialog extends JDialog {
-	// Constant
-	private static final ImageIcon CALENDAR_ICON = new ImageIcon(Constants.CALENDAR_ICON_FILE_PATH);
+	// Constants
+	private static final int HORIZONTAL_PADDING = 25;
+	private static final int TITLED_BORDER_WIDTH = 350;
+	private static final int TITLED_BORDER_HEIGHT = 60;
 
 	// Input formatters
 	private NumberFormatter quantityFormatter;
 	private NumberFormatter priceFormatter;
-	private DateFormatter dateFormatter;
 
 	// Components
 	private JFormattedTextField minQuantityTextField;
 	private JFormattedTextField maxQuantityTextField;
 	private JFormattedTextField minPriceTextField;
 	private JFormattedTextField maxPriceTextField;
-	private JFormattedTextField startDateTextField;
-	private JFormattedTextField endDateTextField;
+	private DateChooserPanel startDateChooser;
+	private DateChooserPanel endDateChooser;
+
 	private JButton cancelButton;
 	private JButton filterButton;
 
@@ -36,7 +35,7 @@ public class FilterNecessariesDialog extends JDialog {
 
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setPreferredSize(new Dimension(500, 220));
+		panel.setPreferredSize(new Dimension(400, 335));
 
 		initInputFormatters();
 		initComponents(panel);
@@ -48,12 +47,12 @@ public class FilterNecessariesDialog extends JDialog {
 	}
 
 	private void initComponents(JPanel panel) {
-		Border lineBorder = BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1);
+		Border grayLineBorder = BorderFactory.createLineBorder(Color.GRAY, 1);
 
-		initQuantityPanel(panel, lineBorder);
-		initPricePanel(panel, lineBorder);
-		initStartDatePanel(panel, lineBorder);
-		initEndDatePanel(panel, lineBorder);
+		initQuantityPanel(panel, grayLineBorder);
+		initPricePanel(panel, grayLineBorder);
+		initStartDatePanel(panel, grayLineBorder);
+		initEndDatePanel(panel, grayLineBorder);
 		initButtons(panel);
 	}
 
@@ -75,107 +74,92 @@ public class FilterNecessariesDialog extends JDialog {
 		priceFormatter.setMaximum(8388607);
 		priceFormatter.setAllowsInvalid(false);
 		priceFormatter.setCommitsOnValidEdit(true);
-
-		// Date format in GMT+7
-		DateFormat dateFormat = DateFormat.getDateInstance();
-		dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+7"));
-
-		// Date formatter
-		dateFormatter = new DateFormatter(dateFormat);
-		dateFormatter.setAllowsInvalid(false);
-		dateFormatter.setCommitsOnValidEdit(true);
 	}
 
 	private void initQuantityPanel(JPanel panel, Border lineBorder) {
-		JLabel quantityLabel = new JLabel("Quantity");
-		quantityLabel.setBounds(25, 20, 80, 30);
-		panel.add(quantityLabel);
+		JPanel quantityPanel = new JPanel();
+		quantityPanel.setLayout(null);
+		quantityPanel.setBounds(HORIZONTAL_PADDING, 15, TITLED_BORDER_WIDTH, TITLED_BORDER_HEIGHT);
+		quantityPanel.setBorder(BorderFactory.createTitledBorder(lineBorder, "Quantity"));
+		panel.add(quantityPanel);
 
 		JLabel minQuantityLabel = new JLabel("Min");
-		minQuantityLabel.setBounds(115, 20, 30, 30);
-		panel.add(minQuantityLabel);
+		minQuantityLabel.setBounds(10, 20, 30, Constants.TEXT_HEIGHT);
+		quantityPanel.add(minQuantityLabel);
 
 		minQuantityTextField = new JFormattedTextField(quantityFormatter);
-		minQuantityTextField.setBounds(150, 20, 135, 30);
+		minQuantityTextField.setBounds(45, 20, 120, Constants.TEXT_HEIGHT);
 		minQuantityTextField.setValue(0);
 		minQuantityTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel.add(minQuantityTextField);
+		quantityPanel.add(minQuantityTextField);
 
 		JLabel maxQuantityLabel = new JLabel("Max");
-		maxQuantityLabel.setBounds(305, 20, 30, 30);
-		panel.add(maxQuantityLabel);
+		maxQuantityLabel.setBounds(185, 20, 30, Constants.TEXT_HEIGHT);
+		quantityPanel.add(maxQuantityLabel);
 
 		maxQuantityTextField = new JFormattedTextField(quantityFormatter);
-		maxQuantityTextField.setBounds(340, 20, 135, 30);
+		maxQuantityTextField.setBounds(220, 20, 120, Constants.TEXT_HEIGHT);
 		maxQuantityTextField.setValue(0);
 		maxQuantityTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel.add(maxQuantityTextField);
+		quantityPanel.add(maxQuantityTextField);
 	}
 
 	private void initPricePanel(JPanel panel, Border lineBorder) {
-		JLabel priceLabel = new JLabel("Price (VND)");
-		priceLabel.setBounds(25, 60, 80, 30);
-		panel.add(priceLabel);
+		JPanel pricePanel = new JPanel();
+		pricePanel.setLayout(null);
+		pricePanel.setBounds(HORIZONTAL_PADDING, 85, TITLED_BORDER_WIDTH, TITLED_BORDER_HEIGHT);
+		pricePanel.setBorder(BorderFactory.createTitledBorder(lineBorder, "Price with VND currency"));
+		panel.add(pricePanel);
 
 		JLabel minPriceLabel = new JLabel("Min");
-		minPriceLabel.setBounds(115, 60, 30, 30);
-		panel.add(minPriceLabel);
+		minPriceLabel.setBounds(10, 20, 30, Constants.TEXT_HEIGHT);
+		pricePanel.add(minPriceLabel);
 
 		minPriceTextField = new JFormattedTextField(priceFormatter);
-		minPriceTextField.setBounds(150, 60, 135, 30);
+		minPriceTextField.setBounds(45, 20, 120, Constants.TEXT_HEIGHT);
 		minPriceTextField.setValue(0);
 		minPriceTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel.add(minPriceTextField);
+		pricePanel.add(minPriceTextField);
 
 		JLabel maxPriceLabel = new JLabel("Max");
-		maxPriceLabel.setBounds(305, 60, 30, 30);
-		panel.add(maxPriceLabel);
+		maxPriceLabel.setBounds(185, 20, 30, Constants.TEXT_HEIGHT);
+		pricePanel.add(maxPriceLabel);
 
 		maxPriceTextField = new JFormattedTextField(priceFormatter);
-		maxPriceTextField.setBounds(340, 60, 135, 30);
+		maxPriceTextField.setBounds(220, 20, 120, Constants.TEXT_HEIGHT);
 		maxPriceTextField.setValue(0);
 		maxPriceTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel.add(maxPriceTextField);
+		pricePanel.add(maxPriceTextField);
 	}
 
 	private void initStartDatePanel(JPanel panel, Border lineBorder) {
-		JLabel startDateLabel = new JLabel("Start date");
-		startDateLabel.setBounds(25, 100, 80, 30);
-		panel.add(startDateLabel);
+		JPanel startDatePanel = new JPanel();
+		startDatePanel.setLayout(null);
+		startDatePanel.setBounds(HORIZONTAL_PADDING, 155, TITLED_BORDER_WIDTH, TITLED_BORDER_HEIGHT);
+		startDatePanel.setBorder(BorderFactory.createTitledBorder(lineBorder, "Start date"));
+		panel.add(startDatePanel);
 
-		startDateTextField = new JFormattedTextField(dateFormatter);
-		startDateTextField.setBounds(115, 100, 320, 30);
-		startDateTextField.setBorder(lineBorder);
-		startDateTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel.add(startDateTextField);
-
-		JDateChooser startDateChooser = new JDateChooser();
-		startDateChooser.setBounds(445, 100, 30, 30);
-		startDateChooser.setIcon(CALENDAR_ICON);
-		panel.add(startDateChooser);
+		startDateChooser = new DateChooserPanel((short) 1930, (short) 2021);
+		startDateChooser.setBounds(10, 20, 330, 30);
+		startDatePanel.add(startDateChooser);
 	}
 
 	private void initEndDatePanel(JPanel panel, Border lineBorder) {
-		JLabel endDateLabel = new JLabel("End date");
-		endDateLabel.setBounds(25, 140, 80, 30);
-		panel.add(endDateLabel);
+		JPanel endDatePanel = new JPanel();
+		endDatePanel.setLayout(null);
+		endDatePanel.setBounds(HORIZONTAL_PADDING, 225, TITLED_BORDER_WIDTH, TITLED_BORDER_HEIGHT);
+		endDatePanel.setBorder(BorderFactory.createTitledBorder(lineBorder, "End date"));
+		panel.add(endDatePanel);
 
-		endDateTextField = new JFormattedTextField(dateFormatter);
-		endDateTextField.setBounds(115, 140, 320, 30);
-		endDateTextField.setBorder(lineBorder);
-		endDateTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel.add(endDateTextField);
-
-		JDateChooser endDateChooser = new JDateChooser();
-		endDateChooser.setBounds(445, 140, 30, 30);
-		endDateChooser.setIcon(CALENDAR_ICON);
-		panel.add(endDateChooser);
+		endDateChooser = new DateChooserPanel((short) 1930, (short) 2022);
+		endDateChooser.setBounds(10, 20, 330, 30);
+		endDatePanel.add(endDateChooser);
 	}
 
 	private void initButtons(JPanel panel) {
 		// Cancel button
 		cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(165, 180, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
+		cancelButton.setBounds(115, 295, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
 		cancelButton.setHorizontalTextPosition(JButton.CENTER);
 		cancelButton.setBackground(new Color(229, 229, 229));
 		cancelButton.setForeground(Color.BLACK);
@@ -190,9 +174,9 @@ public class FilterNecessariesDialog extends JDialog {
 				System.out.println("Cancel: No");
 		});
 
-		// Sort button
+		// Filter button
 		filterButton = new JButton("Filter");
-		filterButton.setBounds(255, 180, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
+		filterButton.setBounds(205, 295, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
 		filterButton.setHorizontalTextPosition(JButton.CENTER);
 		filterButton.setBackground(Constants.LIGHT_BLUE);
 		filterButton.setForeground(Color.WHITE);
@@ -215,12 +199,12 @@ public class FilterNecessariesDialog extends JDialog {
 		return maxPriceTextField;
 	}
 
-	public JFormattedTextField getStartDateTextField() {
-		return startDateTextField;
+	public DateChooserPanel getStartDateChooser() {
+		return startDateChooser;
 	}
 
-	public JFormattedTextField getEndDateTextField() {
-		return endDateTextField;
+	public DateChooserPanel getEndDateChooser() {
+		return endDateChooser;
 	}
 
 	public JButton getCancelButton() {
