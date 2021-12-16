@@ -1,4 +1,4 @@
-package com.views;
+package com.views.login;
 
 import com.utilities.Constants;
 import javax.swing.*;
