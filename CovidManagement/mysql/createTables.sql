@@ -6,7 +6,7 @@ USE COVID_MANAGEMENT;
 
 
 -- ------------------------------------------------ --
--- 					CREATE TABLE					--
+--                  CREATE TABLE                    --
 -- ------------------------------------------------ --
 
 -- Table: Account
@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.`Account` (
     username VARCHAR(12) NOT NULL,
     `password` VARCHAR(64),
     `role` TINYINT NOT NULL,
-    `active` TINYINT NOT NULL,
+    isActive TINYINT NOT NULL,
+    userId INT NOT NULL,
 
     CONSTRAINT PK_Account PRIMARY KEY (username)
 )
@@ -24,18 +25,20 @@ DEFAULT COLLATE = utf8mb4_bin;
 
 -- Table: User
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.`User` (
-    identifierNumber VARCHAR(12) NOT NULL,
+    userId INT NOT NULL AUTO_INCREMENT,
+    identifierNumber VARCHAR(12),
     fullname NVARCHAR(50) NOT NULL,
     yearOfBirth SMALLINT,
     locationId INT,
     `status` TINYINT,
-    userInvolvedId VARCHAR(12),
+    userInvolvedId INT,
     street NVARCHAR(50),
     wardId INT,
     districtId INT,
     provinceId INT,
 
-    CONSTRAINT PK_User PRIMARY KEY (identifierNumber)
+    CONSTRAINT PK_User PRIMARY KEY (userId),
+    FULLTEXT FT_User (fullname)
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -92,8 +95,8 @@ DEFAULT COLLATE = utf8mb4_bin;
 -- Table: UserHistory
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.UserHistory (
     historyId INT NOT NULL AUTO_INCREMENT,
-    managerId VARCHAR(12) NOT NULL,
-    userId VARCHAR(12) NOT NULL,
+    managerId INT NOT NULL,
+    userId INT NOT NULL,
     `date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- auto init
     `description` TEXT NOT NULL,
     operationType TINYINT NOT NULL,
@@ -107,7 +110,7 @@ DEFAULT COLLATE = utf8mb4_bin;
 -- Table: NecessariesHistory
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.NecessariesHistory (
     historyId INT NOT NULL AUTO_INCREMENT,
-    managerId VARCHAR(12) NOT NULL,
+    managerId INT NOT NULL,
     `date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- auto init
     `description` TEXT NOT NULL,
     operationType TINYINT NOT NULL,
@@ -121,7 +124,7 @@ DEFAULT COLLATE = utf8mb4_bin;
 -- Table: PaymentHistory
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.PaymentHistory (
     historyId INT NOT NULL AUTO_INCREMENT,
-    userId VARCHAR(12) NOT NULL,
+    userId INT NOT NULL,
     `date` TIMESTAMP NOT NULL,
     paymentAmount INT NOT NULL,
 
@@ -134,7 +137,7 @@ DEFAULT COLLATE = utf8mb4_bin;
 -- Table: Debt
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.Debt (
     debtId INT NOT NULL AUTO_INCREMENT,
-    userId VARCHAR(12) NOT NULL,
+    userId INT NOT NULL,
     debtDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- auto init
     totalDebt MEDIUMINT NOT NULL,
 
@@ -148,7 +151,7 @@ DEFAULT COLLATE = utf8mb4_bin;
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.PaymentAccount (
     paymentId INT NOT NULL AUTO_INCREMENT,
     balance INT NOT NULL,
-    userId VARCHAR(12) NOT NULL,
+    userId INT NOT NULL,
 
     CONSTRAINT PK_PaymentAccount PRIMARY KEY (paymentId)
 )
@@ -172,7 +175,7 @@ DEFAULT COLLATE = utf8mb4_bin;
 -- Table: Order
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.`Order` (
     orderId INT NOT NULL AUTO_INCREMENT,
-    userId VARCHAR(12) NOT NULL,
+    userId INT NOT NULL,
     createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- auto init
     totalPrice INT NOT NULL,
 
@@ -205,7 +208,8 @@ CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.Necessaries (
     duration TINYINT,
     price MEDIUMINT NOT NULL,
 
-    CONSTRAINT PK_Necessaries PRIMARY KEY (necessariesId)
+    CONSTRAINT PK_Necessaries PRIMARY KEY (necessariesId),
+    FULLTEXT FT_Necessaries (necessariesName)
 )
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
@@ -214,7 +218,7 @@ DEFAULT COLLATE = utf8mb4_bin;
 -- Table: SystemInfo
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.SystemInfo (
     id INT NOT NULL AUTO_INCREMENT,
-    firstLoggedIn CHAR(50) NOT NULL,
+    firstLoggedIn TINYINT NOT NULL,
     bankAccountNumber CHAR(12) NOT NULL,
     balance INT NOT NULL,
 
@@ -226,15 +230,15 @@ DEFAULT COLLATE = utf8mb4_bin;
 
 
 -- ------------------------------------------------ --
--- 				CREATE FOREIGN KEY					--
+--              CREATE FOREIGN KEY                  --
 -- ------------------------------------------------ --
 
 -- Table: Account
--- Account(username) ==> User(identifierNumber)
+-- Account(userId) ==> User(userId)
 ALTER TABLE COVID_MANAGEMENT.`Account`
 ADD CONSTRAINT FK_Account_User
-FOREIGN KEY (username)
-REFERENCES COVID_MANAGEMENT.`User`(identifierNumber);
+FOREIGN KEY (userId)
+REFERENCES COVID_MANAGEMENT.`User`(userId);
 
 -- Table: User
 -- User(locationId) ==> Location(locationId)
@@ -244,11 +248,11 @@ FOREIGN KEY (locationId)
 REFERENCES COVID_MANAGEMENT.Location(locationId);
 
 -- Table: User
--- User(userInvolvedId) ==> User(identifierNumber)
+-- User(userInvolvedId) ==> User(userId)
 ALTER TABLE COVID_MANAGEMENT.`User`
 ADD CONSTRAINT FK_User_User
 FOREIGN KEY (userInvolvedId)
-REFERENCES COVID_MANAGEMENT.`User`(identifierNumber);
+REFERENCES COVID_MANAGEMENT.`User`(userId);
 
 -- Table: User
 -- User(wardId) ==> Ward(wardId)
@@ -286,46 +290,46 @@ FOREIGN KEY (districtId)
 REFERENCES COVID_MANAGEMENT.District(districtId);
 
 -- Table: UserHistory
--- UserHistory(managerId) ==> User(identifierNumber)
+-- UserHistory(managerId) ==> User(userId)
 ALTER TABLE COVID_MANAGEMENT.UserHistory
 ADD CONSTRAINT FK_UserHistory_User_Manager
 FOREIGN KEY (managerId)
-REFERENCES COVID_MANAGEMENT.`User`(identifierNumber);
+REFERENCES COVID_MANAGEMENT.`User`(userId);
 
 -- Table: UserHistory
--- UserHistory(userId) ==> User(identifierNumber)
+-- UserHistory(userId) ==> User(userId)
 ALTER TABLE COVID_MANAGEMENT.UserHistory
 ADD CONSTRAINT FK_UserHistory_User
 FOREIGN KEY (userId)
-REFERENCES COVID_MANAGEMENT.`User`(identifierNumber);
+REFERENCES COVID_MANAGEMENT.`User`(userId);
 
 -- Table: NecessariesHistory
--- NecessariesHistory(managerId) ==> User(identifierNumber)
+-- NecessariesHistory(managerId) ==> User(userId)
 ALTER TABLE COVID_MANAGEMENT.NecessariesHistory
 ADD CONSTRAINT FK_NecessariesHistory_User_Manager
 FOREIGN KEY (managerId)
-REFERENCES COVID_MANAGEMENT.`User`(identifierNumber);
+REFERENCES COVID_MANAGEMENT.`User`(userId);
 
 -- Table: PaymentHistory
--- PaymentHistory(userId) ==> User(identifierNumber)
+-- PaymentHistory(userId) ==> User(userId)
 ALTER TABLE COVID_MANAGEMENT.PaymentHistory
 ADD CONSTRAINT FK_PaymentHistory_User
 FOREIGN KEY (userId)
-REFERENCES COVID_MANAGEMENT.`User`(identifierNumber);
+REFERENCES COVID_MANAGEMENT.`User`(userId);
 
 -- Table: Debt
--- Debt(userId) ==> User(identifierNumber)
+-- Debt(userId) ==> User(userId)
 ALTER TABLE COVID_MANAGEMENT.Debt
 ADD CONSTRAINT FK_Debt_User
 FOREIGN KEY (userId)
-REFERENCES COVID_MANAGEMENT.`User`(identifierNumber);
+REFERENCES COVID_MANAGEMENT.`User`(userId);
 
 -- Table: PaymentAccount
--- PaymentAccount(userId) ==> User(identifierNumber)
+-- PaymentAccount(userId) ==> User(userId)
 ALTER TABLE COVID_MANAGEMENT.PaymentAccount
 ADD CONSTRAINT FK_PaymentAccount_User
 FOREIGN KEY (userId)
-REFERENCES COVID_MANAGEMENT.`User`(identifierNumber);
+REFERENCES COVID_MANAGEMENT.`User`(userId);
 
 -- Table: Transaction
 -- Transaction(sourceAccount) ==> PaymentAccount(paymentId)
@@ -335,11 +339,11 @@ FOREIGN KEY (sourceAccount)
 REFERENCES COVID_MANAGEMENT.PaymentAccount(paymentId);
 
 -- Table: Order
--- Order(userId) ==> User(identifierNumber)
+-- Order(userId) ==> User(userId)
 ALTER TABLE COVID_MANAGEMENT.`Order`
 ADD CONSTRAINT FK_Order_User
 FOREIGN KEY (userId)
-REFERENCES COVID_MANAGEMENT.`User`(identifierNumber);
+REFERENCES COVID_MANAGEMENT.`User`(userId);
 
 -- Table: OrderDetail
 -- OrderDetail(orderId) ==> Order(orderId)

@@ -12,40 +12,40 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class AdminView extends JPanel {
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		SwingUtilities.invokeLater(() -> {
-			AdminView adminView = new AdminView();
-
-			CreateAccountDialog createAccountDialog = new CreateAccountDialog(adminView.getFrame());
-			CreateQuarantineDialog createQuarantineDialog = new CreateQuarantineDialog(adminView.getFrame());
-			EditQuarantineDialog editQuarantineDialog = new EditQuarantineDialog(adminView.getFrame());
-			ViewActivityDialog viewActivityDialog = new ViewActivityDialog(adminView.getFrame());
-
-			adminView.getManagerManagementPanel()
-					.getViewActivityButton()
-					.addActionListener((event) -> viewActivityDialog.setVisible(true));
-
-			adminView.getManagerManagementPanel()
-					.getCreateButton()
-					.addActionListener((event) ->	createAccountDialog.setVisible(true));
-
-			adminView.getQuarantineManagementPanel()
-					.getEditButton()
-					.addActionListener((event) -> editQuarantineDialog.setVisible(true));
-
-			adminView.getQuarantineManagementPanel()
-					.getCreateButton()
-					.addActionListener((event) -> createQuarantineDialog.setVisible(true));
-
-			adminView.display();
-		});
-	}
+//	public static void main(String[] args) {
+//		try {
+//			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		SwingUtilities.invokeLater(() -> {
+//			AdminView adminView = new AdminView();
+//
+//			CreateAccountDialog createAccountDialog = new CreateAccountDialog(adminView.getFrame());
+//			CreateQuarantineDialog createQuarantineDialog = new CreateQuarantineDialog(adminView.getFrame());
+//			EditQuarantineDialog editQuarantineDialog = new EditQuarantineDialog(adminView.getFrame());
+//			ViewActivityDialog viewActivityDialog = new ViewActivityDialog(adminView.getFrame());
+//
+//			adminView.getManagerManagementPanel()
+//					.getViewActivityButton()
+//					.addActionListener((event) -> viewActivityDialog.setVisible(true));
+//
+//			adminView.getManagerManagementPanel()
+//					.getCreateButton()
+//					.addActionListener((event) ->	createAccountDialog.setVisible(true));
+//
+//			adminView.getQuarantineManagementPanel()
+//					.getEditButton()
+//					.addActionListener((event) -> editQuarantineDialog.setVisible(true));
+//
+//			adminView.getQuarantineManagementPanel()
+//					.getCreateButton()
+//					.addActionListener((event) -> createQuarantineDialog.setVisible(true));
+//
+//			adminView.display();
+//		});
+//	}
 
 	// Constants for selecting feature.
 	public static final int MANAGE_MANAGER = 0;
@@ -54,8 +54,8 @@ public class AdminView extends JPanel {
 	// Status
 	private int selectingFeature = MANAGE_MANAGER;
 
-	// Main frame.
-	private JFrame frame;
+	// Main rame.
+	private JFrame mainFrame;
 
 	// Components at the left pane.
 	private JLabel nameLabel;
@@ -68,8 +68,9 @@ public class AdminView extends JPanel {
 	private ManagerManagementPanel managerManagementPanel;
 	private QuarantineManagementPanel quarantineManagementPanel;
 
-	public AdminView() {
+	public AdminView(JFrame mainFrame) {
 		super();
+		this.mainFrame = mainFrame;
 
 		setLayout(null);
 		initLeftPaneComponents();
@@ -177,13 +178,15 @@ public class AdminView extends JPanel {
 	}
 
 	public void display() {
-		frame = new JFrame("Admin");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setContentPane(this);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		mainFrame.setVisible(false);
+		mainFrame.setResizable(true);
+
+		mainFrame.setTitle("Admin");
+		mainFrame.setResizable(false);
+		mainFrame.setContentPane(this);
+		mainFrame.pack();
+		mainFrame.setLocationRelativeTo(null);
+		mainFrame.setVisible(true);
 	}
 
 	public void setSelectingFeature(int selectingFeature) {
@@ -194,8 +197,8 @@ public class AdminView extends JPanel {
 		return selectingFeature;
 	}
 
-	public JFrame getFrame() {
-		return frame;
+	public JFrame getMainFrame() {
+		return mainFrame;
 	}
 
 	public JLabel getNameLabel() {
