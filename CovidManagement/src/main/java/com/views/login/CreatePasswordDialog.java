@@ -1,9 +1,12 @@
 package com.views.login;
 
 import com.utilities.Constants;
+import com.views.shared.panels.PasswordFieldPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class CreatePasswordDialog extends JDialog {
 	// Constants
@@ -12,8 +15,8 @@ public class CreatePasswordDialog extends JDialog {
 	private static final int MAX_WIDTH = 250;
 
 	// Components
-	private JPasswordField passwordField;
-	private JPasswordField confirmPasswordField;
+	private PasswordFieldPanel passwordFieldPanel;
+	private PasswordFieldPanel confirmPasswordFieldPanel;
 	private JButton cancelButton;
 	private JButton createButton;
 
@@ -23,7 +26,18 @@ public class CreatePasswordDialog extends JDialog {
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setPreferredSize(new Dimension(430, 140));
+
 		initComponents(panel);
+		addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				passwordFieldPanel.getPasswordField().setText("");
+				confirmPasswordFieldPanel.getPasswordField().setText("");
+
+				passwordFieldPanel.setPasswordVisible(false);
+				confirmPasswordFieldPanel.setPasswordVisible(false);
+			}
+		});
 
 		setAlwaysOnTop(true);
 		setResizable(false);
@@ -38,20 +52,20 @@ public class CreatePasswordDialog extends JDialog {
 		passwordLabel.setBounds(LEFT_PADDING, 20, MIN_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(passwordLabel);
 
-		// Password text field
-		passwordField = new JPasswordField();
-		passwordField.setBounds(155, 20, MAX_WIDTH, Constants.TEXT_HEIGHT);
-		panel.add(passwordField);
+		passwordFieldPanel = new PasswordFieldPanel();
+		passwordFieldPanel.setBounds(155, 20, MAX_WIDTH, Constants.TEXT_HEIGHT);
+		passwordFieldPanel.setVisible(true);
+		panel.add(passwordFieldPanel);
 
 		// Confirm password label
 		JLabel confirmPasswordLabel = new JLabel("Confirm password");
 		confirmPasswordLabel.setBounds(LEFT_PADDING, 60, MIN_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(confirmPasswordLabel);
 
-		// Confirm password text field
-		confirmPasswordField = new JPasswordField();
-		confirmPasswordField.setBounds(155, 60, MAX_WIDTH, Constants.TEXT_HEIGHT);
-		panel.add(confirmPasswordField);
+		confirmPasswordFieldPanel = new PasswordFieldPanel();
+		confirmPasswordFieldPanel.setBounds(155, 60, MAX_WIDTH, Constants.TEXT_HEIGHT);
+		confirmPasswordFieldPanel.setVisible(true);
+		panel.add(confirmPasswordFieldPanel);
 
 		// Cancel button
 		cancelButton = new JButton("Cancel");
@@ -71,11 +85,11 @@ public class CreatePasswordDialog extends JDialog {
 	}
 
 	public JPasswordField getPasswordField() {
-		return passwordField;
+		return passwordFieldPanel.getPasswordField();
 	}
 
 	public JPasswordField getConfirmPasswordField() {
-		return confirmPasswordField;
+		return confirmPasswordFieldPanel.getPasswordField();
 	}
 
 	public JButton getCancelButton() {

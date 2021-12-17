@@ -12,18 +12,18 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ManagerView extends JPanel {
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		SwingUtilities.invokeLater(() -> {
-			ManagerView managerView = new ManagerView();
-			managerView.display();
-		});
-	}
+//	public static void main(String[] args) {
+//		try {
+//			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		SwingUtilities.invokeLater(() -> {
+//			ManagerView managerView = new ManagerView();
+//			managerView.display();
+//		});
+//	}
 
 	// Constants for selecting feature.
 	public static final int MANAGE_USER = 0;
@@ -34,7 +34,7 @@ public class ManagerView extends JPanel {
 	private int selectingFeature = MANAGE_USER;
 
 	// Main frame.
-	private JFrame frame;
+	private JFrame mainFrame;
 
 	// Components at the left pane.
 	private JLabel nameLabel;
@@ -49,8 +49,9 @@ public class ManagerView extends JPanel {
 	private ManageNecessariesPanel manageNecessariesPanel;
 	private StatisticPanel statisticPanel;
 
-	public ManagerView() {
+	public ManagerView(JFrame mainFrame) {
 		super();
+		this.mainFrame = mainFrame;
 
 		setLayout(null);
 		initLeftComponents();
@@ -191,13 +192,15 @@ public class ManagerView extends JPanel {
 	}
 
 	public void display() {
-		frame = new JFrame("Manager");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setContentPane(this);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		mainFrame.setVisible(false);
+		mainFrame.setResizable(true);
+
+		mainFrame.setTitle("Manager");
+		mainFrame.setResizable(false);
+		mainFrame.setContentPane(this);
+		mainFrame.pack();
+		mainFrame.setLocationRelativeTo(null);
+		mainFrame.setVisible(true);
 	}
 
 	public void setSelectingFeature(int selectingFeature) {
@@ -208,8 +211,8 @@ public class ManagerView extends JPanel {
 		return selectingFeature;
 	}
 
-	public JFrame getFrame() {
-		return frame;
+	public JFrame getMainFrame() {
+		return mainFrame;
 	}
 
 	public JLabel getNameLabel() {

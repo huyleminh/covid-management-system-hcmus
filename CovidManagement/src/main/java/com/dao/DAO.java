@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface DAO<EntityType, IdType> {
 	List<EntityType> getAll();
 	Optional<EntityType> get(IdType id);
-	void create(EntityType entity);
-	void update(EntityType entity);
-	void delete(EntityType entity);
+	boolean create(EntityType entity);
+	boolean update(EntityType entity);
+	boolean delete(EntityType entity);
 }

@@ -43,6 +43,8 @@ public class Constants {
 	// File path
 	public static final String PROFILE_ICON_FILE_PATH = "src/main/resources/images/profile-128x128.png";
 	public static final String RIGHT_CHEVRON_ICON_FILE_PATH = "src/main/resources/images/right-chevron-24x24.png";
+	public static final String HIDE_PASSWORD_ICON_FILE_PATH = "src/main/resources/images/hidden-24x24.png";
+	public static final String SHOW_PASSWORD_ICON_FILE_PATH = "src/main/resources/images/view-24x24.png";
 
 	// Icon
 	public static final Icon RIGHT_CHEVRON_ICON = new ImageIcon(RIGHT_CHEVRON_ICON_FILE_PATH);

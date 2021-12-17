@@ -11,18 +11,18 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class UserView extends JPanel {
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		SwingUtilities.invokeLater(() -> {
-			UserView userView = new UserView();
-			userView.display();
-		});
-	}
+//	public static void main(String[] args) {
+//		try {
+//			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		SwingUtilities.invokeLater(() -> {
+//			UserView userView = new UserView();
+//			userView.display();
+//		});
+//	}
 
 	// Constants for selecting feature.
 	public static final int PERSONAL_INFO = 0;
@@ -33,7 +33,7 @@ public class UserView extends JPanel {
 	private int selectingFeature = PERSONAL_INFO;
 
 	// Main frame.
-	private JFrame frame;
+	private JFrame mainFrame;
 
 	// Components at the left pane.
 	private JLabel nameLabel;
@@ -48,8 +48,9 @@ public class UserView extends JPanel {
 	private PurchaseNecessariesTabbed purchaseNecessariesTabbed;
 	private DebtPaymentPanel debtPaymentPanel;
 
-	public UserView() {
+	public UserView(JFrame mainFrame) {
 		super();
+		this.mainFrame = mainFrame;
 
 		setLayout(null);
 		initLeftPaneComponents();
@@ -201,13 +202,15 @@ public class UserView extends JPanel {
 	}
 
 	public void display() {
-		frame = new JFrame("User");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.setContentPane(this);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		mainFrame.setVisible(false);
+		mainFrame.setResizable(true);
+
+		mainFrame.setTitle("User");
+		mainFrame.setResizable(false);
+		mainFrame.setContentPane(this);
+		mainFrame.pack();
+		mainFrame.setLocationRelativeTo(null);
+		mainFrame.setVisible(true);
 	}
 
 	public void setSelectingFeature(int selectingFeature) {
@@ -218,8 +221,8 @@ public class UserView extends JPanel {
 		return selectingFeature;
 	}
 
-	public JFrame getFrame() {
-		return frame;
+	public JFrame getMainFrame() {
+		return mainFrame;
 	}
 
 	public JLabel getNameLabel() {

@@ -1,22 +1,29 @@
 package com.views.login;
 
 import com.utilities.Constants;
+import com.views.shared.panels.PasswordFieldPanel;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class LoginView extends JPanel {
-
-	private JTextField usernameField;
-	private JPasswordField passwordField;
-	private JButton loginButton;
-
+	// Constants
 	private static final int LEFT_PADDING = 50;
 	private static final int MIN_WIDTH = 80;
 	private static final int MAX_WIDTH = 250;
 
+	// Components
+	private JTextField usernameField;
+	private JLabel passwordLabel;
+	PasswordFieldPanel passwordFieldPanel;
+	private JButton loginButton;
 
-	public LoginView() {
+	// Main frame
+	private JFrame mainFrame;
+
+	public LoginView(JFrame mainFrame) {
 		super();
+		this.mainFrame = mainFrame;
 
 		setLayout(null);
 		initComponents();
@@ -35,56 +42,73 @@ public class LoginView extends JPanel {
 		add(usernameField);
 
 		// password label
-		JLabel passwordLabel = new JLabel("Password");
+		passwordLabel = new JLabel("Password");
 		passwordLabel.setBounds(LEFT_PADDING, 100, MIN_WIDTH, Constants.TEXT_HEIGHT);
+		passwordLabel.setVisible(false);
 		add(passwordLabel);
 
-		// password text field
-		passwordField = new JPasswordField();
-		passwordField.setBounds(LEFT_PADDING, 130, MAX_WIDTH, Constants.TEXT_HEIGHT);
-		add(passwordField);
+		passwordFieldPanel = new PasswordFieldPanel();
+		passwordFieldPanel.setBounds(LEFT_PADDING, 130, MAX_WIDTH, Constants.TEXT_HEIGHT);
+		passwordFieldPanel.setVisible(false);
+		add(passwordFieldPanel);
 
 		// login button
-		loginButton = new JButton("Login");
-		loginButton.setBounds(LEFT_PADDING, 180, MAX_WIDTH, Constants.BUTTON_HEIGHT);
+		loginButton = new JButton("Next");
+		loginButton.setActionCommand("Next");
+		loginButton.setBounds(LEFT_PADDING, 100, MAX_WIDTH, Constants.BUTTON_HEIGHT);
+		loginButton.setBackground(Constants.LIGHT_BLUE);
 		loginButton.setForeground(Color.WHITE);
-		loginButton.setBackground(Color.BLACK);
-		loginButton.setOpaque(true);
 		add(loginButton);
 	}
 
+	public void displayBeforeValidatingUsername() {
+		passwordLabel.setVisible(false);
+		passwordFieldPanel.setVisible(false);
+
+		loginButton.setText("Next");
+		loginButton.setActionCommand("Next");
+		loginButton.setBounds(LEFT_PADDING, 100, MAX_WIDTH, Constants.BUTTON_HEIGHT);
+		loginButton.setBackground(Constants.LIGHT_BLUE);
+	}
+
+	public void displayAfterValidatingUsername() {
+		passwordFieldPanel.getPasswordField().setText("");
+
+		passwordLabel.setVisible(true);
+		passwordFieldPanel.setVisible(true);
+		passwordFieldPanel.setPasswordVisible(false);
+
+		loginButton.setText("Login");
+		loginButton.setActionCommand("Login");
+		loginButton.setBounds(LEFT_PADDING, 180, MAX_WIDTH, Constants.BUTTON_HEIGHT);
+		loginButton.setBackground(Color.BLACK);
+	}
+
 	public void display() {
-		JFrame loginFrame = new JFrame("Login");
-		loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		loginFrame.setResizable(false);
-		loginFrame.add(this);
-		loginFrame.pack();
-		loginFrame.setLocationRelativeTo(null);
-		loginFrame.setVisible(true);
+		mainFrame.setVisible(false);
+		mainFrame.setResizable(true);
+
+		mainFrame.setTitle("Login");
+		mainFrame.setResizable(false);
+		mainFrame.setContentPane(this);
+		mainFrame.pack();
+		mainFrame.setLocationRelativeTo(null);
+		mainFrame.setVisible(true);
 	}
 
 	public JTextField getUsernameField() {
 		return usernameField;
 	}
 
-	public JTextField getPasswordField() {
-		return passwordField;
+	public JPasswordField getPasswordField() {
+		return passwordFieldPanel.getPasswordField();
 	}
 
 	public JButton getLoginButton() {
 		return loginButton;
 	}
 
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-
-		SwingUtilities.invokeLater(() -> {
-			LoginView loginView = new LoginView();
-			loginView.display();
-		});
+	public JFrame getMainFrame() {
+		return mainFrame;
 	}
 }
