@@ -4,7 +4,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.swing.*;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 
 public class UtilityFunctions {
 	private UtilityFunctions() {}
@@ -26,13 +25,6 @@ public class UtilityFunctions {
 	}
 
 	public static void quitApp(JFrame mainFrame) {
-		try {
-			SingletonDBConnection.getInstance().getConnection().close();
-		} catch (SQLException e) {
-			System.out.println(">>> UtilityFunctions.java - line 32");
-			e.printStackTrace();
-		} finally {
-			mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
-		}
+		mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
 	}
 }

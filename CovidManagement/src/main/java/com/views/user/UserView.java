@@ -11,19 +11,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class UserView extends JPanel {
-//	public static void main(String[] args) {
-//		try {
-//			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		SwingUtilities.invokeLater(() -> {
-//			UserView userView = new UserView();
-//			userView.display();
-//		});
-//	}
-
 	// Constants for selecting feature.
 	public static final int PERSONAL_INFO = 0;
 	public static final int PURCHASE_NECESSARIES = 1;
@@ -127,51 +114,6 @@ public class UserView extends JPanel {
 		quitButton.setHorizontalTextPosition(JButton.CENTER);
 		quitButton.setForeground(Color.WHITE);
 		leftPane.add(quitButton);
-
-		personalInfoButton.addActionListener((event) -> {
-			purchaseNecessariesTabbed.setVisible(false);
-			debtPaymentPanel.setVisible(false);
-
-			purchaseNecessariesButton.setBackground(Constants.LIGHT_BLUE);
-			purchaseNecessariesButton.setIcon(null);
-			debtPaymentButton.setBackground(Constants.LIGHT_BLUE);
-			debtPaymentButton.setIcon(null);
-			personalInfoButton.setBackground(Constants.DARK_BLUE);
-			personalInfoButton.setIcon(Constants.RIGHT_CHEVRON_ICON);
-			selectingFeature = PERSONAL_INFO;
-
-			personalInfoTabbed.setVisible(true);
-		});
-
-		purchaseNecessariesButton.addActionListener((event) -> {
-			personalInfoTabbed.setVisible(false);
-			debtPaymentPanel.setVisible(false);
-
-			personalInfoButton.setBackground(Constants.LIGHT_BLUE);
-			personalInfoButton.setIcon(null);
-			debtPaymentButton.setBackground(Constants.LIGHT_BLUE);
-			debtPaymentButton.setIcon(null);
-			purchaseNecessariesButton.setBackground(Constants.DARK_BLUE);
-			purchaseNecessariesButton.setIcon(Constants.RIGHT_CHEVRON_ICON);
-			selectingFeature = PURCHASE_NECESSARIES;
-
-			purchaseNecessariesTabbed.setVisible(true);
-		});
-
-		debtPaymentButton.addActionListener((event) -> {
-			personalInfoTabbed.setVisible(false);
-			purchaseNecessariesTabbed.setVisible(false);
-
-			personalInfoButton.setBackground(Constants.LIGHT_BLUE);
-			personalInfoButton.setIcon(null);
-			purchaseNecessariesButton.setBackground(Constants.LIGHT_BLUE);
-			purchaseNecessariesButton.setIcon(null);
-			debtPaymentButton.setBackground(Constants.DARK_BLUE);
-			debtPaymentButton.setIcon(Constants.RIGHT_CHEVRON_ICON);
-			selectingFeature = DEBT_PAYMENT;
-
-			debtPaymentPanel.setVisible(true);
-		});
 	}
 
 	private void initRightPaneComponents() {

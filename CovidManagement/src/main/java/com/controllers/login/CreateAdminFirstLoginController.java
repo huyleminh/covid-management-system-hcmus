@@ -4,10 +4,12 @@ import com.dao.AccountDAO;
 import com.dao.SystemInfoDAO;
 import com.models.Account;
 import com.models.SystemInfo;
+import com.utilities.SingletonDBConnection;
 import com.utilities.UtilityFunctions;
 import com.utilities.ValidationHandler;
 import com.views.login.CreateAdminFirstLoginDialog;
 import com.views.login.LoginView;
+import com.views.shared.dialogs.ConnectionErrorDialog;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -16,6 +18,7 @@ public class CreateAdminFirstLoginController implements ActionListener {
 	private LoginView loginView;
 	private CreateAdminFirstLoginDialog adminFirstLoginDialog;
 	private AccountDAO accountDAOModel;
+	private ConnectionErrorDialog connectionErrorDialog;
 
 	public CreateAdminFirstLoginController(
 			LoginView loginView,
@@ -24,8 +27,16 @@ public class CreateAdminFirstLoginController implements ActionListener {
 		this.loginView = loginView;
 		this.adminFirstLoginDialog = adminFirstLoginDialog;
 		this.accountDAOModel = new AccountDAO();
+		this.connectionErrorDialog = new ConnectionErrorDialog(loginView.getMainFrame());
 
 		this.adminFirstLoginDialog.getCreateButton().addActionListener(this);
+		this.connectionErrorDialog.getReconnectButton().addActionListener((event) -> {
+			connectionErrorDialog.setExitOnCloseButton(false);
+			connectionErrorDialog.setVisible(false);
+
+			SingletonDBConnection.getInstance().connect();
+			createActionOfAdminFirstLoginDialog();
+		});
 
 		this.adminFirstLoginDialog.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -79,7 +90,7 @@ public class CreateAdminFirstLoginController implements ActionListener {
 					);
 				}
 				if (!isUpdated) {
-					showErrorMessage("Create Admin Account", "Can not create this account!");
+					SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 				} else {
 					// Switches to part of login screen
 					adminFirstLoginDialog.setCreatedAccount(true);

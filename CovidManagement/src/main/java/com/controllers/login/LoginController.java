@@ -1,26 +1,37 @@
 package com.controllers.login;
 
+import com.controllers.user.UserController;
 import com.dao.AccountDAO;
 import com.models.Account;
+import com.utilities.SingletonDBConnection;
 import com.utilities.UtilityFunctions;
 import com.utilities.ValidationHandler;
 import com.views.admin.AdminView;
 import com.views.login.CreatePasswordDialog;
 import com.views.login.LoginView;
 import com.views.manager.ManagerView;
+import com.views.shared.dialogs.ConnectionErrorDialog;
 import com.views.user.UserView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Optional;
 
 public class LoginController implements ActionListener {
+	// Constants
+	private static final byte NEXT_ACTION_OF_LOGIN_VIEW = 0;
+	private static final byte LOGIN_ACTION_OF_LOGIN_VIEW = 1;
+
 	private LoginDocumentListener documentListener;
 	private LoginView loginView;
 	private CreatePasswordDialog createPasswordDialog;
 	private AccountDAO accountDAOModel;
+	private ConnectionErrorDialog connectionErrorDialog;
+	private byte currentTask;
 
 	// The value of this attribute always has a non-null value when the Next button is clicked successfully.
 	private Account account;
@@ -29,11 +40,36 @@ public class LoginController implements ActionListener {
 		this.documentListener = new LoginDocumentListener(loginView);
 		this.loginView = loginView;
 		this.createPasswordDialog = new CreatePasswordDialog(loginView.getMainFrame());
+		this.connectionErrorDialog = new ConnectionErrorDialog(loginView.getMainFrame());
+		this.currentTask = NEXT_ACTION_OF_LOGIN_VIEW;
 		this.accountDAOModel = new AccountDAO();
 
+		// Add action listeners
 		this.loginView.getLoginButton().addActionListener(this);
 		this.createPasswordDialog.getCancelButton().addActionListener(this);
 		this.createPasswordDialog.getCreateButton().addActionListener(this);
+		this.connectionErrorDialog.getReconnectButton().addActionListener((event) -> {
+			connectionErrorDialog.setExitOnCloseButton(false);
+			connectionErrorDialog.setVisible(false);
+
+			SingletonDBConnection.getInstance().connect();
+			switch (currentTask) {
+				case NEXT_ACTION_OF_LOGIN_VIEW -> createPasswordDialog.setVisible(false);
+				case LOGIN_ACTION_OF_LOGIN_VIEW -> loginView.displayBeforeValidatingUsername();
+			}
+		});
+
+		// Add component listener
+		this.createPasswordDialog.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				createPasswordDialog.getPasswordFieldPanel().getPasswordField().setText("");
+				createPasswordDialog.getConfirmPasswordFieldPanel().getPasswordField().setText("");
+
+				createPasswordDialog.getPasswordFieldPanel().setPasswordVisible(false);
+				createPasswordDialog.getConfirmPasswordFieldPanel().setPasswordVisible(false);
+			}
+		});
 	}
 
 	@Override
@@ -51,6 +87,8 @@ public class LoginController implements ActionListener {
 	}
 
 	private void nextActionOfLoginView() {
+		this.currentTask = NEXT_ACTION_OF_LOGIN_VIEW;
+
 		final String username = loginView.getUsernameField().getText();
 		if (!ValidationHandler.validateUsername(username)) {
 			showErrorMessage(loginView, "Login", "Invalid username");
@@ -68,8 +106,10 @@ public class LoginController implements ActionListener {
 			// Testing
 			account.logToScreen();
 
-			if (account.getPassword() == null) {
-				// If the user has not password yet, the app will display "create new password" dialog from loginView
+			if (account.equals(Account.emptyAccount)) {
+				SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
+			} else if (account.getPassword() == null) {
+				// If the user has not logged in yet, the app will display "create new password" dialog from loginView
 				int option = JOptionPane.showConfirmDialog(
 						loginView,
 						"This is the first time you sign in. You need to create a password",
@@ -88,6 +128,8 @@ public class LoginController implements ActionListener {
 	}
 
 	private void loginActionOfLoginView() {
+		this.currentTask = LOGIN_ACTION_OF_LOGIN_VIEW;
+
 		// Password from input user
 		final String password = String.valueOf(loginView.getPasswordField().getPassword());
 
@@ -117,6 +159,8 @@ public class LoginController implements ActionListener {
 				managerView.display();
 			} else {  // User
 				UserView userView = new UserView(loginView.getMainFrame());
+				UserController userController = new UserController(userView, loginView, account.getUserId(), username);
+
 				userView.display();
 			}
 		}
@@ -135,8 +179,8 @@ public class LoginController implements ActionListener {
 	}
 
 	private void createActionOfCreatePasswordDialog() {
-		final String password = String.valueOf(createPasswordDialog.getPasswordField().getPassword());
-		final String confirmPassword = String.valueOf(createPasswordDialog.getConfirmPasswordField().getPassword());
+		final String password = String.valueOf(createPasswordDialog.getPasswordFieldPanel().getPasswordField().getPassword());
+		final String confirmPassword = String.valueOf(createPasswordDialog.getConfirmPasswordFieldPanel().getPasswordField().getPassword());
 
 		// Validate password and confirm password
 		if (!ValidationHandler.validatePassword(password) || !ValidationHandler.validatePassword(confirmPassword)) {
@@ -162,7 +206,7 @@ public class LoginController implements ActionListener {
 				);
 
 				if (!isUpdated)
-					showErrorMessage(createPasswordDialog, "Create Password", "Can not create this password!");
+					SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 				else
 					createPasswordDialog.setVisible(false);
 			}

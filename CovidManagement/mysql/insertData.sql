@@ -177,11 +177,11 @@ VALUES
     (1, null, 'SYSTEM ADMIN', null, null, null, null, null, null, null, null),
     (2, '021234567', N'Phan Minh Hiếu', null, null, null, null, null, null, null, null),
     (3, '021234568', N'Nguyễn Hứa Hùng', null, null, null, null, null, null, null, null),
-    (4, '021234569', N'Bạch Minh Khôi', 1997, 1, 0, null, N'Lý Thường Kiệt', 26, 6, 2),
-    (5, '011234568', N'Lê Hoàng Anh', 1998, 1, 1, 4, N'Trương Định', 66, 14, 3),
-    (6, '011234569', N'Lê Minh Huy', 1999, 1, 1, 4, N'Trường Chinh', 17, 4, 1),
-    (7, '011234570', N'Nguyễn Nhật Cường', 2000, 1, 2, 5, N'Đinh Tiên Hoàn', 124, 25, 5),
-    (8, '011234571', N'Nguyễn Đinh Hồng Phúc', 2001, 1, 2, 5, N'An Dương Vương', 33, 7, 2);
+    (4, '021234569', N'Bạch Minh Khôi', 1997, 1, 1, null, N'Lý Thường Kiệt', 26, 6, 2),
+    (5, '011234568', N'Lê Hoàng Anh', 1998, 1, 2, 4, N'Trương Định', 66, 14, 3),
+    (6, '011234569', N'Lê Minh Huy', 1999, 1, 2, 4, N'Trường Chinh', 17, 4, 1),
+    (7, '011234570', N'Nguyễn Nhật Cường', 2000, 1, 3, 5, N'Đinh Tiên Hoàn', 124, 25, 5),
+    (8, '011234571', N'Nguyễn Đinh Hồng Phúc', 2001, 1, 3, 5, N'An Dương Vương', 33, 7, 2);
 
 INSERT INTO COVID_MANAGEMENT.`Account` (username, `password`, `role`, isActive, userId)
 VALUES
