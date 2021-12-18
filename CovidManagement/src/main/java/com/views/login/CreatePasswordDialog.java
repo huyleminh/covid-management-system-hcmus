@@ -28,16 +28,6 @@ public class CreatePasswordDialog extends JDialog {
 		panel.setPreferredSize(new Dimension(430, 140));
 
 		initComponents(panel);
-		addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(ComponentEvent e) {
-				passwordFieldPanel.getPasswordField().setText("");
-				confirmPasswordFieldPanel.getPasswordField().setText("");
-
-				passwordFieldPanel.setPasswordVisible(false);
-				confirmPasswordFieldPanel.setPasswordVisible(false);
-			}
-		});
 
 		setAlwaysOnTop(true);
 		setResizable(false);
@@ -84,12 +74,12 @@ public class CreatePasswordDialog extends JDialog {
 		panel.add(createButton);
 	}
 
-	public JPasswordField getPasswordField() {
-		return passwordFieldPanel.getPasswordField();
+	public PasswordFieldPanel getPasswordFieldPanel() {
+		return passwordFieldPanel;
 	}
 
-	public JPasswordField getConfirmPasswordField() {
-		return confirmPasswordFieldPanel.getPasswordField();
+	public PasswordFieldPanel getConfirmPasswordFieldPanel() {
+		return confirmPasswordFieldPanel;
 	}
 
 	public JButton getCancelButton() {

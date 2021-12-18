@@ -26,7 +26,7 @@ public class BasicInfoPanel extends JPanel {
 		add(fullnameLabel);
 
 		// Full name text field
-		fullnameTextField = new JTextField(" Lê Hoàng Anh");
+		fullnameTextField = new JTextField();
 		fullnameTextField.setBounds(160, 10, 610, 30);
 		fullnameTextField.setBorder(lineBorder);
 		fullnameTextField.setEditable(false);
@@ -38,7 +38,7 @@ public class BasicInfoPanel extends JPanel {
 		add(idCardLabel);
 
 		// ID card text field
-		idCardTextField = new JTextField(" 123456789012");
+		idCardTextField = new JTextField();
 		idCardTextField.setBounds(160, 50, 610, 30);
 		idCardTextField.setBorder(lineBorder);
 		idCardTextField.setEditable(false);
@@ -50,7 +50,7 @@ public class BasicInfoPanel extends JPanel {
 		add(yearBirthLabel);
 
 		// Year of birth text field
-		yearBirthTextField = new JTextField(" 2001");
+		yearBirthTextField = new JTextField();
 		yearBirthTextField.setBounds(160, 90, 610, 30);
 		yearBirthTextField.setBorder(lineBorder);
 		yearBirthTextField.setEditable(false);
@@ -62,7 +62,7 @@ public class BasicInfoPanel extends JPanel {
 		add(addressLabel);
 
 		// Address text field
-		addressTextField = new JTextField(" 227 Nguyễn Văn Cừ, Quận 5, Thành phố Hồ Chí Minh");
+		addressTextField = new JTextField();
 		addressTextField.setBounds(160, 130, 610, 30);
 		addressTextField.setBorder(lineBorder);
 		addressTextField.setEditable(false);
@@ -74,7 +74,7 @@ public class BasicInfoPanel extends JPanel {
 		add(currentStatusLabel);
 
 		// Current status text field
-		currentStatusTextField = new JTextField(" F1");
+		currentStatusTextField = new JTextField();
 		currentStatusTextField.setBounds(160, 170, 610, 30);
 		currentStatusTextField.setBorder(lineBorder);
 		currentStatusTextField.setEditable(false);
@@ -86,7 +86,7 @@ public class BasicInfoPanel extends JPanel {
 		add(quarantineLabel);
 
 		// Quarantine location text field
-		quarantineTextField = new JTextField(" Bệnh viện dã chiến trung tâm Sài Gòn");
+		quarantineTextField = new JTextField();
 		quarantineTextField.setBounds(160, 210, 610, 30);
 		quarantineTextField.setBorder(lineBorder);
 		quarantineTextField.setEditable(false);
@@ -98,11 +98,21 @@ public class BasicInfoPanel extends JPanel {
 		add(infectiousPersonLabel);
 
 		// Infectious person text field
-		infectiousPersonTextField = new JTextField(" Nguyễn Văn A");
+		infectiousPersonTextField = new JTextField();
 		infectiousPersonTextField.setBounds(160, 250, 610, 30);
 		infectiousPersonTextField.setBorder(lineBorder);
 		infectiousPersonTextField.setEditable(false);
 		add(infectiousPersonTextField);
+	}
+
+	public void clearDataShowing() {
+		fullnameTextField.setText("");
+		idCardTextField.setText("");
+		yearBirthTextField.setText("");
+		addressTextField.setText("");
+		currentStatusTextField.setText("");
+		quarantineTextField.setText("");
+		infectiousPersonTextField.setText("");
 	}
 
 	public JTextField getFullnameTextField() {

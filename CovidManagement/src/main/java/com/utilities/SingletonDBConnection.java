@@ -14,12 +14,26 @@ import java.sql.Statement;
 
 public class SingletonDBConnection {
 	private static final String  JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	private Connection connection;
+	private Connection connection = null;
 
 	private SingletonDBConnection() {
-		try {
-			Class.forName(JDBC_DRIVER);
+		connect();
+	}
 
+	private static class BillPughSingleton {
+		private static final SingletonDBConnection INSTANCE = new SingletonDBConnection();
+	}
+
+	public static SingletonDBConnection getInstance() {
+		return BillPughSingleton.INSTANCE;
+	}
+
+	public void connect() {
+		try {
+			if (connection != null && !connection.isClosed())
+				closeConnection();
+
+			Class.forName(JDBC_DRIVER);
 			Dotenv dotenv = Dotenv.load();
 
 			System.out.println("Connecting to database...");
@@ -38,16 +52,16 @@ public class SingletonDBConnection {
 		}
 	}
 
-	private static class BillPughSingleton {
-		private static final SingletonDBConnection INSTANCE = new SingletonDBConnection();
-	}
-
-	public static SingletonDBConnection getInstance() {
-		return BillPughSingleton.INSTANCE;
-	}
-
 	public Connection getConnection() {
 		return connection;
+	}
+
+	public void closeConnection() throws SQLException {
+		if (connection != null && !connection.isClosed()) {
+			connection.close();
+			connection = null;
+			System.out.println("Connection closed");
+		}
 	}
 }
 

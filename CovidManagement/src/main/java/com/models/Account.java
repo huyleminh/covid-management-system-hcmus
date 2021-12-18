@@ -1,6 +1,15 @@
 package com.models;
 
 public class Account {
+	public static final Account emptyAccount = new Account(
+			"empty",
+			"empty",
+			(byte) -1,
+			(byte) -1,
+			-1
+	);  // An object to check whether connection of the database is unavailable or not.
+		// Using at the login view.
+
 	public static final byte ADMIN = 0;
 	public static final byte MANAGER = 1;
 	public static final byte USER = 2;
@@ -39,6 +48,14 @@ public class Account {
 
 	public int getUserId() {
 		return userId;
+	}
+
+	public boolean equals(Account account) {
+		return username.equals(account.username) &&
+				password.equals(account.password) &&
+				role == account.role &&
+				isActive == account.isActive &&
+				userId == account.userId;
 	}
 
 	// Testing

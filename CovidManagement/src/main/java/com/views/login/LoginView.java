@@ -62,6 +62,10 @@ public class LoginView extends JPanel {
 	}
 
 	public void displayBeforeValidatingUsername() {
+		usernameField.setText("");
+		passwordFieldPanel.getPasswordField().setText("");
+		passwordFieldPanel.setPasswordVisible(false);
+
 		passwordLabel.setVisible(false);
 		passwordFieldPanel.setVisible(false);
 
@@ -87,6 +91,8 @@ public class LoginView extends JPanel {
 	public void display() {
 		mainFrame.setVisible(false);
 		mainFrame.setResizable(true);
+
+		displayBeforeValidatingUsername();
 
 		mainFrame.setTitle("Login");
 		mainFrame.setResizable(false);

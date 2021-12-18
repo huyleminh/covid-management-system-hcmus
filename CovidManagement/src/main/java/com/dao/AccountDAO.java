@@ -72,14 +72,16 @@ public class AccountDAO implements DAO<Account, String> {
 					));
 				}
 			} catch (SQLException e) {
-				System.out.println(">>> AccountDAO.java - line 75 <<<");
+				accountOptional = Optional.of(Account.emptyAccount);
+				System.out.println(">>> AccountDAO.java - line 76 <<<");
 				e.printStackTrace();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> AccountDAO.java - line 82 <<<");
+						accountOptional = Optional.of(Account.emptyAccount);
+						System.out.println(">>> AccountDAO.java - line 84 <<<");
 					}
 				}
 			}
