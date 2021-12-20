@@ -49,12 +49,14 @@ public class UserDAO implements DAO<User, Integer> {
 			} catch (SQLException e) {
 				System.out.println(">>> UserDAO.java - line 50 <<<");
 				e.printStackTrace();
+				userOptional = Optional.empty();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> UserDAO.java - line 57 <<<");
+						System.out.println(">>> UserDAO.java - line 58 <<<");
+						userOptional = Optional.empty();
 					}
 				}
 			}
@@ -96,14 +98,16 @@ public class UserDAO implements DAO<User, Integer> {
 					optionalValue = Optional.ofNullable(value);
 				}
 			} catch (SQLException e) {
-				System.out.println(">>> UserDAO.java - line 99 <<<");
+				System.out.println(">>> UserDAO.java - line 101 <<<");
 				e.printStackTrace();
+				optionalValue = Optional.empty();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> UserDAO.java - line 106 <<<");
+						System.out.println(">>> UserDAO.java - line 109 <<<");
+						optionalValue = Optional.empty();
 					}
 				}
 			}

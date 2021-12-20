@@ -47,8 +47,8 @@ public class ManagerManagementPanel extends JPanel {
 		add(createButton);
 
 		// Scrollable table
-		final String[] columnNames = {"id", "Username", "Status"};
-		final int[] columnWidths = {0, 613, 150};
+		final String[] columnNames = {"Username", "Status"};
+		final int[] columnWidths = {614, 150};
 
 		scrollableTable = new ScrollableTablePanel(
 				new JTable(new NonEditableTableModel(columnNames, 0))

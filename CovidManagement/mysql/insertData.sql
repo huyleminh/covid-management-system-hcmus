@@ -174,50 +174,47 @@ VALUES
 
 INSERT INTO COVID_MANAGEMENT.`User` (userId, identifierNumber, fullname, yearOfBirth, locationId, `status`, userInvolvedId, street, wardId, districtId, provinceId)
 VALUES
-    (1, null, 'SYSTEM ADMIN', null, null, null, null, null, null, null, null),
-    (2, '021234567', N'Phan Minh Hiếu', null, null, null, null, null, null, null, null),
-    (3, '021234568', N'Nguyễn Hứa Hùng', null, null, null, null, null, null, null, null),
-    (4, '021234569', N'Bạch Minh Khôi', 1997, 1, 1, null, N'Lý Thường Kiệt', 26, 6, 2),
-    (5, '011234568', N'Lê Hoàng Anh', 1998, 1, 2, 4, N'Trương Định', 66, 14, 3),
-    (6, '011234569', N'Lê Minh Huy', 1999, 1, 2, 4, N'Trường Chinh', 17, 4, 1),
-    (7, '011234570', N'Nguyễn Nhật Cường', 2000, 1, 3, 5, N'Đinh Tiên Hoàn', 124, 25, 5),
-    (8, '011234571', N'Nguyễn Đinh Hồng Phúc', 2001, 1, 3, 5, N'An Dương Vương', 33, 7, 2);
+    (1, '021234569', N'Bạch Minh Khôi', 1997, 1, 1, null, N'Lý Thường Kiệt', 26, 6, 2),
+    (2, '011234568', N'Lê Hoàng Anh', 1998, 1, 2, 1, N'Trương Định', 66, 14, 3),
+    (3, '011234569', N'Lê Minh Huy', 1999, 1, 2, 1, N'Trường Chinh', 17, 4, 1),
+    (4, '011234570', N'Nguyễn Nhật Cường', 2000, 1, 3, 2, N'Đinh Tiên Hoàn', 124, 25, 5),
+    (5, '011234571', N'Nguyễn Đinh Hồng Phúc', 2001, 1, 3, 2, N'An Dương Vương', 33, 7, 2);
 
 INSERT INTO COVID_MANAGEMENT.`Account` (username, `password`, `role`, isActive, userId)
 VALUES
-    ('admin', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 0, 0, 1),
-    ('manager1', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 1, 0, 2),
-    ('manager2', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 1, 1, 3),
-    ('021234569', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 2, 0, 4),
-    ('011234568', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 2, 0, 5),
-    ('011234569', null, 2, 0, 6),
-    ('011234570', null, 2, 0, 7),
-    ('011234571', null, 2, 0, 8);
+    ('admin', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 0, 0, null),
+    ('manager1', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 1, 0, null),
+    ('manager2', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 1, 1, null),
+    ('021234569', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 2, 0, 1),
+    ('011234568', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', 2, 0, 2),
+    ('011234569', null, 2, 0, 3),
+    ('011234570', null, 2, 0, 4),
+    ('011234571', null, 2, 0, 5);
 
-INSERT INTO COVID_MANAGEMENT.UserHistory (managerId, userId, `date`, `description`, operationType)
+INSERT INTO COVID_MANAGEMENT.UserHistory (managerUsername, userId, `date`, `description`, operationType)
 VALUES
-    (2, 4, '2020-9-10 10:05:10', N'Tạo mới', 3),
-    (2, 5, '2020-9-10 10:12:25', N'Tạo mới', 3),
-    (2, 6, '2020-9-10 10:31:20', N'Tạo mới', 3),
-    (2, 7, '2020-9-10 10:40:50', N'Tạo mới', 3),
-    (2, 8, '2020-9-10 10:45:23', N'Tạo mới', 3);
+    ('manager1', 1, '2020-9-10 10:05:10', N'Thêm mới người dùng 021234569', 3),
+    ('manager1', 2, '2020-9-10 10:12:25', N'Thêm mới người dùng 011234568', 3),
+    ('manager1', 3, '2020-9-10 10:31:20', N'Thêm mới người dùng 011234569', 3),
+    ('manager1', 4, '2020-9-10 10:40:50', N'Thêm mới người dùng 011234570', 3),
+    ('manager1', 5, '2020-9-10 10:45:23', N'Thêm mới người dùng 011234571', 3);
 
-INSERT INTO COVID_MANAGEMENT.NecessariesHistory (managerId, `date`, `description`, operationType)
+INSERT INTO COVID_MANAGEMENT.NecessariesHistory (managerUsername, `date`, `description`, operationType)
 VALUES
-    (2, '2020-10-10 8:00:19', N'Thêm mới gói Combo 1 (Thịt, Rau củ, Nước uống)', 1),
-    (2, '2020-10-10 8:05:23', N'Thêm mới gói Combo 2 (Cá, Rau củ, Nước uống)', 1),
-    (2, '2020-10-10 8:10:50', N'Thêm mới gói Combo 3 (Thịt, Cá, Trứng, Nước uống)', 1),
-    (2, '2020-10-12 9:20:33', N'Thêm mới gói Combo 4 (Thịt, Cá, Rau Củ, Nước uống)', 1),
-    (2, '2020-10-13 8:00:15', N'Thêm mới gói Combo 5 (Thịt, Cá, Trứng, Rau củ, Nước uống)', 1);
+    ('manager1', '2020-10-10 8:00:19', N'Thêm mới gói Combo 1 (Thịt, Rau củ, Nước uống)', 1),
+    ('manager1', '2020-10-10 8:05:23', N'Thêm mới gói Combo 2 (Cá, Rau củ, Nước uống)', 1),
+    ('manager1', '2020-10-10 8:10:50', N'Thêm mới gói Combo 3 (Thịt, Cá, Trứng, Nước uống)', 1),
+    ('manager1', '2020-10-12 9:20:33', N'Thêm mới gói Combo 4 (Thịt, Cá, Rau Củ, Nước uống)', 1),
+    ('manager1', '2020-10-13 8:00:15', N'Thêm mới gói Combo 5 (Thịt, Cá, Trứng, Rau củ, Nước uống)', 1);
 
 INSERT INTO COVID_MANAGEMENT.Debt (debtId, userId, debtDate, totalDebt)
 VALUES
-    (1, 4, '2020-10-14 12:31:20', 300000),
-    (2, 5, '2020-12-01 07:33:43', 150000),
-    (3, 6, '2021-03-12 16:22:56', 330000),
-    (5, 8, '2021-06-10 12:31:20', 200000),
-    (6, 7, '2021-11-11 07:15:22', 250000),
-    (7, 7, '2021-11-15 06:30:39', 300000);
+    (1, 1, '2020-10-14 12:31:20', 300000),
+    (2, 2, '2020-12-01 07:33:43', 150000),
+    (3, 3, '2021-03-12 16:22:56', 330000),
+    (5, 5, '2021-06-10 12:31:20', 200000),
+    (6, 4, '2021-11-11 07:15:22', 250000),
+    (7, 4, '2021-11-15 06:30:39', 300000);
 
 INSERT INTO COVID_MANAGEMENT.Necessaries (necessariesName, `limit`, expiredDate, duration, price)
 VALUES
@@ -229,13 +226,13 @@ VALUES
 
 INSERT INTO COVID_MANAGEMENT.`Order` (userId, createdDate, totalPrice)
 VALUES
-    (4, '2020-10-14 12:31:20', 300000),
-    (5, '2020-12-01 07:33:43', 150000),
-    (6, '2021-03-12 16:22:56', 330000),
-    (5, '2021-05-21 18:20:15', 500000),
-    (8, '2021-06-10 12:31:20', 200000),
-    (7, '2021-11-11 07:15:22', 250000),
-    (7, '2021-11-15 06:30:39', 300000);
+    (1, '2020-10-14 12:31:20', 300000),
+    (2, '2020-12-01 07:33:43', 150000),
+    (3, '2021-03-12 16:22:56', 330000),
+    (2, '2021-05-21 18:20:15', 500000),
+    (5, '2021-06-10 12:31:20', 200000),
+    (4, '2021-11-11 07:15:22', 250000),
+    (4, '2021-11-15 06:30:39', 300000);
 
 
 INSERT INTO COVID_MANAGEMENT.OrderDetail (orderId, necessariesName, price, quantity)
@@ -250,11 +247,11 @@ VALUES
 
 INSERT INTO COVID_MANAGEMENT.PaymentAccount (balance, userId)
 VALUES
-    (1750000, 4),
-    (1350000, 5),
-    (1700000, 6),
-    (1610000, 7),
-    (1820000, 8);
+    (1750000, 1),
+    (1350000, 2),
+    (1700000, 3),
+    (1610000, 4),
+    (1820000, 5);
 
 INSERT INTO COVID_MANAGEMENT.`Transaction` (sourceAccount, transactionDate, paymentAmount)
 VALUES
@@ -268,8 +265,8 @@ VALUES
 
 INSERT INTO COVID_MANAGEMENT.PaymentHistory (userId, `date`, paymentAmount)
 VALUES
-    (5, '2021-05-21 18:20:15', 500000);
+    (2, '2021-05-21 18:20:15', 500000);
 
 INSERT INTO COVID_MANAGEMENT.SystemInfo (id, firstLoggedIn, bankAccountNumber, balance)
 VALUES
-    (1, 0, '129029974556', 500000);
+    (1, 1, '129029974556', 500000);

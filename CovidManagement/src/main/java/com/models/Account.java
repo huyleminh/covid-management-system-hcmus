@@ -34,20 +34,44 @@ public class Account {
 		return username;
 	}
 
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getPassword() {
 		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public byte getRole() {
 		return role;
 	}
 
+	public void setRole(byte role) {
+		this.role = role;
+	}
+
 	public byte getIsActive() {
 		return isActive;
 	}
 
+	public void setIsActive(byte isActive) {
+		this.isActive = isActive;
+	}
+
 	public int getUserId() {
 		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public boolean isEmpty() {
+		return equals(Account.emptyAccount);
 	}
 
 	public boolean equals(Account account) {
@@ -56,6 +80,16 @@ public class Account {
 				role == account.role &&
 				isActive == account.isActive &&
 				userId == account.userId;
+	}
+
+	public static Account createEmpty() {
+		return new Account(
+				emptyAccount.username,
+				emptyAccount.password,
+				emptyAccount.role,
+				emptyAccount.isActive,
+				emptyAccount.userId
+		);
 	}
 
 	// Testing

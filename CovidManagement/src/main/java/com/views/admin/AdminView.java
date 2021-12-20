@@ -1,7 +1,6 @@
 package com.views.admin;
 
 import com.utilities.Constants;
-import com.views.admin.dialogs.*;
 import com.views.admin.panels.ManagerManagementPanel;
 import com.views.admin.panels.QuarantineManagementPanel;
 import com.views.shared.panels.ImagePanel;
@@ -12,41 +11,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class AdminView extends JPanel {
-//	public static void main(String[] args) {
-//		try {
-//			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		SwingUtilities.invokeLater(() -> {
-//			AdminView adminView = new AdminView();
-//
-//			CreateAccountDialog createAccountDialog = new CreateAccountDialog(adminView.getFrame());
-//			CreateQuarantineDialog createQuarantineDialog = new CreateQuarantineDialog(adminView.getFrame());
-//			EditQuarantineDialog editQuarantineDialog = new EditQuarantineDialog(adminView.getFrame());
-//			ViewActivityDialog viewActivityDialog = new ViewActivityDialog(adminView.getFrame());
-//
-//			adminView.getManagerManagementPanel()
-//					.getViewActivityButton()
-//					.addActionListener((event) -> viewActivityDialog.setVisible(true));
-//
-//			adminView.getManagerManagementPanel()
-//					.getCreateButton()
-//					.addActionListener((event) ->	createAccountDialog.setVisible(true));
-//
-//			adminView.getQuarantineManagementPanel()
-//					.getEditButton()
-//					.addActionListener((event) -> editQuarantineDialog.setVisible(true));
-//
-//			adminView.getQuarantineManagementPanel()
-//					.getCreateButton()
-//					.addActionListener((event) -> createQuarantineDialog.setVisible(true));
-//
-//			adminView.display();
-//		});
-//	}
-
 	// Constants for selecting feature.
 	public static final int MANAGE_MANAGER = 0;
 	public static final int MANAGE_QUARANTINE = 1;
@@ -54,7 +18,7 @@ public class AdminView extends JPanel {
 	// Status
 	private int selectingFeature = MANAGE_MANAGER;
 
-	// Main rame.
+	// Main frame.
 	private JFrame mainFrame;
 
 	// Components at the left pane.
@@ -137,30 +101,6 @@ public class AdminView extends JPanel {
 		quitButton.setHorizontalTextPosition(JButton.CENTER);
 		quitButton.setForeground(Color.WHITE);
 		leftPanel.add(quitButton);
-
-		manageManagerButton.addActionListener((event) -> {
-			quarantineManagementPanel.setVisible(false);
-
-			manageQuarantineButton.setBackground(Constants.LIGHT_BLUE);
-			manageQuarantineButton.setIcon(null);
-			manageManagerButton.setBackground(Constants.DARK_BLUE);
-			manageManagerButton.setIcon(Constants.RIGHT_CHEVRON_ICON);
-			selectingFeature = MANAGE_MANAGER;
-
-			managerManagementPanel.setVisible(true);
-		});
-
-		manageQuarantineButton.addActionListener((event) -> {
-			managerManagementPanel.setVisible(false);
-
-			manageManagerButton.setBackground(Constants.LIGHT_BLUE);
-			manageManagerButton.setIcon(null);
-			manageQuarantineButton.setBackground(Constants.DARK_BLUE);
-			manageQuarantineButton.setIcon(Constants.RIGHT_CHEVRON_ICON);
-			selectingFeature = MANAGE_QUARANTINE;
-
-			quarantineManagementPanel.setVisible(true);
-		});
 	}
 
 	private void initRightPaneComponents() {

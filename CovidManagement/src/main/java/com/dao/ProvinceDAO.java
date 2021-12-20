@@ -40,12 +40,14 @@ public class ProvinceDAO implements DAO<Province, Integer> {
 			} catch (SQLException e) {
 				System.out.println(">>> ProvinceDAO.java - line 41 <<<");
 				e.printStackTrace();
+				provinceOptional = Optional.empty();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> ProvinceDAO.java - line 48 <<<");
+						System.out.println(">>> ProvinceDAO.java - line 49 <<<");
+						provinceOptional = Optional.empty();
 					}
 				}
 			}
@@ -72,14 +74,16 @@ public class ProvinceDAO implements DAO<Province, Integer> {
 					provinceNameOptional = Optional.of(resultSet.getString("provinceName"));
 				}
 			} catch (SQLException e) {
-				System.out.println(">>> ProvinceDAO.java - line 75 <<<");
+				System.out.println(">>> ProvinceDAO.java - line 77 <<<");
 				e.printStackTrace();
+				provinceNameOptional = Optional.empty();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> ProvinceDAO.java - line 82 <<<");
+						System.out.println(">>> ProvinceDAO.java - line 85 <<<");
+						provinceNameOptional = Optional.empty();
 					}
 				}
 			}

@@ -16,13 +16,14 @@ public class PersonalInfoController implements ChangeListener {
 	private PersonalInfoTabbed personalInfoTabbed;
 	private int userId;
 	private UserDAO userDAOModel;
-	private String currentTab = PersonalInfoTabbed.BASIC_INFORMATION_TITLE;
+	private String currentTab;
 	private ConnectionErrorDialog connectionErrorDialog;
 
 	public PersonalInfoController(JFrame mainFrame, PersonalInfoTabbed personalInfoTabbed, int userId) {
 		this.personalInfoTabbed = personalInfoTabbed;
 		this.userId = userId;
 		this.userDAOModel = new UserDAO();
+		this.currentTab = PersonalInfoTabbed.BASIC_INFORMATION_TITLE;
 		this.connectionErrorDialog = new ConnectionErrorDialog(mainFrame);
 
 		this.connectionErrorDialog.getReconnectButton().addActionListener((event) -> {
@@ -90,12 +91,8 @@ public class PersonalInfoController implements ChangeListener {
 			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 		} else {
 			// Create full address.
-			final String address = " %s, %s, %s, %s".formatted(
-					user.getStreet(),
-					wardName.get(),
-					districtName.get(),
-					provinceName.get()
-			);
+			final String addressWithoutStreet = "%s, %s, %s".formatted(wardName.get(), districtName.get(), provinceName.get());
+			final String fullAddress = ((user.getStreet() == null) ? addressWithoutStreet : (user.getStreet() + ", " + addressWithoutStreet));
 
 			// Display values
 			BasicInfoPanel basicInfoPanel = personalInfoTabbed.getBasicInfoPanel();
@@ -106,7 +103,7 @@ public class PersonalInfoController implements ChangeListener {
 			basicInfoPanel.getYearBirthTextField()
 						  .setText(" " + user.getYearOfBirth());
 			basicInfoPanel.getAddressTextField()
-						  .setText(address);
+						  .setText(fullAddress);
 			basicInfoPanel.getCurrentStatusTextField()
 						  .setText(" " + User.STATUS_NAMES[user.getStatus()]);  // Because a user always has a non-null value of status field.
 			basicInfoPanel.getQuarantineTextField()
@@ -124,5 +121,9 @@ public class PersonalInfoController implements ChangeListener {
 				basicInfoAction();
 			}
 		}
+	}
+
+	public void runFirstTab() {
+		basicInfoAction();
 	}
 }

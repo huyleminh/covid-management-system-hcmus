@@ -33,4 +33,13 @@ public class NonEditableTableModel extends DefaultTableModel {
 
 		return rowValue;
 	}
+
+	public void removeAllRows() {
+		int rowCount = getRowCount();
+
+		while (rowCount > 0) {
+			removeRow(0);
+			--rowCount;
+		}
+	}
 }

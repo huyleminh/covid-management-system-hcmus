@@ -77,7 +77,7 @@ public class CreateAdminFirstLoginController implements ActionListener {
 
 				// Save password encoded into the database
 				boolean isUpdated = accountDAOModel.updateOneField(
-						new Account(username, passwordEncoded, Account.ADMIN, Account.ACTIVE, 1),
+						new Account(username, passwordEncoded, Account.ADMIN, Account.ACTIVE, 0),  // ignore userId
 						"password"
 				);
 

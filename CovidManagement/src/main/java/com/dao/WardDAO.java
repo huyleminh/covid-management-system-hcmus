@@ -41,12 +41,14 @@ public class WardDAO implements DAO<Ward, Integer> {
 			} catch (SQLException e) {
 				System.out.println(">>> WardDAO.java - line 42 <<<");
 				e.printStackTrace();
+				wardOptional = Optional.empty();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> WardDAO.java - line 49 <<<");
+						System.out.println(">>> WardDAO.java - line 50 <<<");
+						wardOptional = Optional.empty();
 					}
 				}
 			}
@@ -76,14 +78,16 @@ public class WardDAO implements DAO<Ward, Integer> {
 					}
 				}
 			} catch (SQLException e) {
-				System.out.println(">>> WardDAO.java - line 79 <<<");
+				System.out.println(">>> WardDAO.java - line 81 <<<");
 				e.printStackTrace();
+				optionalValue = Optional.empty();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> WardDAO.java - line 86 <<<");
+						System.out.println(">>> WardDAO.java - line 89 <<<");
+						optionalValue = Optional.empty();
 					}
 				}
 			}

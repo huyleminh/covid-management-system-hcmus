@@ -43,12 +43,14 @@ public class SystemInfoDAO implements DAO<SystemInfo, Integer> {
 			} catch (SQLException e) {
 				System.out.println(">>> SystemInfoDAO.java - line 44 <<<");
 				e.printStackTrace();
+				systemInfoOptional = Optional.empty();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> SystemInfoDAO.java - line 51 <<<");
+						System.out.println(">>> SystemInfoDAO.java - line 52 <<<");
+						systemInfoOptional = Optional.empty();
 					}
 				}
 			}
@@ -91,14 +93,16 @@ public class SystemInfoDAO implements DAO<SystemInfo, Integer> {
 
 				rowsAffected = preparedStatement.executeUpdate();
 			} catch (SQLException e) {
-				System.out.println(">>> SystemInfoDAO.java - line 59 <<<");
+				System.out.println(">>> SystemInfoDAO.java - line 96 <<<");
 				e.printStackTrace();
+				rowsAffected = 0;
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> SystemInfoDAO.java - line 66 <<<");
+						System.out.println(">>> SystemInfoDAO.java - line 104 <<<");
+						rowsAffected = 0;
 					}
 				}
 			}
