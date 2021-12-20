@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class ViewActivityDialog extends JDialog {
 	// Components
-	private JLabel managerNameValueLabel;
+	private JTextField managerUsernameTextField;
 	private ScrollableTablePanel scrollableTable;
 
 	public ViewActivityDialog(JFrame frame) {
@@ -29,22 +29,12 @@ public class ViewActivityDialog extends JDialog {
 	}
 
 	private void initComponents(JPanel panel) {
-		// Manager name panel
-		JPanel managerNamePanel = new JPanel();
-		managerNamePanel.setLayout(null);
-		managerNamePanel.setBounds(10, 10, 645, 30);
-		managerNamePanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-		panel.add(managerNamePanel);
-
-		// Manager name label
-		JLabel managerNameLabel = new JLabel("Manager: ", SwingConstants.LEFT);
-		managerNameLabel.setBounds(5, 0, 60, 30);
-		managerNamePanel.add(managerNameLabel);
-
-		// Manager name value label
-		managerNameValueLabel = new JLabel("Lê Hoàng Anh", SwingConstants.LEFT);
-		managerNameValueLabel.setBounds(65, 0, 580, 30);
-		managerNamePanel.add(managerNameValueLabel);
+		// Manager username text field
+		managerUsernameTextField = new JTextField();
+		managerUsernameTextField.setBounds(10, 10, 645, 30);
+		managerUsernameTextField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+		managerUsernameTextField.setEditable(false);
+		panel.add(managerUsernameTextField);
 
 		// Scrollable table
 		final String[] columnNames = {"Description", "Date"};
@@ -67,8 +57,8 @@ public class ViewActivityDialog extends JDialog {
 		scrollableTable.setBounds(10, 50, tableWidth + verticalScrollbarWidth, 440);
 	}
 
-	public JLabel getManagerNameValueLabel() {
-		return managerNameValueLabel;
+	public JTextField getManagerUsernameTextField() {
+		return managerUsernameTextField;
 	}
 
 	public ScrollableTablePanel getScrollableTable() {

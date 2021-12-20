@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.`Account` (
     `password` VARCHAR(64),
     `role` TINYINT NOT NULL,
     isActive TINYINT NOT NULL,
-    userId INT NOT NULL,
+    userId INT,
 
     CONSTRAINT PK_Account PRIMARY KEY (username)
 )
@@ -26,7 +26,7 @@ DEFAULT COLLATE = utf8mb4_bin;
 -- Table: User
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.`User` (
     userId INT NOT NULL AUTO_INCREMENT,
-    identifierNumber VARCHAR(12),
+    identifierNumber VARCHAR(12) NOT NULL,
     fullname NVARCHAR(50) NOT NULL,
     yearOfBirth SMALLINT,
     locationId INT,
@@ -95,7 +95,7 @@ DEFAULT COLLATE = utf8mb4_bin;
 -- Table: UserHistory
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.UserHistory (
     historyId INT NOT NULL AUTO_INCREMENT,
-    managerId INT NOT NULL,
+    managerUsername VARCHAR(12) NOT NULL,
     userId INT NOT NULL,
     `date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- auto init
     `description` TEXT NOT NULL,
@@ -110,7 +110,7 @@ DEFAULT COLLATE = utf8mb4_bin;
 -- Table: NecessariesHistory
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.NecessariesHistory (
     historyId INT NOT NULL AUTO_INCREMENT,
-    managerId INT NOT NULL,
+    managerUsername VARCHAR(12) NOT NULL,
     `date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- auto init
     `description` TEXT NOT NULL,
     operationType TINYINT NOT NULL,
@@ -290,11 +290,11 @@ FOREIGN KEY (districtId)
 REFERENCES COVID_MANAGEMENT.District(districtId);
 
 -- Table: UserHistory
--- UserHistory(managerId) ==> User(userId)
+-- UserHistory(managerUsername) ==> Account(username)
 ALTER TABLE COVID_MANAGEMENT.UserHistory
 ADD CONSTRAINT FK_UserHistory_User_Manager
-FOREIGN KEY (managerId)
-REFERENCES COVID_MANAGEMENT.`User`(userId);
+FOREIGN KEY (managerUsername)
+REFERENCES COVID_MANAGEMENT.Account(username);
 
 -- Table: UserHistory
 -- UserHistory(userId) ==> User(userId)
@@ -304,11 +304,11 @@ FOREIGN KEY (userId)
 REFERENCES COVID_MANAGEMENT.`User`(userId);
 
 -- Table: NecessariesHistory
--- NecessariesHistory(managerId) ==> User(userId)
+-- NecessariesHistory(managerUsername) ==> Account(username)
 ALTER TABLE COVID_MANAGEMENT.NecessariesHistory
 ADD CONSTRAINT FK_NecessariesHistory_User_Manager
-FOREIGN KEY (managerId)
-REFERENCES COVID_MANAGEMENT.`User`(userId);
+FOREIGN KEY (managerUsername)
+REFERENCES COVID_MANAGEMENT.Account(username);
 
 -- Table: PaymentHistory
 -- PaymentHistory(userId) ==> User(userId)

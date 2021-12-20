@@ -9,7 +9,6 @@ import com.views.shared.panels.ImagePanel;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class ManagerView extends JPanel {
 //	public static void main(String[] args) {

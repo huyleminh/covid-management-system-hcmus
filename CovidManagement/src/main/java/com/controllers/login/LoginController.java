@@ -1,5 +1,6 @@
 package com.controllers.login;
 
+import com.controllers.admin.AdminController;
 import com.controllers.user.UserController;
 import com.dao.AccountDAO;
 import com.models.Account;
@@ -108,14 +109,16 @@ public class LoginController implements ActionListener {
 
 			if (account.equals(Account.emptyAccount)) {
 				SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
-			} else if (account.getPassword() == null) {
+			} else if (account.getIsActive() == Account.INACTIVE) {
+				showErrorMessage(loginView, "Login", "This account has been locked!");
+			} else if (account.getRole() == Account.USER && account.getPassword() == null) {
 				// If the user has not logged in yet, the app will display "create new password" dialog from loginView
 				int option = JOptionPane.showConfirmDialog(
 						loginView,
-						"This is the first time you sign in. You need to create a password",
+						"This account has not logged in yet. Do you want to create password?",
 						"Login",
 						JOptionPane.YES_NO_OPTION,
-						JOptionPane.INFORMATION_MESSAGE
+						JOptionPane.QUESTION_MESSAGE
 				);
 
 				if (option == JOptionPane.YES_OPTION)
@@ -135,33 +138,49 @@ public class LoginController implements ActionListener {
 
 		// Validates password
 		if (!ValidationHandler.validatePassword(password)) {
-			JOptionPane.showMessageDialog(
-					loginView, "Invalid password", "Login", JOptionPane.ERROR_MESSAGE
-			);
+			showErrorMessage(loginView, "Login", "Invalid password");
 			return;
 		}
 
 		final String username = loginView.getUsernameField().getText();
 		final String passwordEncoded = UtilityFunctions.hashPassword(password);
+		account = accountDAOModel.get(username).get();
 
-		// Authenticate
-		if (!username.equals(account.getUsername()) || !passwordEncoded.equals(account.getPassword())) {
+		// Testing
+		account.logToScreen();
+
+		if (account.equals(Account.emptyAccount)) {
+			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
+		} else if (account.getIsActive() == Account.INACTIVE) {
+			showErrorMessage(loginView, "Login", "This account has been locked!");
+		} else if (!username.equals(account.getUsername()) || !passwordEncoded.equals(account.getPassword())) {
 			showErrorMessage(loginView, "Login", "Incorrect username or password");
 		} else {
 			// Switches to dashboard with the corresponding role
 			byte role = account.getRole();
 
-			if (role == Account.ADMIN) {
-				AdminView adminView = new AdminView(loginView.getMainFrame());
-				adminView.display();
-			} else if (role == Account.MANAGER) {
-				ManagerView managerView = new ManagerView(loginView.getMainFrame());
-				managerView.display();
-			} else {  // User
-				UserView userView = new UserView(loginView.getMainFrame());
-				UserController userController = new UserController(userView, loginView, account.getUserId(), username);
+			switch (role) {
+				case Account.ADMIN -> {
+					AdminView adminView = new AdminView(loginView.getMainFrame());
+					AdminController adminController = new AdminController(adminView, loginView, username);
 
-				userView.display();
+					adminView.display();
+				}
+				case Account.MANAGER -> {
+					ManagerView managerView = new ManagerView(loginView.getMainFrame());
+					managerView.display();
+				}
+				case Account.USER -> {
+					UserView userView = new UserView(loginView.getMainFrame());
+					UserController userController = new UserController(
+							userView,
+							loginView,
+							account.getUserId(),
+							username
+					);
+
+					userView.display();
+				}
 			}
 		}
 	}
@@ -186,7 +205,7 @@ public class LoginController implements ActionListener {
 		if (!ValidationHandler.validatePassword(password) || !ValidationHandler.validatePassword(confirmPassword)) {
 			showErrorMessage(createPasswordDialog, "Login", "Invalid password or confirm password");
 		} else if (!password.equals(confirmPassword)) {
-			showErrorMessage(createPasswordDialog, "Login", "Incorrect confirm password");
+			showErrorMessage(createPasswordDialog, "Login", "Confirm password does not match");
 		} else {
 			int option = JOptionPane.showConfirmDialog(
 					createPasswordDialog,

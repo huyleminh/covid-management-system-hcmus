@@ -42,12 +42,14 @@ public class LocationDAO implements DAO<Location, Integer> {
 			} catch (SQLException e) {
 				System.out.println(">>> LocationDAO.java - line 43 <<<");
 				e.printStackTrace();
+				locationOptional = Optional.empty();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> LocationDAO.java - line 50 <<<");
+						System.out.println(">>> LocationDAO.java - line 51 <<<");
+						locationOptional = Optional.empty();
 					}
 				}
 			}
@@ -82,14 +84,16 @@ public class LocationDAO implements DAO<Location, Integer> {
 					optionalValue = Optional.ofNullable(value);
 				}
 			} catch (SQLException e) {
-				System.out.println(">>> LocationDAO.java - line 85 <<<");
+				System.out.println(">>> LocationDAO.java - line 87 <<<");
 				e.printStackTrace();
+				optionalValue = Optional.empty();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> LocationDAO.java - line 92 <<<");
+						System.out.println(">>> LocationDAO.java - line 95 <<<");
+						optionalValue = Optional.empty();
 					}
 				}
 			}

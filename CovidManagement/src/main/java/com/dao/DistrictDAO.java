@@ -41,12 +41,14 @@ public class DistrictDAO implements DAO<District, Integer> {
 			} catch (SQLException e) {
 				System.out.println(">>> DistrictDAO.java - line 42 <<<");
 				e.printStackTrace();
+				districtOptional = Optional.empty();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> DistrictDAO.java - line 49 <<<");
+						System.out.println(">>> DistrictDAO.java - line 50 <<<");
+						districtOptional = Optional.empty();
 					}
 				}
 			}
@@ -76,14 +78,16 @@ public class DistrictDAO implements DAO<District, Integer> {
 					}
 				}
 			} catch (SQLException e) {
-				System.out.println(">>> DistrictDAO.java - line 79 <<<");
+				System.out.println(">>> DistrictDAO.java - line 81 <<<");
 				e.printStackTrace();
+				optionalValue = Optional.empty();
 			} finally {
 				if (preparedStatement != null) {
 					try {
 						preparedStatement.close();
 					} catch (SQLException e) {
-						System.out.println(">>> DistrictDAO.java - line 86 <<<");
+						System.out.println(">>> DistrictDAO.java - line 89 <<<");
+						optionalValue = Optional.empty();
 					}
 				}
 			}

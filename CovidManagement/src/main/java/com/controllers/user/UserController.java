@@ -38,6 +38,7 @@ public class UserController implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == userView.getPersonalInfoButton()) {
 			personalInfoNavigateAction();
+			personalInfoController.runFirstTab();
 		} else if (event.getSource() == userView.getPurchaseNecessariesButton()) {
 			purchaseNecessariesNavigateAction();
 		} else if (event.getSource() == userView.getDebtPaymentButton()) {
