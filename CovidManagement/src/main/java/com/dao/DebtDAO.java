@@ -17,7 +17,7 @@ public class DebtDAO implements DAO<Debt, Integer> {
 		return null;
 	}
 
-	public List<Debt> getAllUserId(Integer userId) {
+	public List<Debt> getAllByUserId(Integer userId) {
 		Connection connection = SingletonDBConnection.getInstance().getConnection();
 		ArrayList<Debt> debtList = new ArrayList<>();
 
