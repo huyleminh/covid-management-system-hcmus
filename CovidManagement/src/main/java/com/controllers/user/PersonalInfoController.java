@@ -1,6 +1,7 @@
 package com.controllers.user;
 
 import com.dao.*;
+import com.models.Debt;
 import com.models.OrderDetail;
 import com.models.User;
 import com.models.UserHistory;
@@ -158,7 +159,7 @@ public class PersonalInfoController implements ChangeListener {
 						orderDetailList.get(0).getRightValue().isEmpty()
 		) {
 			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
-		} else if (!orderDetailList.isEmpty()) {  // Add those date into the table.
+		} else if (!orderDetailList.isEmpty()) {  // Add those data into the table.
 			NonEditableTableModel tableModel = (NonEditableTableModel) personalInfoTabbed.getPurchasedNecessariesPanel()
 					.getScrollableTable()
 					.getTableModel();
@@ -167,8 +168,30 @@ public class PersonalInfoController implements ChangeListener {
 				tableModel.addRow(new Object[] {
 						item.getRightValue().getNecessariesName(),
 						item.getRightValue().getQuantity(),
-						item.getRightValue().getPrice(),
+						UtilityFunctions.formatMoneyVND(item.getRightValue().getPrice()),
 						UtilityFunctions.formatTimestamp(Constants.TIMESTAMP_WITHOUT_NANOSECOND, item.getLeftValue())
+				});
+			}
+		}
+	}
+
+	private void debtAction() {
+		// Load all Debt entities by userId from the database.
+		DebtDAO daoModel = new DebtDAO();
+		ArrayList<Debt> debtList = (ArrayList<Debt>) daoModel.getAllUserId(userId);
+
+		// Check connection.
+		if (debtList.size() == 1 && debtList.get(0).isEmpty())
+			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
+		else if (!debtList.isEmpty()) {  // Add those data into the table.
+			NonEditableTableModel tableModel = (NonEditableTableModel) personalInfoTabbed.getDebtPanel()
+					.getScrollableTable()
+					.getTableModel();
+
+			for (Debt debt : debtList) {
+				tableModel.addRow(new Object[] {
+						UtilityFunctions.formatMoneyVND(debt.getTotalDebt()),
+						UtilityFunctions.formatTimestamp(Constants.TIMESTAMP_WITHOUT_NANOSECOND, debt.getDebtDate())
 				});
 			}
 		}
@@ -188,6 +211,10 @@ public class PersonalInfoController implements ChangeListener {
 			case PersonalInfoTabbed.PURCHASED_NECESSARIES_INDEX -> {
 				personalInfoTabbed.getPurchasedNecessariesPanel().clearDataShowing();
 				purchasedNecessariesAction();
+			}
+			case PersonalInfoTabbed.DEBT_INDEX -> {
+				personalInfoTabbed.getDebtPanel().clearDataShowing();
+				debtAction();
 			}
 		}
 	}

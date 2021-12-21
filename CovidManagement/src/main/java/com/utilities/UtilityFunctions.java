@@ -5,7 +5,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.sql.Timestamp;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 public class UtilityFunctions {
 	private UtilityFunctions() {
@@ -34,5 +36,14 @@ public class UtilityFunctions {
 	public static String formatTimestamp(String pattern, Timestamp timestamp) {
 		SimpleDateFormat formatter = new SimpleDateFormat(pattern);
 		return formatter.format(timestamp);
+	}
+
+	public static String formatMoneyVND(int money) {
+		Locale vnLocale = new Locale("vi", "VN");
+		NumberFormat currencyInstance = NumberFormat.getCurrencyInstance(vnLocale);
+		currencyInstance.setGroupingUsed(true);
+
+		String moneyFormatted = currencyInstance.format(money);
+		return moneyFormatted.substring(0, moneyFormatted.length() - 2);
 	}
 }
