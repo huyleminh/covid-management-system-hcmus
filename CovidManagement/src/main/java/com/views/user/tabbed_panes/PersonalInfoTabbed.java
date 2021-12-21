@@ -12,6 +12,11 @@ public class PersonalInfoTabbed extends JTabbedPane {
 	public static final String PURCHASED_NECESSARIES_TITLE = "Purchased Necessaries";
 	public static final String DEBT_TITLE = "Debt";
 	public static final String PAYMENT_HISTORY_TITLE = "Payment History";
+	public static final int BASIC_INFORMATION_INDEX = 0;
+	public static final int MANAGED_HISTORY_INDEX = 1;
+	public static final int PURCHASED_NECESSARIES_INDEX = 2;
+	public static final int DEBT_INDEX = 3;
+	public static final int PAYMENT_HISTORY_INDEX = 4;
 
 	// Components
 	private BasicInfoPanel basicInfoPanel;
@@ -36,17 +41,10 @@ public class PersonalInfoTabbed extends JTabbedPane {
 	}
 
 	private void initManagedHistoryPanel() {
-		final String[] columnNames = {"Manager Name", "Description", "Date"};
-		final int [] columnWidths = {180, 413, 150};
-		final int[] columnHorizontalAlignments = {
-				DefaultTableCellRenderer.LEFT,
-				DefaultTableCellRenderer.LEFT,
-				DefaultTableCellRenderer.LEFT
-		};
+		final String[] columnNames = {"Description", "Date"};
+		final int [] columnWidths = {584, 160};
 
-		managedHistoryPanel = new UserPersonalInfoTablePanel(
-				columnNames, columnWidths, columnHorizontalAlignments
-		);
+		managedHistoryPanel = new UserPersonalInfoTablePanel(columnNames, columnWidths);
 		addTab(MANAGED_HISTORY_TITLE, managedHistoryPanel);
 	}
 

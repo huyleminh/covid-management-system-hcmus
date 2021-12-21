@@ -36,7 +36,7 @@ public class UserHistoryDAO implements DAO<UserHistory, Integer> {
 							resultSet.getInt("historyId"),
 							resultSet.getString("managerUsername"),
 							resultSet.getInt("userId"),
-							resultSet.getDate("date"),
+							resultSet.getTimestamp("date"),
 							resultSet.getString("description"),
 							resultSet.getByte("operationType")
 					));
@@ -53,6 +53,58 @@ public class UserHistoryDAO implements DAO<UserHistory, Integer> {
 						preparedStatement.close();
 					} catch (SQLException e) {
 						System.out.println(">>> UserHistoryDAO.java - line 55 <<<");
+
+						userHistoryList.clear();
+						userHistoryList.add(UserHistory.emptyUserHistory);
+					}
+				}
+			}
+		} else {
+			userHistoryList.add(UserHistory.emptyUserHistory);
+		}
+
+		return userHistoryList;
+	}
+
+	public List<UserHistory> getAllManagedHistoryByUserId(Integer userId) {
+		Connection connection = SingletonDBConnection.getInstance().getConnection();
+		ArrayList<UserHistory> userHistoryList = new ArrayList<>();
+
+		if (connection != null) {
+			PreparedStatement preparedStatement = null;
+
+			try {
+				final String sqlStatement = "SELECT * FROM COVID_MANAGEMENT.UserHistory " +
+						"WHERE userId = ? AND operationType = ? AND operationType = ?;";
+				preparedStatement = connection.prepareStatement(sqlStatement);
+
+				preparedStatement.setInt(1, userId);
+				preparedStatement.setByte(2, UserHistory.CHANGE_STATUS);
+				preparedStatement.setByte(3, UserHistory.CHANGE_QUARANTINE);
+				ResultSet resultSet = preparedStatement.executeQuery();
+
+				while (resultSet.next()) {
+					userHistoryList.add(new UserHistory(
+							resultSet.getInt("historyId"),
+							resultSet.getString("managerUsername"),
+							resultSet.getInt("userId"),
+							resultSet.getTimestamp("date"),
+							resultSet.getString("description"),
+							resultSet.getByte("operationType")
+					));
+				}
+			} catch (SQLException e) {
+				System.out.println(">>> UserHistoryDAO.java - line 97 <<<");
+				e.printStackTrace();
+
+				userHistoryList.clear();
+				userHistoryList.add(UserHistory.emptyUserHistory);
+			} finally {
+				if (preparedStatement != null) {
+					try {
+						preparedStatement.close();
+					} catch (SQLException e) {
+						System.out.println(">>> UserHistoryDAO.java - line 107 <<<");
 
 						userHistoryList.clear();
 						userHistoryList.add(UserHistory.emptyUserHistory);

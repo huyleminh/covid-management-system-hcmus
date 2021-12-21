@@ -4,7 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Constants {
-	private Constants() {}
+	private Constants() {
+	}
 
 	// Label and TextField
 	public static final int TEXT_HEIGHT = 30;
@@ -47,4 +48,7 @@ public class Constants {
 
 	// Icon
 	public static final Icon RIGHT_CHEVRON_ICON = new ImageIcon(RIGHT_CHEVRON_ICON_FILE_PATH);
+
+	// Format
+	public static final String TIMESTAMP_WITHOUT_NANOSECOND = "yyyy-MM-dd hh:mm:ss";
 }

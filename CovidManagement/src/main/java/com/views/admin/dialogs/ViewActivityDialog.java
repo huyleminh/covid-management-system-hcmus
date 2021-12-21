@@ -5,6 +5,7 @@ import com.utilities.Constants;
 import com.views.shared.panels.ScrollableTablePanel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
 public class ViewActivityDialog extends JDialog {
@@ -38,13 +39,15 @@ public class ViewActivityDialog extends JDialog {
 
 		// Scrollable table
 		final String[] columnNames = {"Description", "Date"};
-		final int[] columnWidths = {480, 149};
+		final int[] columnWidths = {470, 159};
+		final int[] columnHorizontalAlignments = {DefaultTableCellRenderer.LEFT, DefaultTableCellRenderer.CENTER};
 
 		scrollableTable = new ScrollableTablePanel(
 				new JTable(new NonEditableTableModel(columnNames, 0))
 		);
 		scrollableTable.setRowSelectionAllowed(false);
 		scrollableTable.setColumnWidths(columnWidths);
+		scrollableTable.setColumnHorizontalAlignments(columnHorizontalAlignments);
 		panel.add(scrollableTable);
 
 		final int tableWidth = scrollableTable.getTableWidth();

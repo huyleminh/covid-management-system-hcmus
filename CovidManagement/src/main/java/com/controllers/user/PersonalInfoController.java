@@ -2,7 +2,11 @@ package com.controllers.user;
 
 import com.dao.*;
 import com.models.User;
+import com.models.UserHistory;
+import com.models.table.NonEditableTableModel;
+import com.utilities.Constants;
 import com.utilities.SingletonDBConnection;
+import com.utilities.UtilityFunctions;
 import com.views.shared.dialogs.ConnectionErrorDialog;
 import com.views.user.panels.BasicInfoPanel;
 import com.views.user.tabbed_panes.PersonalInfoTabbed;
@@ -10,20 +14,21 @@ import com.views.user.tabbed_panes.PersonalInfoTabbed;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class PersonalInfoController implements ChangeListener {
 	private PersonalInfoTabbed personalInfoTabbed;
 	private int userId;
 	private UserDAO userDAOModel;
-	private String currentTab;
+	private int currentTabIndex;
 	private ConnectionErrorDialog connectionErrorDialog;
 
 	public PersonalInfoController(JFrame mainFrame, PersonalInfoTabbed personalInfoTabbed, int userId) {
 		this.personalInfoTabbed = personalInfoTabbed;
 		this.userId = userId;
 		this.userDAOModel = new UserDAO();
-		this.currentTab = PersonalInfoTabbed.BASIC_INFORMATION_TITLE;
+		this.currentTabIndex = PersonalInfoTabbed.BASIC_INFORMATION_INDEX;
 		this.connectionErrorDialog = new ConnectionErrorDialog(mainFrame);
 
 		this.connectionErrorDialog.getReconnectButton().addActionListener((event) -> {
@@ -31,7 +36,7 @@ public class PersonalInfoController implements ChangeListener {
 			connectionErrorDialog.setVisible(false);
 
 			SingletonDBConnection.getInstance().connect();
-			preprocessOf(currentTab);
+			preprocessOf(currentTabIndex);
 		});
 
 		basicInfoAction();
@@ -42,10 +47,9 @@ public class PersonalInfoController implements ChangeListener {
 	@Override
 	public void stateChanged(ChangeEvent event) {
 		final int index = personalInfoTabbed.getSelectedIndex();
-		final String title = personalInfoTabbed.getTitleAt(index);
-		this.currentTab = title;
+		this.currentTabIndex = index;
 
-		preprocessOf(title);
+		preprocessOf(index);
 	}
 
 	private void basicInfoAction() {
@@ -83,10 +87,10 @@ public class PersonalInfoController implements ChangeListener {
 
 		if (
 				provinceName.isEmpty() ||
-				districtName.isEmpty() ||
-				wardName.isEmpty() ||
-				locationName.isEmpty() ||
-				(infectiousPersonFullName.isEmpty() && user.getUserInvolvedId() != 0)
+						districtName.isEmpty() ||
+						wardName.isEmpty() ||
+						locationName.isEmpty() ||
+						(infectiousPersonFullName.isEmpty() && user.getUserInvolvedId() != 0)
 		) { // when the connection of the database is unavailable
 			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 		} else {
@@ -97,28 +101,59 @@ public class PersonalInfoController implements ChangeListener {
 			// Display values
 			BasicInfoPanel basicInfoPanel = personalInfoTabbed.getBasicInfoPanel();
 			basicInfoPanel.getFullnameTextField()
-						  .setText(" " + user.getFullname());
+					.setText(" " + user.getFullname());
 			basicInfoPanel.getIdCardTextField()
-						  .setText(" " + user.getIdentifierNumber());
+					.setText(" " + user.getIdentifierNumber());
 			basicInfoPanel.getYearBirthTextField()
-						  .setText(" " + user.getYearOfBirth());
+					.setText(" " + user.getYearOfBirth());
 			basicInfoPanel.getAddressTextField()
-						  .setText(fullAddress);
+					.setText(" " + fullAddress);
 			basicInfoPanel.getCurrentStatusTextField()
-						  .setText(" " + User.STATUS_NAMES[user.getStatus()]);  // Because a user always has a non-null value of status field.
+					.setText(" " + User.STATUS_NAMES[user.getStatus()]);  // Because a user always has a non-null value of status field.
 			basicInfoPanel.getQuarantineTextField()
-						  .setText(" " + locationName.get());
+					.setText(" " + locationName.get());
 			basicInfoPanel.getInfectiousPersonTextField()
-						  .setText(" " + infectiousPersonFullName.get());
+					.setText(" " + infectiousPersonFullName.get());
+		}
+	}
+
+	private void managedHistoryAction() {
+		// Load all rows belong to this user.
+		UserHistoryDAO daoModel = new UserHistoryDAO();
+		ArrayList<UserHistory> userHistoryList = (ArrayList<UserHistory>) daoModel.getAllManagedHistoryByUserId(userId);
+		System.out.println(userHistoryList.isEmpty());
+		// Check connection.
+		if (userHistoryList.size() == 1 && userHistoryList.get(0).isEmpty())
+			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
+		else if (!userHistoryList.isEmpty()) {  // Add those data into the table.
+			NonEditableTableModel tableModel = (NonEditableTableModel) personalInfoTabbed.getManagedHistoryPanel()
+					.getScrollableTable()
+					.getTableModel();
+
+			for (UserHistory userHistory: userHistoryList) {
+				String description = userHistory.getDescription();
+				int index = description.indexOf("của người dùng");
+				// Because the suffix always is "của người dùng " + id card.
+				// And all descriptions are filtered, therefor index is always not equal to -1.
+
+				tableModel.addRow(new Object[] {
+						description.substring(0, index - 1),  // 1 is space.
+						UtilityFunctions.formatTimestamp(Constants.TIMESTAMP_WITHOUT_NANOSECOND, userHistory.getDate())
+				});
+			}
 		}
 	}
 
 	// Preprocessing of a tab of the PersonalInfoTabbed.
-	private void preprocessOf(String tabTitle) {
-		switch (tabTitle) {
-			case PersonalInfoTabbed.BASIC_INFORMATION_TITLE -> {
+	private void preprocessOf(int tabIndex) {
+		switch (tabIndex) {
+			case PersonalInfoTabbed.BASIC_INFORMATION_INDEX -> {
 				personalInfoTabbed.getBasicInfoPanel().clearDataShowing();
 				basicInfoAction();
+			}
+			case PersonalInfoTabbed.MANAGED_HISTORY_INDEX -> {
+				personalInfoTabbed.getManagedHistoryPanel().clearDataShowing();
+				managedHistoryAction();
 			}
 		}
 	}

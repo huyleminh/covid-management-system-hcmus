@@ -1,6 +1,6 @@
 package com.models;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class UserHistory {
 	public static final UserHistory emptyUserHistory = new UserHistory(
@@ -8,10 +8,14 @@ public class UserHistory {
 	);  // An object to check whether connection of the database is unavailable or not.
 	// Using at the login view.
 
+	public static final byte ADD_NEW_USER = 1;
+	public static final byte CHANGE_STATUS = 2;
+	public static final byte CHANGE_QUARANTINE = 3;
+
 	private int historyId;
 	private String managerUsername;
 	private int userId;
-	private Date date;
+	private Timestamp date;
 	private String description;
 	private byte operationType;
 
@@ -19,7 +23,7 @@ public class UserHistory {
 			int historyId,
 			String managerUsername,
 			int userId,
-			Date date,
+			Timestamp date,
 			String description,
 			byte operationType
 	) {
@@ -43,7 +47,7 @@ public class UserHistory {
 		return userId;
 	}
 
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
 

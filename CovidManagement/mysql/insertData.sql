@@ -193,11 +193,11 @@ VALUES
 
 INSERT INTO COVID_MANAGEMENT.UserHistory (managerUsername, userId, `date`, `description`, operationType)
 VALUES
-    ('manager1', 1, '2020-9-10 10:05:10', N'Thêm mới người dùng 021234569', 3),
-    ('manager1', 2, '2020-9-10 10:12:25', N'Thêm mới người dùng 011234568', 3),
-    ('manager1', 3, '2020-9-10 10:31:20', N'Thêm mới người dùng 011234569', 3),
-    ('manager1', 4, '2020-9-10 10:40:50', N'Thêm mới người dùng 011234570', 3),
-    ('manager1', 5, '2020-9-10 10:45:23', N'Thêm mới người dùng 011234571', 3);
+    ('manager1', 1, '2020-9-10 10:05:10', N'Thêm mới người dùng 021234569', 1),
+    ('manager1', 2, '2020-9-10 10:12:25', N'Thêm mới người dùng 011234568', 1),
+    ('manager1', 3, '2020-9-10 10:31:20', N'Thêm mới người dùng 011234569', 1),
+    ('manager1', 4, '2020-9-10 10:40:50', N'Thêm mới người dùng 011234570', 1),
+    ('manager1', 5, '2020-9-10 10:45:23', N'Thêm mới người dùng 011234571', 1);
 
 INSERT INTO COVID_MANAGEMENT.NecessariesHistory (managerUsername, `date`, `description`, operationType)
 VALUES

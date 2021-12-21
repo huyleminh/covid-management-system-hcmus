@@ -10,16 +10,28 @@ import java.awt.*;
 public class UserPersonalInfoTablePanel extends JPanel {
 	private ScrollableTablePanel scrollableTable;
 
+	public UserPersonalInfoTablePanel(String[] columnNames, int[] columnWidths) {
+		super();
+		setLayout(null);
+		initTable(columnNames, columnWidths, null);
+	}
+
 	public UserPersonalInfoTablePanel(String[] columnNames, int[] columnWidths, int[] columnHorizontalAlignments) {
 		super();
 		setLayout(null);
+		initTable(columnNames, columnWidths, columnHorizontalAlignments);
+	}
 
+	private void initTable(String[] columnNames, int[] columnWidths, int[] columnHorizontalAlignments) {
 		scrollableTable = new ScrollableTablePanel(
 				new JTable(new NonEditableTableModel(columnNames, 0))
 		);
 		scrollableTable.setRowSelectionAllowed(false);
 		scrollableTable.setColumnWidths(columnWidths);
-		scrollableTable.setColumnHorizontalAlignments(columnHorizontalAlignments);
+		if (columnHorizontalAlignments != null) {
+			scrollableTable.setColumnHorizontalAlignments(columnHorizontalAlignments);
+		}
+
 		add(scrollableTable);
 
 		final int tableWidth = scrollableTable.getTableWidth();
@@ -34,5 +46,9 @@ public class UserPersonalInfoTablePanel extends JPanel {
 
 	public ScrollableTablePanel getScrollableTable() {
 		return scrollableTable;
+	}
+
+	public void clearDataShowing() {
+		((NonEditableTableModel) scrollableTable.getTableModel()).removeAllRows();
 	}
 }
