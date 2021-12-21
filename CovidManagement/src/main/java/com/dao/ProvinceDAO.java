@@ -34,7 +34,7 @@ public class ProvinceDAO implements DAO<Province, Integer> {
 				if (resultSet.next()) {
 					provinceOptional = Optional.of(new Province(
 							resultSet.getInt("provinceId"),
-							resultSet.getString("provinceName")
+							resultSet.getNString("provinceName")
 					));
 				}
 			} catch (SQLException e) {
@@ -71,7 +71,7 @@ public class ProvinceDAO implements DAO<Province, Integer> {
 				ResultSet resultSet = preparedStatement.executeQuery();
 
 				if (resultSet.next()) {
-					provinceNameOptional = Optional.of(resultSet.getString("provinceName"));
+					provinceNameOptional = Optional.of(resultSet.getNString("provinceName"));
 				}
 			} catch (SQLException e) {
 				System.out.println(">>> ProvinceDAO.java - line 77 <<<");

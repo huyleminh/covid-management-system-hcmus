@@ -37,7 +37,7 @@ public class UserHistoryDAO implements DAO<UserHistory, Integer> {
 							resultSet.getString("managerUsername"),
 							resultSet.getInt("userId"),
 							resultSet.getTimestamp("date"),
-							resultSet.getString("description"),
+							resultSet.getNString("description"),
 							resultSet.getByte("operationType")
 					));
 				}
@@ -89,7 +89,7 @@ public class UserHistoryDAO implements DAO<UserHistory, Integer> {
 							resultSet.getString("managerUsername"),
 							resultSet.getInt("userId"),
 							resultSet.getTimestamp("date"),
-							resultSet.getString("description"),
+							resultSet.getNString("description"),
 							resultSet.getByte("operationType")
 					));
 				}

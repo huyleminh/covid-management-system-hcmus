@@ -49,7 +49,7 @@ public class PersonalInfoTabbed extends JTabbedPane {
 	}
 
 	private void initPurchasedNecessariesPanel() {
-		final String[] columnNames = {"Necessaries Name", "Quantity", "Total Amount (VND)", "Date"};
+		final String[] columnNames = {"Necessaries Name", "Quantity", "Price Per One (VND)", "Date"};
 		final int[] columnWidths = {400, 62, 130, 150};
 		final int[] columnHorizontalAlignments = {
 				DefaultTableCellRenderer.LEFT,

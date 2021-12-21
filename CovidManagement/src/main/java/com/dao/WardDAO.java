@@ -34,7 +34,7 @@ public class WardDAO implements DAO<Ward, Integer> {
 				if (resultSet.next()) {
 					wardOptional = Optional.of(new Ward(
 							resultSet.getInt("wardId"),
-							resultSet.getString("wardName"),
+							resultSet.getNString("wardName"),
 							resultSet.getInt("districtId")
 					));
 				}
@@ -73,7 +73,7 @@ public class WardDAO implements DAO<Ward, Integer> {
 
 				if (resultSet.next()) {
 					switch (fieldName) {
-						case "wardName" -> optionalValue = Optional.of(resultSet.getString("wardName"));
+						case "wardName" -> optionalValue = Optional.of(resultSet.getNString("wardName"));
 						case "districtId" -> optionalValue = Optional.of(resultSet.getInt("districtId"));
 					}
 				}

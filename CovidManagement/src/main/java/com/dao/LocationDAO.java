@@ -34,7 +34,7 @@ public class LocationDAO implements DAO<Location, Integer> {
 				if (resultSet.next()) {
 					locationOptional = Optional.of(new Location(
 							resultSet.getInt("locationId"),
-							resultSet.getString("locationName"),
+							resultSet.getNString("locationName"),
 							resultSet.getShort("capacity"),
 							resultSet.getShort("availableSlots")
 					));
@@ -76,7 +76,7 @@ public class LocationDAO implements DAO<Location, Integer> {
 					Object value = null;
 
 					switch (fieldName) {
-						case "locationName" -> value = resultSet.getString("locationName");
+						case "locationName" -> value = resultSet.getNString("locationName");
 						case "capacity" -> value = resultSet.getShort("capacity");
 						case "availableSlots" -> value = resultSet.getShort("availableSlots");
 					}

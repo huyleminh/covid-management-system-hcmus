@@ -35,12 +35,12 @@ public class UserDAO implements DAO<User, Integer> {
 					userOptional = Optional.of(new User(
 							resultSet.getInt("userId"),
 							resultSet.getString("identifierNumber"),
-							resultSet.getString("fullname"),
+							resultSet.getNString("fullname"),
 							resultSet.getShort("yearOfBirth"),
 							resultSet.getInt("locationId"),
 							resultSet.getByte("status"),
 							resultSet.getInt("userInvolvedId"),
-							resultSet.getString("street"),
+							resultSet.getNString("street"),
 							resultSet.getInt("wardId"),
 							resultSet.getInt("districtId"),
 							resultSet.getInt("provinceId")
@@ -84,12 +84,12 @@ public class UserDAO implements DAO<User, Integer> {
 
 					switch (fieldName) {
 						case "identifierNumber" -> value = resultSet.getString("identifierNumber");
-						case "fullname" 		-> value = resultSet.getString("fullname");
+						case "fullname" 		-> value = resultSet.getNString("fullname");
 						case "yearOfBirth" 		-> value = resultSet.getShort("yearOfBirth");
 						case "locationId" 		-> value = resultSet.getInt("locationId");
 						case "status" 			-> value = resultSet.getByte("status");
 						case "userInvolvedId" 	-> value = resultSet.getInt("userInvolvedId");
-						case "street" 			-> value = resultSet.getString("street");
+						case "street" 			-> value = resultSet.getNString("street");
 						case "wardId" 			-> value = resultSet.getInt("wardId");
 						case "districtId" 		-> value = resultSet.getInt("districtId");
 						case "provinceId" 		-> value = resultSet.getInt("provinceId");
