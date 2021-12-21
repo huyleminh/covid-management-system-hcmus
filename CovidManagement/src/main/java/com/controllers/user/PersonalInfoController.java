@@ -1,10 +1,7 @@
 package com.controllers.user;
 
 import com.dao.*;
-import com.models.Debt;
-import com.models.OrderDetail;
-import com.models.User;
-import com.models.UserHistory;
+import com.models.*;
 import com.models.table.NonEditableTableModel;
 import com.utilities.Constants;
 import com.utilities.Pair;
@@ -178,7 +175,7 @@ public class PersonalInfoController implements ChangeListener {
 	private void debtAction() {
 		// Load all Debt entities by userId from the database.
 		DebtDAO daoModel = new DebtDAO();
-		ArrayList<Debt> debtList = (ArrayList<Debt>) daoModel.getAllUserId(userId);
+		ArrayList<Debt> debtList = (ArrayList<Debt>) daoModel.getAllByUserId(userId);
 
 		// Check connection.
 		if (debtList.size() == 1 && debtList.get(0).isEmpty())
@@ -192,6 +189,28 @@ public class PersonalInfoController implements ChangeListener {
 				tableModel.addRow(new Object[] {
 						UtilityFunctions.formatMoneyVND(debt.getTotalDebt()),
 						UtilityFunctions.formatTimestamp(Constants.TIMESTAMP_WITHOUT_NANOSECOND, debt.getDebtDate())
+				});
+			}
+		}
+	}
+
+	private void paymentHistoryAction() {
+		// Load all PaymentHistory entities by userId from the database.
+		PaymentHistoryDAO daoModel = new PaymentHistoryDAO();
+		ArrayList<PaymentHistory> paymentHistoryList = (ArrayList<PaymentHistory>) daoModel.getAllByUserId(userId);
+
+		// Check connection.
+		if (paymentHistoryList.size() == 1 && paymentHistoryList.get(0).isEmpty())
+			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
+		else if (!paymentHistoryList.isEmpty()) {  // Add those data into the table.
+			NonEditableTableModel tableModel = (NonEditableTableModel) personalInfoTabbed.getPaymentHistoryPanel()
+					.getScrollableTable()
+					.getTableModel();
+
+			for (PaymentHistory paymentHistory : paymentHistoryList) {
+				tableModel.addRow(new Object[] {
+						UtilityFunctions.formatMoneyVND(paymentHistory.getPaymentAmount()),
+						UtilityFunctions.formatTimestamp(Constants.TIMESTAMP_WITHOUT_NANOSECOND, paymentHistory.getDate())
 				});
 			}
 		}
@@ -215,6 +234,10 @@ public class PersonalInfoController implements ChangeListener {
 			case PersonalInfoTabbed.DEBT_INDEX -> {
 				personalInfoTabbed.getDebtPanel().clearDataShowing();
 				debtAction();
+			}
+			case PersonalInfoTabbed.PAYMENT_HISTORY_INDEX -> {
+				personalInfoTabbed.getPaymentHistoryPanel().clearDataShowing();
+				paymentHistoryAction();
 			}
 		}
 	}
