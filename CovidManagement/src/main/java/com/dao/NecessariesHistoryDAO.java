@@ -35,7 +35,7 @@ public class NecessariesHistoryDAO implements DAO<NecessariesHistory, Integer> {
 					necessariesHistoryList.add(new NecessariesHistory(
 							resultSet.getInt("historyId"),
 							resultSet.getString("managerUsername"),
-							resultSet.getDate("date"),
+							resultSet.getTimestamp("date"),
 							resultSet.getString("description"),
 							resultSet.getByte("operationType")
 					));

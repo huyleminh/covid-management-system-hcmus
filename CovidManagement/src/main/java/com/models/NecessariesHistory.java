@@ -1,6 +1,6 @@
 package com.models;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class NecessariesHistory {
 	public static final NecessariesHistory emptyNecessariesHistory = new NecessariesHistory(
@@ -10,14 +10,14 @@ public class NecessariesHistory {
 
 	private int historyId;
 	private String managerUsername;
-	private Date date;
+	private Timestamp date;
 	private String description;
 	private byte operationType;
 
 	public NecessariesHistory(
 			int historyId,
 			String managerUsername,
-			Date date,
+			Timestamp date,
 			String description,
 			byte operationType
 	) {
@@ -36,7 +36,7 @@ public class NecessariesHistory {
 		return managerUsername;
 	}
 
-	public Date getDate() {
+	public Timestamp getDate() {
 		return date;
 	}
 
