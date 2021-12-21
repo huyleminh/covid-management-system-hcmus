@@ -78,7 +78,7 @@ public class UserHistory {
 		System.out.println("historyId       = " + historyId);
 		System.out.println("managerUsername = " + managerUsername);
 		System.out.println("userId 		    = " + userId);
-		System.out.println("date 		    = " + date);
+		System.out.println("date 		    = " + date.toString());
 		System.out.println("description     = " + description);
 		System.out.println("operationType   = " + operationType);
 	}

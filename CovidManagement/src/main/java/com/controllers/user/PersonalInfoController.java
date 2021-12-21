@@ -1,10 +1,12 @@
 package com.controllers.user;
 
 import com.dao.*;
+import com.models.OrderDetail;
 import com.models.User;
 import com.models.UserHistory;
 import com.models.table.NonEditableTableModel;
 import com.utilities.Constants;
+import com.utilities.Pair;
 import com.utilities.SingletonDBConnection;
 import com.utilities.UtilityFunctions;
 import com.views.shared.dialogs.ConnectionErrorDialog;
@@ -14,20 +16,19 @@ import com.views.user.tabbed_panes.PersonalInfoTabbed;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Optional;
 
 public class PersonalInfoController implements ChangeListener {
 	private PersonalInfoTabbed personalInfoTabbed;
 	private int userId;
-	private UserDAO userDAOModel;
 	private int currentTabIndex;
 	private ConnectionErrorDialog connectionErrorDialog;
 
 	public PersonalInfoController(JFrame mainFrame, PersonalInfoTabbed personalInfoTabbed, int userId) {
 		this.personalInfoTabbed = personalInfoTabbed;
 		this.userId = userId;
-		this.userDAOModel = new UserDAO();
 		this.currentTabIndex = PersonalInfoTabbed.BASIC_INFORMATION_INDEX;
 		this.connectionErrorDialog = new ConnectionErrorDialog(mainFrame);
 
@@ -53,7 +54,8 @@ public class PersonalInfoController implements ChangeListener {
 	}
 
 	private void basicInfoAction() {
-		Optional<User> userOptional = userDAOModel.get(userId);
+		UserDAO daoModel = new UserDAO();
+		Optional<User> userOptional = daoModel.get(userId);
 		if (userOptional.isEmpty()) {
 			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 			return;
@@ -82,7 +84,7 @@ public class PersonalInfoController implements ChangeListener {
 		// Infectious person full name
 		Optional<Object> infectiousPersonFullName = Optional.of("Không xác định");
 		if (user.getUserInvolvedId() != 0) {  // when using jdbc's getInt() method, if null then value is 0.
-			infectiousPersonFullName = userDAOModel.getOneField(user.getUserInvolvedId(), "fullname");
+			infectiousPersonFullName = daoModel.getOneField(user.getUserInvolvedId(), "fullname");
 		}
 
 		if (
@@ -121,7 +123,7 @@ public class PersonalInfoController implements ChangeListener {
 		// Load all rows belong to this user.
 		UserHistoryDAO daoModel = new UserHistoryDAO();
 		ArrayList<UserHistory> userHistoryList = (ArrayList<UserHistory>) daoModel.getAllManagedHistoryByUserId(userId);
-		System.out.println(userHistoryList.isEmpty());
+
 		// Check connection.
 		if (userHistoryList.size() == 1 && userHistoryList.get(0).isEmpty())
 			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
@@ -144,6 +146,34 @@ public class PersonalInfoController implements ChangeListener {
 		}
 	}
 
+	private void purchasedNecessariesAction() {
+		// Load all necessaries belong to this user, which contains necessaries name, price, quantity and created date.
+		OrderDetailDAO daoModel = new OrderDetailDAO();
+		ArrayList<Pair<Timestamp, OrderDetail>> orderDetailList = (ArrayList<Pair<Timestamp, OrderDetail>>) daoModel.getAllByUserId(userId);
+
+
+		if (  // Check connection
+				orderDetailList.size() == 1 &&
+						orderDetailList.get(0).getLeftValue() == null &&
+						orderDetailList.get(0).getRightValue().isEmpty()
+		) {
+			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
+		} else if (!orderDetailList.isEmpty()) {  // Add those date into the table.
+			NonEditableTableModel tableModel = (NonEditableTableModel) personalInfoTabbed.getPurchasedNecessariesPanel()
+					.getScrollableTable()
+					.getTableModel();
+
+			for (Pair<Timestamp, OrderDetail> item : orderDetailList) {
+				tableModel.addRow(new Object[] {
+						item.getRightValue().getNecessariesName(),
+						item.getRightValue().getQuantity(),
+						item.getRightValue().getPrice(),
+						UtilityFunctions.formatTimestamp(Constants.TIMESTAMP_WITHOUT_NANOSECOND, item.getLeftValue())
+				});
+			}
+		}
+	}
+
 	// Preprocessing of a tab of the PersonalInfoTabbed.
 	private void preprocessOf(int tabIndex) {
 		switch (tabIndex) {
@@ -154,6 +184,10 @@ public class PersonalInfoController implements ChangeListener {
 			case PersonalInfoTabbed.MANAGED_HISTORY_INDEX -> {
 				personalInfoTabbed.getManagedHistoryPanel().clearDataShowing();
 				managedHistoryAction();
+			}
+			case PersonalInfoTabbed.PURCHASED_NECESSARIES_INDEX -> {
+				personalInfoTabbed.getPurchasedNecessariesPanel().clearDataShowing();
+				purchasedNecessariesAction();
 			}
 		}
 	}

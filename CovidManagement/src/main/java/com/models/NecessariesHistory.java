@@ -65,7 +65,7 @@ public class NecessariesHistory {
 		System.out.println(">>> NecessariesHistory <<<");
 		System.out.println("historyId       = " + historyId);
 		System.out.println("managerUsername = " + managerUsername);
-		System.out.println("date 		    = " + date);
+		System.out.println("date 		    = " + date.toString());
 		System.out.println("description     = " + description);
 		System.out.println("operationType   = " + operationType);
 	}

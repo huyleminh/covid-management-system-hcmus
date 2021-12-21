@@ -34,7 +34,7 @@ public class DistrictDAO implements DAO<District, Integer> {
 				if (resultSet.next()) {
 					districtOptional = Optional.of(new District(
 							resultSet.getInt("districtId"),
-							resultSet.getString("districtName"),
+							resultSet.getNString("districtName"),
 							resultSet.getInt("provinceId")
 					));
 				}
@@ -73,7 +73,7 @@ public class DistrictDAO implements DAO<District, Integer> {
 
 				if (resultSet.next()) {
 					switch (fieldName) {
-						case "districtName" -> optionalValue = Optional.of(resultSet.getString("districtName"));
+						case "districtName" -> optionalValue = Optional.of(resultSet.getNString("districtName"));
 						case "provinceId" -> optionalValue = Optional.of(resultSet.getInt("provinceId"));
 					}
 				}
