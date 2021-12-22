@@ -2,6 +2,7 @@ package com.utilities;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Locale;
 
 public class Constants {
 	private Constants() {
@@ -51,4 +52,5 @@ public class Constants {
 
 	// Format
 	public static final String TIMESTAMP_WITHOUT_NANOSECOND = "yyyy-MM-dd hh:mm:ss";
+	public static final Locale VN_LOCALE = new Locale("vi", "VN");
 }

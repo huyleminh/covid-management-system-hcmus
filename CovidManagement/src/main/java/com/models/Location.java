@@ -1,16 +1,21 @@
 package com.models;
 
 public class Location {
+	// An object to check whether connection of the database is unavailable or not.
+	public static final Location emptyLocation = new Location(
+			-1, "empty", (short) -1, (short) -1
+	);
+
 	private int locationId;
 	private String locationName;
 	private short capacity;
-	private short availableSlots;
+	private short currentSlots;
 
-	public Location(int locationId, String locationName, short capacity, short availableSlots) {
+	public Location(int locationId, String locationName, short capacity, short currentSlots) {
 		this.locationId = locationId;
 		this.locationName = locationName;
 		this.capacity = capacity;
-		this.availableSlots = availableSlots;
+		this.currentSlots = currentSlots;
 	}
 
 	public int getLocationId() {
@@ -25,16 +30,27 @@ public class Location {
 		return capacity;
 	}
 
-	public short getAvailableSlots() {
-		return availableSlots;
+	public short getCurrentSlots() {
+		return currentSlots;
+	}
+
+	public boolean isEmpty() {
+		return equals(Location.emptyLocation);
+	}
+
+	public boolean equals(Location location) {
+		return locationId == location.locationId &&
+				locationName.equals(location.locationName) &&
+				capacity == location.capacity &&
+				currentSlots == location.currentSlots;
 	}
 
 	// Testing
 	public void logToScreen() {
 		System.out.println(">>> Location <<<");
-		System.out.println("locationId 	   = " + locationId);
-		System.out.println("locationName   = " + locationName);
-		System.out.println("capacity 	   = " + capacity);
-		System.out.println("availableSlots = " + availableSlots);
+		System.out.println("locationId 	 = " + locationId);
+		System.out.println("locationName = " + locationName);
+		System.out.println("capacity 	 = " + capacity);
+		System.out.println("currentSlots = " + currentSlots);
 	}
 }

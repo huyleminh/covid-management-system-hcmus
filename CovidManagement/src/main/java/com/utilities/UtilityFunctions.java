@@ -3,6 +3,7 @@ package com.utilities;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.swing.*;
+import javax.swing.text.NumberFormatter;
 import java.awt.event.WindowEvent;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
@@ -10,8 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 public class UtilityFunctions {
-	private UtilityFunctions() {
-	}
+	private UtilityFunctions() {}
 
 	public static int sum(int[] a) {
 		int result = 0;
@@ -33,6 +33,19 @@ public class UtilityFunctions {
 		mainFrame.dispatchEvent(new WindowEvent(mainFrame, WindowEvent.WINDOW_CLOSING));
 	}
 
+	public static NumberFormatter getIntegerNumberFormatter(int min, int max, boolean groupingUsed) {
+		NumberFormat integerInstance = NumberFormat.getIntegerInstance(Constants.VN_LOCALE);
+		integerInstance.setGroupingUsed(groupingUsed);
+
+		NumberFormatter positiveIntegerFormatter = new NumberFormatter(integerInstance);
+		positiveIntegerFormatter.setMinimum(min);
+		positiveIntegerFormatter.setMaximum(max);
+		positiveIntegerFormatter.setAllowsInvalid(false);
+		positiveIntegerFormatter.setCommitsOnValidEdit(true);
+
+		return positiveIntegerFormatter;
+	}
+
 	public static String formatTimestamp(String pattern, Timestamp timestamp) {
 		SimpleDateFormat formatter = new SimpleDateFormat(pattern);
 		return formatter.format(timestamp);
@@ -45,5 +58,9 @@ public class UtilityFunctions {
 
 		String moneyFormatted = currencyInstance.format(money);
 		return moneyFormatted.substring(0, moneyFormatted.length() - 2);
+	}
+
+	public static String removeRedundantWhiteSpace(String str) {
+		return str.trim().replaceAll("\\s{2,}", " ");
 	}
 }

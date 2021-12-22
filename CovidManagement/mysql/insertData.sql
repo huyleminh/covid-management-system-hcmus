@@ -164,13 +164,13 @@ VALUES
     (N'Xã Đại Phú', 25),
     (N'Xã Đông Lợi', 25);
 
-INSERT INTO COVID_MANAGEMENT.Location (locationName, capacity, availableSlots)
+INSERT INTO COVID_MANAGEMENT.Location (locationName, capacity, currentSlots)
 VALUES
-    (N'Khu điều trị thu dung số 1', 1000, 995),
-    (N'Bệnh viện dã chiến ngoại ô TP', 2000, 2000),
-    (N'Bệnh viện dã chiến trung tâm Sài Gòn', 4500, 4500),
-    (N'Khu điều trị thu dung số 2', 950, 950),
-    (N'Khu điều trị thu dung số 3', 1500, 1500);
+    (N'Khu điều trị thu dung số 1', 1000, 5),
+    (N'Bệnh viện dã chiến ngoại ô TP', 2000, 0),
+    (N'Bệnh viện dã chiến trung tâm Sài Gòn', 4500, 0),
+    (N'Khu điều trị thu dung số 2', 950, 0),
+    (N'Khu điều trị thu dung số 3', 1500, 0);
 
 INSERT INTO COVID_MANAGEMENT.`User` (userId, identifierNumber, fullname, yearOfBirth, locationId, `status`, userInvolvedId, street, wardId, districtId, provinceId)
 VALUES

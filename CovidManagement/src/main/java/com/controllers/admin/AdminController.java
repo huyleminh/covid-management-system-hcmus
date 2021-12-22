@@ -11,14 +11,19 @@ import java.awt.event.ActionListener;
 public class AdminController implements ActionListener {
 	private AdminView adminView;
 	private LoginView loginView;
-	private ManageManagerController manageManagerController;
+	private ManagerManagementController managerManagementController;
+	private QuarantineManagementController quarantineManagementController;
 
 	public AdminController(AdminView adminView, LoginView loginView, String username) {
 		this.adminView = adminView;
 		this.loginView = loginView;
-		this.manageManagerController = new ManageManagerController(
+		this.managerManagementController = new ManagerManagementController(
 				this.loginView.getMainFrame(),
 				this.adminView.getManagerManagementPanel()
+		);
+		this.quarantineManagementController = new QuarantineManagementController(
+				this.loginView.getMainFrame(),
+				this.adminView.getQuarantineManagementPanel()
 		);
 
 		this.adminView.getNameLabel().setText(username);

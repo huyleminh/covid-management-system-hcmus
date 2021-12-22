@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.Location (
     locationId INT NOT NULL AUTO_INCREMENT,
     locationName NVARCHAR(50) NOT NULL,
     capacity SMALLINT NOT NULL,
-    availableSlots SMALLINT NOT NULL,
+    currentSlots SMALLINT NOT NULL,
 
     CONSTRAINT PK_Location PRIMARY KEY (locationId)
 )

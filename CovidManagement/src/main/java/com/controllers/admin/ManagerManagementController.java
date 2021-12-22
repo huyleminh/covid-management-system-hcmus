@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Vector;
 
-public class ManageManagerController implements ActionListener {
+public class ManagerManagementController implements ActionListener {
 	private JFrame mainFrame;
 	private ManagerManagementPanel managerManagementPanel;
 	private AccountDAO accountDAOModel;
@@ -34,7 +34,7 @@ public class ManageManagerController implements ActionListener {
 	private CreateAccountDialog createAccountDialog;
 	private ConnectionErrorDialog connectionErrorDialog;
 
-	public ManageManagerController(JFrame mainFrame, ManagerManagementPanel managerManagementPanel) {
+	public ManagerManagementController(JFrame mainFrame, ManagerManagementPanel managerManagementPanel) {
 		this.mainFrame = mainFrame;
 		this.managerManagementPanel = managerManagementPanel;
 		this.accountDAOModel = new AccountDAO();
@@ -182,7 +182,7 @@ public class ManageManagerController implements ActionListener {
 			// Check connection to show Connection Failed dialog if the connection is unavailable.
 			if (
 					(userHistoryList.size() == 1 && userHistoryList.get(0).isEmpty()) ||
-					(necessariesHistoryList.size() == 1 && necessariesHistoryList.get(0).isEmpty())
+							(necessariesHistoryList.size() == 1 && necessariesHistoryList.get(0).isEmpty())
 			) {
 				SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 			} else {
@@ -190,7 +190,7 @@ public class ManageManagerController implements ActionListener {
 				viewActivityDialog.getManagerUsernameTextField().setText("Manager's username: " + managerUsername);
 
 				NonEditableTableModel viewActivityTableModel = (NonEditableTableModel) viewActivityDialog.getScrollableTable()
-																										 .getTableModel();
+						.getTableModel();
 
 				// Add userHistoryList into the table.
 				if (!userHistoryList.isEmpty()) {
