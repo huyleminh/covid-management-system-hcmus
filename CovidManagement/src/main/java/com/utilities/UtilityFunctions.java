@@ -63,4 +63,16 @@ public class UtilityFunctions {
 	public static String removeRedundantWhiteSpace(String str) {
 		return str.trim().replaceAll("\\s{2,}", " ");
 	}
+
+	public static boolean compareTwoStrings(String lhs, String rhs) {
+		if (lhs == null)
+			return rhs == null;
+		return lhs.equals(rhs);
+	}
+
+	public static boolean compareTwoTimestamps(Timestamp lhs, Timestamp rhs) {
+		if (lhs == null)
+			return rhs == null;
+		return lhs.equals(rhs);
+	}
 }

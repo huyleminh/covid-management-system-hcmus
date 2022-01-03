@@ -12,7 +12,7 @@ public class CreatePasswordDialog extends JDialog {
 	// Constants
 	private static final int LEFT_PADDING = 25;
 	private static final int MIN_WIDTH = 120;
-	private static final int MAX_WIDTH = 250;
+	private static final int MAX_WIDTH = 300;
 
 	// Components
 	private PasswordFieldPanel passwordFieldPanel;
@@ -25,7 +25,7 @@ public class CreatePasswordDialog extends JDialog {
 
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setPreferredSize(new Dimension(430, 140));
+		panel.setPreferredSize(new Dimension(480, 140));
 
 		initComponents(panel);
 
@@ -42,7 +42,7 @@ public class CreatePasswordDialog extends JDialog {
 		passwordLabel.setBounds(LEFT_PADDING, 20, MIN_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(passwordLabel);
 
-		passwordFieldPanel = new PasswordFieldPanel();
+		passwordFieldPanel = new PasswordFieldPanel(MAX_WIDTH);
 		passwordFieldPanel.setBounds(155, 20, MAX_WIDTH, Constants.TEXT_HEIGHT);
 		passwordFieldPanel.setVisible(true);
 		panel.add(passwordFieldPanel);
@@ -52,14 +52,14 @@ public class CreatePasswordDialog extends JDialog {
 		confirmPasswordLabel.setBounds(LEFT_PADDING, 60, MIN_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(confirmPasswordLabel);
 
-		confirmPasswordFieldPanel = new PasswordFieldPanel();
+		confirmPasswordFieldPanel = new PasswordFieldPanel(MAX_WIDTH);
 		confirmPasswordFieldPanel.setBounds(155, 60, MAX_WIDTH, Constants.TEXT_HEIGHT);
 		confirmPasswordFieldPanel.setVisible(true);
 		panel.add(confirmPasswordFieldPanel);
 
 		// Cancel button
 		cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(130, 100, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
+		cancelButton.setBounds(155, 100, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
 		cancelButton.setHorizontalTextPosition(JButton.CENTER);
 		cancelButton.setBackground(new Color(229, 229, 229));
 		cancelButton.setForeground(Color.BLACK);
@@ -67,7 +67,7 @@ public class CreatePasswordDialog extends JDialog {
 
 		// Create button
 		createButton = new JButton("Create");
-		createButton.setBounds(220, 100, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
+		createButton.setBounds(245, 100, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
 		createButton.setHorizontalTextPosition(JButton.CENTER);
 		createButton.setBackground(Constants.LIGHT_BLUE);
 		createButton.setForeground(Color.WHITE);

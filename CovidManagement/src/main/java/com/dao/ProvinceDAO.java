@@ -3,17 +3,48 @@ package com.dao;
 import com.models.Province;
 import com.utilities.SingletonDBConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class ProvinceDAO implements DAO<Province, Integer> {
 	@Override
 	public List<Province> getAll() {
-		return null;
+		Connection connection = SingletonDBConnection.getInstance().getConnection();
+		ArrayList<Province> provinceList = new ArrayList<>();
+
+		if (connection != null) {
+			Statement statement = null;
+
+			try {
+				String sqlStatement = "SELECT * FROM COVID_MANAGEMENT.Province;";
+				statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);
+
+				while (resultSet.next()) {
+					provinceList.add(new Province(
+							resultSet.getInt("provinceId"),
+							resultSet.getNString("provinceName")
+					));
+				}
+			} catch (SQLException e) {
+				System.out.println(">>> ProvinceDAO.java - getAll() method - catch block <<<");
+				e.printStackTrace();
+				provinceList.clear();
+			} finally {
+				if (statement != null) {
+					try {
+						statement.close();
+					} catch (SQLException e) {
+						System.out.println(">>> ProvinceDAO.java - getAll() method - finally block <<<");
+						provinceList.clear();
+					}
+				}
+			}
+		}
+
+		return provinceList;
 	}
 
 	@Override

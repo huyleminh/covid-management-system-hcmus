@@ -3,17 +3,49 @@ package com.dao;
 import com.models.District;
 import com.utilities.SingletonDBConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class DistrictDAO implements DAO<District, Integer> {
 	@Override
 	public List<District> getAll() {
-		return null;
+		Connection connection = SingletonDBConnection.getInstance().getConnection();
+		ArrayList<District> districtList = new ArrayList<>();
+
+		if (connection != null) {
+			Statement statement = null;
+
+			try {
+				String sqlStatement = "SELECT * FROM COVID_MANAGEMENT.District;";
+				statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);
+
+				while (resultSet.next()) {
+					districtList.add(new District(
+							resultSet.getInt("districtId"),
+							resultSet.getNString("districtName"),
+							resultSet.getInt("provinceId")
+					));
+				}
+			} catch (SQLException e) {
+				System.out.println(">>> DistrictDAO.java - getAll() method - catch block <<<");
+				e.printStackTrace();
+				districtList.clear();
+			} finally {
+				if (statement != null) {
+					try {
+						statement.close();
+					} catch (SQLException e) {
+						System.out.println(">>> DistrictDAO.java - getAll() method - finally block <<<");
+						districtList.clear();
+					}
+				}
+			}
+		}
+
+		return districtList;
 	}
 
 	@Override

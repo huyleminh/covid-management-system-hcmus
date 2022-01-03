@@ -35,9 +35,7 @@ public class SystemInfoDAO implements DAO<SystemInfo, Integer> {
 				if (resultSet.next()) {
 					systemInfoOptional = Optional.of(new SystemInfo(
 							resultSet.getInt("id"),
-							resultSet.getByte("firstLoggedIn"),
-							resultSet.getString("bankAccountNumber"),
-							resultSet.getInt("balance")
+							resultSet.getByte("firstLoggedIn")
 					));
 				}
 			} catch (SQLException e) {
@@ -85,12 +83,7 @@ public class SystemInfoDAO implements DAO<SystemInfo, Integer> {
 				String sqlStatement = "UPDATE COVID_MANAGEMENT.SystemInfo SET " + fieldName + " = ?;";
 				preparedStatement = connection.prepareStatement(sqlStatement);
 
-				switch (fieldName) {
-					case "firstLoggedIn" -> preparedStatement.setByte(1, entity.getFirstLoggedIn());
-					case "bankAccountNumber" -> preparedStatement.setString(1, entity.getBankAccountNumber());
-					case "balance" -> preparedStatement.setInt(1, entity.getBalance());
-				}
-
+				preparedStatement.setByte(1, entity.getFirstLoggedIn());
 				rowsAffected = preparedStatement.executeUpdate();
 			} catch (SQLException e) {
 				System.out.println(">>> SystemInfoDAO.java - line 96 <<<");

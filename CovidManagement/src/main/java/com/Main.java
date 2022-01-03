@@ -75,7 +75,7 @@ public class Main {
 			// Testing
 			systemInfoOptional.get().logToScreen();
 
-			if (systemInfoOptional.get().getFirstLoggedIn() == SystemInfo.INITIALIZE_FIRST_TIME)
+			if (systemInfoOptional.get().getFirstLoggedIn() == SystemInfo.NOT_INITIALIZE_YET)
 				adminFirstLoginDialog.setVisible(true);
 
 			loginView.display();

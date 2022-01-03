@@ -38,16 +38,23 @@ public class FindUserDialog extends JDialog {
 	}
 
 	private void initComponents(JPanel panel) {
+		JPanel searchValuePanel = new JPanel();
+		searchValuePanel.setLayout(null);
+		searchValuePanel.setBounds(10, 20, 490, 30);
+		searchValuePanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+		panel.add(searchValuePanel);
+
 		// Search options
 		searchOptions = new JComboBox<>(SEARCH_OPTION_NAMES);
-		searchOptions.setBounds(10, 20, 100, 30);
-		panel.add(searchOptions);
+		searchOptions.setBounds(0, 0, 100, 30);
+		searchValuePanel.add(searchOptions);
 
 		// Search value text field
 		searchValueTextField = new JTextField();
-		searchValueTextField.setBounds(120, 20, 380, Constants.TEXT_HEIGHT);
-		searchValueTextField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-		panel.add(searchValueTextField);
+		searchValueTextField.setBounds(105, 1, 380, Constants.TEXT_HEIGHT-2);
+		searchValueTextField.setBorder(null);
+		searchValuePanel.setBackground(searchValueTextField.getBackground());
+		searchValuePanel.add(searchValueTextField);
 
 		// Search button
 		searchButton = new JButton("Search");
@@ -58,9 +65,10 @@ public class FindUserDialog extends JDialog {
 		panel.add(searchButton);
 
 		// Scrollable table
-		final String[] columnNames = {"ID Card", "Full name", "Year of Birth", "Current Status"};
-		final int [] columnWidths = {105, 257, 100, 100}; // 580 - 15 - 3
+		final String[] columnNames = {"userId", "ID Card", "Full name", "Year of Birth", "Current Status"};
+		final int [] columnWidths = {0, 105, 256, 100, 100}; // 580 - 15 - 3
 		final int[] columnHorizontalAlignments = {
+				DefaultTableCellRenderer.LEFT,
 				DefaultTableCellRenderer.LEFT,
 				DefaultTableCellRenderer.LEFT,
 				DefaultTableCellRenderer.RIGHT,
@@ -70,7 +78,7 @@ public class FindUserDialog extends JDialog {
 		scrollableTable = new ScrollableTablePanel(
 				new JTable(new NonEditableTableModel(columnNames, 0))
 		);
-		scrollableTable.setRowSelectionAllowed(false);
+		scrollableTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollableTable.setColumnWidths(columnWidths);
 		scrollableTable.setColumnHorizontalAlignments(columnHorizontalAlignments);
 		panel.add(scrollableTable);
@@ -84,13 +92,6 @@ public class FindUserDialog extends JDialog {
 		scrollableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		scrollableTable.setBounds(LEFT_PADDING, 60, tableWidth + verticalScrollbarWidth, 340);
 
-//		NonEditableTableModel tableModel = (NonEditableTableModel) scrollableTable.getTable().getModel();
-//		tableModel.addRow(new String[]{"021234569", "Bạch Minh Khôi", "1997", "F0"});
-//		tableModel.addRow(new String[]{"011234568", "Lê Hoàng Anh", "1998", "F1"});
-//		tableModel.addRow(new String[]{"011234569", "Lê Minh Huy", "1999", "F1"});
-//		tableModel.addRow(new String[]{"011234570", "Nguyễn Nhật Cường", "2000", "F2"});
-//		tableModel.addRow(new String[]{"011234571", "Nguyễn Đinh Hồng Phúc", "2001", "F2"});
-
 		// Cancel button
 		cancelButton = new JButton("Cancel");
 		cancelButton.setBounds(215, 410, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
@@ -98,15 +99,6 @@ public class FindUserDialog extends JDialog {
 		cancelButton.setBackground(new Color(229, 229, 229));
 		cancelButton.setForeground(Color.BLACK);
 		panel.add(cancelButton);
-		cancelButton.addActionListener((event) -> {
-			int option = JOptionPane.showConfirmDialog(this, "Are you sure to close?", null, JOptionPane.YES_NO_OPTION);
-			if (option == JOptionPane.YES_OPTION) {
-				System.out.println("Cancel: Yes");
-				this.setVisible(false);
-			}
-			else
-				System.out.println("Cancel: No");
-		});
 
 		// Create button
 		selectButton = new JButton("Select");
@@ -115,15 +107,6 @@ public class FindUserDialog extends JDialog {
 		selectButton.setBackground(Constants.LIGHT_BLUE);
 		selectButton.setForeground(Color.WHITE);
 		panel.add(selectButton);
-		selectButton.addActionListener((event) -> {
-			int option = JOptionPane.showConfirmDialog(this, "Are you sure to select this user?", null, JOptionPane.YES_NO_OPTION);
-			if (option == JOptionPane.YES_OPTION) {
-				System.out.println("Select: Yes");
-				this.setVisible(false);
-			}
-			else
-				System.out.println("Select: No");
-		});
 	}
 
 	public JComboBox<String> getSearchOptions() {

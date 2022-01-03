@@ -1,12 +1,13 @@
 package com.controllers.login;
 
 import com.controllers.admin.AdminController;
+import com.controllers.manager.ManagerController;
 import com.controllers.user.UserController;
 import com.dao.AccountDAO;
 import com.models.Account;
 import com.utilities.SingletonDBConnection;
 import com.utilities.UtilityFunctions;
-import com.utilities.ValidationHandler;
+import com.controllers.ValidationHandler;
 import com.views.admin.AdminView;
 import com.views.login.CreatePasswordDialog;
 import com.views.login.LoginView;
@@ -107,7 +108,7 @@ public class LoginController implements ActionListener {
 			// Testing
 			account.logToScreen();
 
-			if (account.equals(Account.emptyAccount)) {
+			if (account.equals(Account.emptyInstance)) {
 				SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 			} else if (account.getIsActive() == Account.INACTIVE) {
 				showErrorMessage(loginView, "Login", "This account has been locked!");
@@ -149,7 +150,7 @@ public class LoginController implements ActionListener {
 		// Testing
 		account.logToScreen();
 
-		if (account.equals(Account.emptyAccount)) {
+		if (account.equals(Account.emptyInstance)) {
 			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 		} else if (account.getIsActive() == Account.INACTIVE) {
 			showErrorMessage(loginView, "Login", "This account has been locked!");
@@ -168,6 +169,8 @@ public class LoginController implements ActionListener {
 				}
 				case Account.MANAGER -> {
 					ManagerView managerView = new ManagerView(loginView.getMainFrame());
+					ManagerController managerController = new ManagerController(managerView, loginView, username);
+
 					managerView.display();
 				}
 				case Account.USER -> {
@@ -205,7 +208,7 @@ public class LoginController implements ActionListener {
 		if (!ValidationHandler.validatePassword(password) || !ValidationHandler.validatePassword(confirmPassword)) {
 			showErrorMessage(createPasswordDialog, "Login", "Invalid password or confirm password");
 		} else if (!password.equals(confirmPassword)) {
-			showErrorMessage(createPasswordDialog, "Login", "Confirm password does not match");
+			showErrorMessage(createPasswordDialog, "Login", "Confirm password does not match with password");
 		} else {
 			int option = JOptionPane.showConfirmDialog(
 					createPasswordDialog,

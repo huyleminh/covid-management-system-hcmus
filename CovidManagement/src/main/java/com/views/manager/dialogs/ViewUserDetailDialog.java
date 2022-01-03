@@ -170,9 +170,7 @@ public class ViewUserDetailDialog extends JDialog {
 				DefaultTableCellRenderer.RIGHT
 		};
 
-		scrollableTable = new ScrollableTablePanel(
-				new JTable(new NonEditableTableModel(columnNames, 0))
-		);
+		scrollableTable = new ScrollableTablePanel(new JTable(new NonEditableTableModel(columnNames, 0)));
 		scrollableTable.setRowSelectionAllowed(false);
 		scrollableTable.setColumnWidths(columnWidths);
 		scrollableTable.setColumnHorizontalAlignments(columnHorizontalAlignments);
@@ -186,13 +184,6 @@ public class ViewUserDetailDialog extends JDialog {
 		scrollableTable.setHeaderSize(new Dimension(tableWidth, Constants.TABLE_CELL_HEIGHT));
 		scrollableTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		scrollableTable.setBounds(LEFT_PADDING, 20, tableWidth + verticalScrollbarWidth, 270);
-
-		NonEditableTableModel tableModel = (NonEditableTableModel) scrollableTable.getTable().getModel();
-		tableModel.addRow(new String[]{"021234569", "Bạch Minh Khôi", "1997", "F0"});
-		tableModel.addRow(new String[]{"011234568", "Lê Hoàng Anh", "1998", "F1"});
-		tableModel.addRow(new String[]{"011234569", "Lê Minh Huy", "1999", "F1"});
-		tableModel.addRow(new String[]{"011234570", "Nguyễn Nhật Cường", "2000", "F2"});
-		tableModel.addRow(new String[]{"011234571", "Nguyễn Đinh Hồng Phúc", "2001", "F2"});
 	}
 
 	public JTextField getFullnameTextField() {

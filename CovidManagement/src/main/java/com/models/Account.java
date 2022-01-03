@@ -1,14 +1,11 @@
 package com.models;
 
+import com.utilities.UtilityFunctions;
+
 public class Account {
-	public static final Account emptyAccount = new Account(
-			"empty",
-			"empty",
-			(byte) -1,
-			(byte) -1,
-			-1
-	);  // An object to check whether connection of the database is unavailable or not.
-		// Using at the login view.
+	// An object to check whether connection of the database is unavailable or not.
+	// Using at the login view.
+	public static final Account emptyInstance = new Account("", "", (byte) -1, (byte) -1, -1);
 
 	public static final byte ADMIN = 0;
 	public static final byte MANAGER = 1;
@@ -71,12 +68,12 @@ public class Account {
 	}
 
 	public boolean isEmpty() {
-		return equals(Account.emptyAccount);
+		return equals(Account.emptyInstance);
 	}
 
 	public boolean equals(Account account) {
-		return username.equals(account.username) &&
-				password.equals(account.password) &&
+		return UtilityFunctions.compareTwoStrings(username, account.username) &&
+				UtilityFunctions.compareTwoStrings(password, account.password) &&
 				role == account.role &&
 				isActive == account.isActive &&
 				userId == account.userId;
@@ -84,11 +81,11 @@ public class Account {
 
 	public static Account createEmpty() {
 		return new Account(
-				emptyAccount.username,
-				emptyAccount.password,
-				emptyAccount.role,
-				emptyAccount.isActive,
-				emptyAccount.userId
+				emptyInstance.username,
+				emptyInstance.password,
+				emptyInstance.role,
+				emptyInstance.isActive,
+				emptyInstance.userId
 		);
 	}
 

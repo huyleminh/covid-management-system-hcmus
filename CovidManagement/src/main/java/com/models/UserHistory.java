@@ -1,16 +1,18 @@
 package com.models;
 
+import com.utilities.UtilityFunctions;
+
 import java.sql.Timestamp;
 
 public class UserHistory {
-	public static final UserHistory emptyUserHistory = new UserHistory(
-			-1, "empty", -1, null, "emtpy", (byte) -1
+	public static final byte ADD_NEW_USER = 1;
+	public static final byte DIRECTLY_CHANGE_STATUS = 2;
+	public static final byte INDIRECTLY_CHANGE_STATUS = 3;
+	public static final byte CHANGE_QUARANTINE = 4;
+	public static final UserHistory emptyInstance = new UserHistory(
+			-1, "", -1, null, "", (byte) -1
 	);  // An object to check whether connection of the database is unavailable or not.
 	// Using at the login view.
-
-	public static final byte ADD_NEW_USER = 1;
-	public static final byte CHANGE_STATUS = 2;
-	public static final byte CHANGE_QUARANTINE = 3;
 
 	private int historyId;
 	private String managerUsername;
@@ -60,16 +62,29 @@ public class UserHistory {
 	}
 
 	public boolean isEmpty() {
-		return equals(UserHistory.emptyUserHistory);
+		return equals(UserHistory.emptyInstance);
 	}
 
 	public boolean equals(UserHistory userHistory) {
 		return historyId == userHistory.historyId &&
-				managerUsername.equals(userHistory.managerUsername) &&
+				UtilityFunctions.compareTwoStrings(managerUsername, userHistory.managerUsername) &&
 				userId == userHistory.userId &&
-				date == userHistory.date &&
-				description.equals(userHistory.description) &&
+				UtilityFunctions.compareTwoTimestamps(date, userHistory.date) &&
+				UtilityFunctions.compareTwoStrings(description, userHistory.description) &&
 				operationType == userHistory.operationType;
+	}
+
+	public static String generateDescriptionWithoutFormattedString(byte operationType) {
+		String description = "";
+
+		switch (operationType) {
+			case ADD_NEW_USER 			  -> description = "Thêm mới người dùng %s";
+			case DIRECTLY_CHANGE_STATUS   -> description = "Thay đổi trạng thái từ %s sang %s của người dùng %s";
+			case INDIRECTLY_CHANGE_STATUS -> description = "Thay đổi trạng thái từ %s sang %s của người dùng %s, vì người lây nhiễm %s bị chuyển từ %s thành %s";
+			case CHANGE_QUARANTINE 		  -> description = "Thay đổi nơi điều trị từ %s sang %s của người dùng %s";
+		}
+
+		return description;
 	}
 
 	// Testing

@@ -15,7 +15,7 @@ public class LoginView extends JPanel {
 	// Components
 	private JTextField usernameField;
 	private JLabel passwordLabel;
-	PasswordFieldPanel passwordFieldPanel;
+	private PasswordFieldPanel passwordFieldPanel;
 	private JButton loginButton;
 
 	// Main frame
@@ -39,6 +39,7 @@ public class LoginView extends JPanel {
 		// username text field
 		usernameField = new JTextField();
 		usernameField.setBounds(LEFT_PADDING, 60, MAX_WIDTH, Constants.TEXT_HEIGHT);
+		usernameField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 		add(usernameField);
 
 		// password label
@@ -47,7 +48,7 @@ public class LoginView extends JPanel {
 		passwordLabel.setVisible(false);
 		add(passwordLabel);
 
-		passwordFieldPanel = new PasswordFieldPanel();
+		passwordFieldPanel = new PasswordFieldPanel(MAX_WIDTH);
 		passwordFieldPanel.setBounds(LEFT_PADDING, 130, MAX_WIDTH, Constants.TEXT_HEIGHT);
 		passwordFieldPanel.setVisible(false);
 		add(passwordFieldPanel);

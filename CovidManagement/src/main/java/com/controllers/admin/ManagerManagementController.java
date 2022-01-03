@@ -9,7 +9,7 @@ import com.models.UserHistory;
 import com.models.table.NonEditableTableModel;
 import com.utilities.SingletonDBConnection;
 import com.utilities.UtilityFunctions;
-import com.utilities.ValidationHandler;
+import com.controllers.ValidationHandler;
 import com.views.admin.dialogs.CreateAccountDialog;
 import com.views.admin.dialogs.ViewActivityDialog;
 import com.views.admin.panels.ManagerManagementPanel;
@@ -57,9 +57,7 @@ public class ManagerManagementController implements ActionListener {
 		this.createAccountDialog.getCreateButton().addActionListener(this);
 		this.createAccountDialog.getCancelButton().addActionListener(this);
 
-		loadManagerList();
-
-		// Add component listener
+		// Add component listeners
 		this.createAccountDialog.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
@@ -68,6 +66,14 @@ public class ManagerManagementController implements ActionListener {
 				createAccountDialog.getPasswordFieldPanel().setPasswordVisible(false);
 			}
 		});
+		this.managerManagementPanel.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent event) {
+				loadManagerList();
+			}
+		});
+
+		loadManagerList();
 	}
 
 	@Override
@@ -79,9 +85,9 @@ public class ManagerManagementController implements ActionListener {
 		} else if (event.getSource() == managerManagementPanel.getCreateButton()) {
 			createAccountDialog.setVisible(true);
 		} else if (event.getSource() == createAccountDialog.getCreateButton()) {
-			createActionOfCreateManagerDialog();
+			createActionOfCreateAccountDialog();
 		} else if (event.getSource() == createAccountDialog.getCancelButton()) {
-			cancelActionOfCreateManagerDialog();
+			cancelActionOfCreateAccountDialog();
 		}
 	}
 
@@ -95,7 +101,7 @@ public class ManagerManagementController implements ActionListener {
 		ArrayList<Account> managerList = (ArrayList<Account>) accountDAOModel.getAllByRole(Account.MANAGER);
 
 		// If this list only contains an empty account, showing Connection Failed dialog.
-		if (managerList.size() == 1 && managerList.get(0).equals(Account.emptyAccount))
+		if (managerList.size() == 1 && managerList.get(0).equals(Account.emptyInstance))
 			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 		else if (!managerList.isEmpty()) {  // Otherwise, adding this list into the table using the table model.
 			for (Account account : managerList) {
@@ -220,15 +226,18 @@ public class ManagerManagementController implements ActionListener {
 		}
 	}
 
-	private void createActionOfCreateManagerDialog() {
+	private void createActionOfCreateAccountDialog() {
 		// get username and password to validate and check correction
 		final String username = createAccountDialog.getUsernameField().getText();
-		final String password = String.valueOf(createAccountDialog.getPasswordFieldPanel().getPasswordField().getPassword());
+		final String password = String.valueOf(createAccountDialog.getPasswordFieldPanel().getPasswordValue());
+		final String confirmPassword = String.valueOf(createAccountDialog.getConfirmPasswordFieldPanel().getPasswordValue());
 
 		// Validate username and password
 		if (!ValidationHandler.validateUsername(username) || !ValidationHandler.validatePassword(password))
 			showErrorMessage(createAccountDialog, "Create Account Manager", "Invalid username or password");
-		else {
+		else if (!password.equals(confirmPassword)) {
+			showErrorMessage(createAccountDialog, "Create Account Manager", "Confirm password does not match with password");
+		} else {
 			Optional<Account> optionalAccount = accountDAOModel.get(username);
 
 			if (optionalAccount.isPresent()) {
@@ -270,7 +279,7 @@ public class ManagerManagementController implements ActionListener {
 		}
 	}
 
-	private void cancelActionOfCreateManagerDialog() {
+	private void cancelActionOfCreateAccountDialog() {
 		int option = JOptionPane.showConfirmDialog(
 				createAccountDialog,
 				"Are you sure to close?",

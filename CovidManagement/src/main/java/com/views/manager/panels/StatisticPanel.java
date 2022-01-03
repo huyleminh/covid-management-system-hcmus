@@ -1,5 +1,6 @@
 package com.views.manager.panels;
 
+import com.models.User;
 import com.utilities.Constants;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -37,7 +38,7 @@ public class StatisticPanel extends JPanel {
 			"December"
 	};
 	private static final String[][] ROW_KEYS = {
-			{"F0", "F1", "F2", "F3", "Undangerous", "Recovery"},
+			User.STATUS_NAMES,
 			{"Changing state"},
 			{"Recovery"},
 			{"Combo 1", "Combo 2", "Combo 3", "Combo 4", "Combo 5"}, // need to review, possible change

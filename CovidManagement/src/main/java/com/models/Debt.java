@@ -1,10 +1,12 @@
 package com.models;
 
+import com.utilities.UtilityFunctions;
+
 import java.sql.Timestamp;
 
 public class Debt {
 	// An object to check whether connection of the database is unavailable or not.
-	public static final Debt emptyDebt = new Debt(-1, -1, null, -1);
+	public static final Debt emptyInstance = new Debt(-1, -1, null, -1);
 
 	private int debtId;
 	private int userId;
@@ -35,22 +37,13 @@ public class Debt {
 	}
 
 	public boolean isEmpty() {
-		return equals(Debt.emptyDebt);
+		return equals(Debt.emptyInstance);
 	}
 
 	public boolean equals(Debt debt) {
-		boolean isEqualDate = false;
-
-		if (debtDate != null) {
-			if (!debtDate.equals(debt.debtDate))
-				return false;
-			else
-				isEqualDate = true;
-		}
-
 		return debtId == debt.debtId &&
 				userId == debt.userId &&
-				(isEqualDate || debt.debtDate == null) &&
+				UtilityFunctions.compareTwoTimestamps(debtDate, debt.debtDate) &&
 				totalDebt == debt.totalDebt;
 	}
 

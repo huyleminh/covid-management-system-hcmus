@@ -6,7 +6,7 @@ import com.models.Account;
 import com.models.SystemInfo;
 import com.utilities.SingletonDBConnection;
 import com.utilities.UtilityFunctions;
-import com.utilities.ValidationHandler;
+import com.controllers.ValidationHandler;
 import com.views.login.CreateAdminFirstLoginDialog;
 import com.views.login.LoginView;
 import com.views.shared.dialogs.ConnectionErrorDialog;
@@ -85,7 +85,7 @@ public class CreateAdminFirstLoginController implements ActionListener {
 				if (isUpdated) {
 					SystemInfoDAO systemInfoDAO = new SystemInfoDAO();
 					isUpdated = systemInfoDAO.updateOneField(
-							new SystemInfo(1, SystemInfo.HAS_INITIALIZED_FIRST_TIME, "", 0),
+							new SystemInfo(1, SystemInfo.INITIALIZED),
 							"firstLoggedIn"
 					);
 				}

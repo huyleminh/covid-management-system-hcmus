@@ -56,7 +56,7 @@ public class OrderDetailDAO implements DAO<OrderDetail, Integer> {
 				e.printStackTrace();
 
 				orderDetailList.clear();
-				orderDetailList.add(new Pair<>(null, OrderDetail.emptyOrderDetail));
+				orderDetailList.add(new Pair<>(null, OrderDetail.emptyInstance));
 			} finally {
 				if (preparedStatement != null) {
 					try {
@@ -65,12 +65,12 @@ public class OrderDetailDAO implements DAO<OrderDetail, Integer> {
 						System.out.println(">>> OrderDetailDAO.java - line 65 <<<");
 
 						orderDetailList.clear();
-						orderDetailList.add(new Pair<>(null, OrderDetail.emptyOrderDetail));
+						orderDetailList.add(new Pair<>(null, OrderDetail.emptyInstance));
 					}
 				}
 			}
 		} else {
-			orderDetailList.add(new Pair<>(null, OrderDetail.emptyOrderDetail));
+			orderDetailList.add(new Pair<>(null, OrderDetail.emptyInstance));
 		}
 
 		return orderDetailList;
