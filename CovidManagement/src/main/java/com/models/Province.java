@@ -1,6 +1,8 @@
 package com.models;
 
 public class Province {
+	public static final Province emptyInstance = new Province(-1, "");
+
 	private int provinceId;
 	private String provinceName;
 

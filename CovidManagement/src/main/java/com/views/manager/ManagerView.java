@@ -11,19 +11,6 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class ManagerView extends JPanel {
-//	public static void main(String[] args) {
-//		try {
-//			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		SwingUtilities.invokeLater(() -> {
-//			ManagerView managerView = new ManagerView();
-//			managerView.display();
-//		});
-//	}
-
 	// Constants for selecting feature.
 	public static final int MANAGE_USER = 0;
 	public static final int MANAGE_NECESSARIES = 1;
@@ -38,7 +25,7 @@ public class ManagerView extends JPanel {
 	// Components at the left pane.
 	private JLabel nameLabel;
 	private JButton manageUserButton;
-	private JButton managerNecessariesButton;
+	private JButton manageNecessariesButton;
 	private JButton statisticButton;
 	private JButton logoutButton;
 	private JButton quitButton;
@@ -91,15 +78,15 @@ public class ManagerView extends JPanel {
 		leftPane.add(manageUserButton);
 
 		// Purchase necessaries button
-		managerNecessariesButton = new JButton();
-		managerNecessariesButton.setBounds(0, 230, Constants.LEFT_PANEL_WIDTH - 2, Constants.BUTTON_LARGE_HEIGHT);
-		managerNecessariesButton.setBackground(Constants.LIGHT_BLUE);
-		managerNecessariesButton.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-		managerNecessariesButton.setHorizontalTextPosition(JButton.LEFT);
-		managerNecessariesButton.setHorizontalAlignment(JButton.RIGHT);
-		managerNecessariesButton.setText("<html><div align=left width=200px>Manage Necessaries</div></html>");
-		managerNecessariesButton.setForeground(Color.WHITE);
-		leftPane.add(managerNecessariesButton);
+		manageNecessariesButton = new JButton();
+		manageNecessariesButton.setBounds(0, 230, Constants.LEFT_PANEL_WIDTH - 2, Constants.BUTTON_LARGE_HEIGHT);
+		manageNecessariesButton.setBackground(Constants.LIGHT_BLUE);
+		manageNecessariesButton.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+		manageNecessariesButton.setHorizontalTextPosition(JButton.LEFT);
+		manageNecessariesButton.setHorizontalAlignment(JButton.RIGHT);
+		manageNecessariesButton.setText("<html><div align=left width=200px>Manage Necessaries</div></html>");
+		manageNecessariesButton.setForeground(Color.WHITE);
+		leftPane.add(manageNecessariesButton);
 
 		// Debt payment button
 		statisticButton = new JButton();
@@ -127,51 +114,6 @@ public class ManagerView extends JPanel {
 		quitButton.setHorizontalTextPosition(JButton.CENTER);
 		quitButton.setForeground(Color.WHITE);
 		leftPane.add(quitButton);
-
-		manageUserButton.addActionListener((event) -> {
-			manageNecessariesPanel.setVisible(false);
-			statisticPanel.setVisible(false);
-
-			managerNecessariesButton.setBackground(Constants.LIGHT_BLUE);
-			managerNecessariesButton.setIcon(null);
-			statisticButton.setBackground(Constants.LIGHT_BLUE);
-			statisticButton.setIcon(null);
-			manageUserButton.setBackground(Constants.DARK_BLUE);
-			manageUserButton.setIcon(Constants.RIGHT_CHEVRON_ICON);
-			selectingFeature = MANAGE_USER;
-
-			manageUserPanel.setVisible(true);
-		});
-
-		managerNecessariesButton.addActionListener((event) -> {
-			manageUserPanel.setVisible(false);
-			statisticPanel.setVisible(false);
-
-			manageUserButton.setBackground(Constants.LIGHT_BLUE);
-			manageUserButton.setIcon(null);
-			statisticButton.setBackground(Constants.LIGHT_BLUE);
-			statisticButton.setIcon(null);
-			managerNecessariesButton.setBackground(Constants.DARK_BLUE);
-			managerNecessariesButton.setIcon(Constants.RIGHT_CHEVRON_ICON);
-			selectingFeature = MANAGE_NECESSARIES;
-
-			manageNecessariesPanel.setVisible(true);
-		});
-
-		statisticButton.addActionListener((event) -> {
-			manageUserPanel.setVisible(false);
-			manageNecessariesPanel.setVisible(false);
-
-			manageUserButton.setBackground(Constants.LIGHT_BLUE);
-			manageUserButton.setIcon(null);
-			managerNecessariesButton.setBackground(Constants.LIGHT_BLUE);
-			managerNecessariesButton.setIcon(null);
-			statisticButton.setBackground(Constants.DARK_BLUE);
-			statisticButton.setIcon(Constants.RIGHT_CHEVRON_ICON);
-			selectingFeature = STATISTIC;
-
-			statisticPanel.setVisible(true);
-		});
 	}
 
 	private void initRightComponents() {
@@ -222,8 +164,8 @@ public class ManagerView extends JPanel {
 		return manageUserButton;
 	}
 
-	public JButton getManagerNecessariesButton() {
-		return managerNecessariesButton;
+	public JButton getManageNecessariesButton() {
+		return manageNecessariesButton;
 	}
 
 	public JButton getStatisticButton() {

@@ -1,8 +1,10 @@
 package com.models;
 
+import com.utilities.UtilityFunctions;
+
 public class OrderDetail {
-	public static final OrderDetail emptyOrderDetail = new OrderDetail(
-			-1, -1, "empty", -1, (byte) -1
+	public static final OrderDetail emptyInstance = new OrderDetail(
+			-1, -1, "", -1, (byte) -1
 	);  // An object to check whether connection of the database is unavailable or not.
 	// Using at the login view.
 
@@ -41,13 +43,13 @@ public class OrderDetail {
 	}
 
 	public boolean isEmpty() {
-		return equals(OrderDetail.emptyOrderDetail);
+		return equals(OrderDetail.emptyInstance);
 	}
 
 	public boolean equals(OrderDetail orderDetail) {
 		return detailNo == orderDetail.detailNo &&
 				orderId == orderDetail.orderId &&
-				necessariesName.equals(orderDetail.necessariesName) &&
+				UtilityFunctions.compareTwoStrings(necessariesName, orderDetail.necessariesName) &&
 				price == orderDetail.price &&
 				quantity == orderDetail.quantity;
 	}

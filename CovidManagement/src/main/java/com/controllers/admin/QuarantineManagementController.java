@@ -48,8 +48,6 @@ public class QuarantineManagementController implements ActionListener {
 		this.createQuarantineDialog.getCreateButton().addActionListener(this);
 		this.createQuarantineDialog.getCancelButton().addActionListener(this);
 
-		loadLocationList();
-
 		// Add component listeners
 		this.createQuarantineDialog.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -58,6 +56,14 @@ public class QuarantineManagementController implements ActionListener {
 				createQuarantineDialog.getCapacityField().setValue(1);
 			}
 		});
+		this.quarantineManagementPanel.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent event) {
+				loadLocationList();
+			}
+		});
+
+		loadLocationList();
 	}
 
 	@Override

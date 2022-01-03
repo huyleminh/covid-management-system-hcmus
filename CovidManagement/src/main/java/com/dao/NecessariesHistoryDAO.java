@@ -45,7 +45,7 @@ public class NecessariesHistoryDAO implements DAO<NecessariesHistory, Integer> {
 				e.printStackTrace();
 
 				necessariesHistoryList.clear();
-				necessariesHistoryList.add(NecessariesHistory.emptyNecessariesHistory);
+				necessariesHistoryList.add(NecessariesHistory.emptyInstance);
 			} finally {
 				if (preparedStatement != null) {
 					try {
@@ -54,12 +54,12 @@ public class NecessariesHistoryDAO implements DAO<NecessariesHistory, Integer> {
 						System.out.println(">>> NecessariesHistoryDAO.java - line 54 <<<");
 
 						necessariesHistoryList.clear();
-						necessariesHistoryList.add(NecessariesHistory.emptyNecessariesHistory);
+						necessariesHistoryList.add(NecessariesHistory.emptyInstance);
 					}
 				}
 			}
 		} else {
-			necessariesHistoryList.add(NecessariesHistory.emptyNecessariesHistory);
+			necessariesHistoryList.add(NecessariesHistory.emptyInstance);
 		}
 
 		return necessariesHistoryList;

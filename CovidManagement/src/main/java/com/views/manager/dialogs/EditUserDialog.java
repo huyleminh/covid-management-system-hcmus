@@ -3,21 +3,26 @@ package com.views.manager.dialogs;
 import com.utilities.Constants;
 
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ItemEvent;
 
 public class EditUserDialog extends JDialog {
 	// Constants
-	private static final int LEFT_PADDING = 45;
-	private static final int MIN_WIDTH = 160;
-	private static final int MAX_WIDTH = 340;
+	private static final int LEFT_PADDING = 20;
 
-	// Components
-	private JCheckBox currentStatusCheckBox;
-	private JComboBox<String> currentStatusOptions;
-	private JCheckBox quarantineCheckBox;
+	// Radio buttons
+	private JRadioButton statusEditableButton;
+	private JRadioButton quarantineEditableButton;
+
+	// Components for editing status person panel.
+	private JComboBox<String> statusOptions;
+	private JButton findButton;
+	private JTextField infectiousPersonFullnameTextField;
+
+	// Components for editing quarantine person panel.
 	private JComboBox<String> quarantineOptions;
 	private JTextField availableSlotsTextField;
+
 	private JButton cancelButton;
 	private JButton saveButton;
 
@@ -26,7 +31,7 @@ public class EditUserDialog extends JDialog {
 
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setPreferredSize(new Dimension(590, 180));
+		panel.setPreferredSize(new Dimension(540, 330));
 		initComponents(panel);
 
 		setResizable(false);
@@ -36,90 +41,147 @@ public class EditUserDialog extends JDialog {
 	}
 
 	private void initComponents(JPanel panel) {
-		// Current status check box.
-		currentStatusCheckBox = new JCheckBox("Current status", true);
-		currentStatusCheckBox.setBounds(LEFT_PADDING, 20, MIN_WIDTH, Constants.TEXT_HEIGHT);
-		currentStatusCheckBox.addItemListener((event) -> {
-			currentStatusOptions.setEnabled(event.getStateChange() == ItemEvent.SELECTED);
-		});
-		panel.add(currentStatusCheckBox);
+		JLabel editTypeLabel = new JLabel("Edit type:");
+		editTypeLabel.setBounds(LEFT_PADDING, 20, 100, 30);
+		panel.add(editTypeLabel);
 
-		// Current status options.
-		currentStatusOptions = new JComboBox<>();
-		currentStatusOptions.setBounds(205, 20, MAX_WIDTH, Constants.TEXT_HEIGHT);
-		panel.add(currentStatusOptions);
+		// Current status check box.
+		statusEditableButton = new JRadioButton("Status", true);
+		statusEditableButton.setBounds(120, 20, Constants.BUTTON_SMALL_WIDTH, Constants.TEXT_HEIGHT);
+		panel.add(statusEditableButton);
 
 		// Quarantine location check box.
-		quarantineCheckBox = new JCheckBox("Quarantine location", true);
-		quarantineCheckBox.setBounds(LEFT_PADDING, 60, MIN_WIDTH, Constants.TEXT_HEIGHT);
-		quarantineCheckBox.addItemListener((event) -> {
-			quarantineOptions.setEnabled(event.getStateChange() == ItemEvent.SELECTED);
-		});
-		panel.add(quarantineCheckBox);
+		quarantineEditableButton = new JRadioButton("Quarantine", true);
+		quarantineEditableButton.setBounds(210, 20, Constants.BUTTON_WIDTH, Constants.TEXT_HEIGHT);
+		panel.add(quarantineEditableButton);
 
-		// Quarantine location options.
-		quarantineOptions = new JComboBox<>();
-		quarantineOptions.setBounds(205, 60, MAX_WIDTH, Constants.TEXT_HEIGHT);
-		panel.add(quarantineOptions);
+		// ButtonGroup
+		ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(statusEditableButton);
+		buttonGroup.add(quarantineEditableButton);
 
-		// Available slots label.
-		JLabel availableSlotsLabel = new JLabel("Available slots");
-		availableSlotsLabel.setBounds(67, 100, 138, Constants.TEXT_HEIGHT);
-		panel.add(availableSlotsLabel);
-
-		// Available slots text field.
-		availableSlotsTextField = new JTextField("0 ");
-		availableSlotsTextField.setBounds(205, 100, 80, Constants.TEXT_HEIGHT);
-		availableSlotsTextField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-		availableSlotsTextField.setHorizontalAlignment(SwingConstants.RIGHT);
-		availableSlotsTextField.setEditable(false);
-		panel.add(availableSlotsTextField);
+		initEditStatusPanel(panel);
+		initEditQuarantinePanel(panel);
 
 		// Cancel button.
 		cancelButton = new JButton("Cancel");
-		cancelButton.setBounds(205, 140, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
+		cancelButton.setBounds(185, 290, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
 		cancelButton.setHorizontalTextPosition(JButton.CENTER);
 		cancelButton.setBackground(new Color(229, 229, 229));
 		cancelButton.setForeground(Color.BLACK);
 		panel.add(cancelButton);
-		cancelButton.addActionListener((event) -> {
-			int option = JOptionPane.showConfirmDialog(this, "Are you sure to close?", null, JOptionPane.YES_NO_OPTION);
-			if (option == JOptionPane.YES_OPTION) {
-				System.out.println("Cancel: Yes");
-				this.setVisible(false);
-			}
-			else
-				System.out.println("Cancel: No");
-		});
 
 		// Save button.
 		saveButton = new JButton("Save");
-		saveButton.setBounds(295, 140, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
+		saveButton.setBounds(275, 290, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
 		saveButton.setHorizontalTextPosition(JButton.CENTER);
 		saveButton.setBackground(Constants.GREEN);
 		saveButton.setForeground(Color.WHITE);
 		panel.add(saveButton);
-		saveButton.addActionListener((event) -> {
-			int option = JOptionPane.showConfirmDialog(this, "Are you sure to save this information?", null, JOptionPane.YES_NO_OPTION);
-			if (option == JOptionPane.YES_OPTION) {
-				System.out.println("Save: Yes");
-				this.setVisible(false);
-			}
-			else
-				System.out.println("Save: No");
-		});
 	}
 
-	public JCheckBox getCurrentStatusCheckBox() {
-		return currentStatusCheckBox;
+	private void initEditStatusPanel(JPanel panel) {
+		// Edit status panel
+		JPanel editStatusPanel = new JPanel();
+		editStatusPanel.setLayout(null);
+		editStatusPanel.setBounds(LEFT_PADDING, 60, 500, 100);
+		editStatusPanel.setBorder(
+				BorderFactory.createTitledBorder(
+						BorderFactory.createLineBorder(Color.GRAY, 1),
+						"Edit Status",
+						TitledBorder.LEFT,
+						TitledBorder.TOP
+				)
+		);
+		panel.add(editStatusPanel);
+
+		JLabel statusLabel = new JLabel("Status");
+		statusLabel.setBounds(10, 20, 150, Constants.TEXT_HEIGHT);
+		editStatusPanel.add(statusLabel);
+
+		// status options.
+		statusOptions = new JComboBox<>();
+		statusOptions.setBounds(160, 20, 330, Constants.BUTTON_HEIGHT);
+		editStatusPanel.add(statusOptions);
+
+		// Edit button
+		findButton = new JButton("Find");
+		findButton.setBounds(410, 60, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
+		findButton.setBackground(Color.LIGHT_GRAY);
+		findButton.setHorizontalTextPosition(JButton.CENTER);
+		findButton.setForeground(Color.BLACK);
+		editStatusPanel.add(findButton);
+
+		// Full name label
+		JLabel infectiousPersonFullnameLabel = new JLabel("Infectious person");
+		infectiousPersonFullnameLabel.setBounds(10, 60, 150, Constants.TEXT_HEIGHT);
+		editStatusPanel.add(infectiousPersonFullnameLabel);
+
+		// Full name text field
+		infectiousPersonFullnameTextField = new JTextField();
+		infectiousPersonFullnameTextField.setBounds(160, 60, 240, Constants.TEXT_HEIGHT);
+		infectiousPersonFullnameTextField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+		infectiousPersonFullnameTextField.setEditable(false);
+		editStatusPanel.add(infectiousPersonFullnameTextField);
 	}
 
-	public JComboBox<String> getCurrentStatusOptions() {
-		return currentStatusOptions;
+	private void initEditQuarantinePanel(JPanel panel) {
+		// Edit quarantine panel
+		JPanel editQuarantinePanel = new JPanel();
+		editQuarantinePanel.setLayout(null);
+		editQuarantinePanel.setBounds(LEFT_PADDING, 180, 500, 100);
+		editQuarantinePanel.setBorder(
+				BorderFactory.createTitledBorder(
+						BorderFactory.createLineBorder(Color.GRAY, 1),
+						"Edit Quarantine",
+						TitledBorder.LEFT,
+						TitledBorder.TOP
+				)
+		);
+		panel.add(editQuarantinePanel);
+
+		JLabel quarantineLabel = new JLabel("Quarantine location");
+		quarantineLabel.setBounds(10, 20, 150, Constants.TEXT_HEIGHT);
+		editQuarantinePanel.add(quarantineLabel);
+
+		// Quarantine location options.
+		quarantineOptions = new JComboBox<>();
+		quarantineOptions.setBounds(160, 20, 330, Constants.BUTTON_HEIGHT);
+		quarantineOptions.setEnabled(false);
+		editQuarantinePanel.add(quarantineOptions);
+
+		// Available slots label.
+		JLabel availableSlotsLabel = new JLabel("Available slots");
+		availableSlotsLabel.setBounds(10, 60, 150, Constants.TEXT_HEIGHT);
+		editQuarantinePanel.add(availableSlotsLabel);
+
+		// Available slots text field.
+		availableSlotsTextField = new JTextField();
+		availableSlotsTextField.setBounds(160, 60, 80, Constants.TEXT_HEIGHT);
+		availableSlotsTextField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+		availableSlotsTextField.setHorizontalAlignment(SwingConstants.RIGHT);
+		availableSlotsTextField.setEditable(false);
+		editQuarantinePanel.add(availableSlotsTextField);
 	}
 
-	public JCheckBox getQuarantineCheckBox() {
-		return quarantineCheckBox;
+	public JRadioButton getStatusEditableButton() {
+		return statusEditableButton;
+	}
+
+	public JRadioButton getQuarantineEditableButton() {
+		return quarantineEditableButton;
+	}
+
+	public JComboBox<String> getStatusOptions() {
+		return statusOptions;
+	}
+
+	public JButton getFindButton() {
+		return findButton;
+	}
+
+	public JTextField getInfectiousPersonFullnameTextField() {
+		return infectiousPersonFullnameTextField;
 	}
 
 	public JComboBox<String> getQuarantineOptions() {

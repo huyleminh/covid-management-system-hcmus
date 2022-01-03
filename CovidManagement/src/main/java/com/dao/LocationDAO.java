@@ -9,6 +9,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class LocationDAO implements DAO<Location, Integer> {
+	public static final byte CONNECTION_ERROR = 0;
+	public static final byte NON_EXISTENCE = 1;
+	public static final byte EXISTING = 2;
+	public static final byte ENOUGH_ONE_SLOT = 1;
+	public static final byte NOT_ENOUGH_ONE_SLOT = 2;
+
 	@Override
 	public List<Location> getAll() {
 		Connection connection = SingletonDBConnection.getInstance().getConnection();
@@ -34,7 +40,7 @@ public class LocationDAO implements DAO<Location, Integer> {
 				e.printStackTrace();
 
 				locationList.clear();
-				locationList.add(Location.emptyLocation);
+				locationList.add(Location.emptyInstance);
 			} finally {
 				if (statement != null) {
 					try {
@@ -43,12 +49,60 @@ public class LocationDAO implements DAO<Location, Integer> {
 						System.out.println(">>> LocationDAO.java - line 43 <<<");
 
 						locationList.clear();
-						locationList.add(Location.emptyLocation);
+						locationList.add(Location.emptyInstance);
 					}
 				}
 			}
 		} else {
-			locationList.add(Location.emptyLocation);
+			locationList.add(Location.emptyInstance);
+		}
+
+		return locationList;
+	}
+
+	public List<Location> getAllAvailable(boolean isIncludedNoneLocation) {
+		Connection connection = SingletonDBConnection.getInstance().getConnection();
+		ArrayList<Location> locationList = new ArrayList<>();
+
+		if (connection != null) {
+			Statement statement = null;
+
+			try {
+				String sqlStatement = "SELECT * FROM COVID_MANAGEMENT.Location WHERE currentSlots < capacity";
+				if (isIncludedNoneLocation)
+					sqlStatement += " OR locationName = 'None'";
+
+				statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);
+
+				while (resultSet.next()) {
+					locationList.add(new Location(
+							resultSet.getInt("locationId"),
+							resultSet.getNString("locationName"),
+							resultSet.getShort("capacity"),
+							resultSet.getShort("currentSlots")
+					));
+				}
+			} catch (SQLException e) {
+				System.out.println(">>> LocationDAO.java - getAllAvailable() method - catch block <<<");
+				e.printStackTrace();
+
+				locationList.clear();
+				locationList.add(Location.emptyInstance);
+			} finally {
+				if (statement != null) {
+					try {
+						statement.close();
+					} catch (SQLException e) {
+						System.out.println(">>> LocationDAO.java - getAllAvailable() method - finally block <<<");
+
+						locationList.clear();
+						locationList.add(Location.emptyInstance);
+					}
+				}
+			}
+		} else {
+			locationList.add(Location.emptyInstance);
 		}
 
 		return locationList;
@@ -230,10 +284,6 @@ public class LocationDAO implements DAO<Location, Integer> {
 		return false;
 	}
 
-	public static final byte CONNECTION_ERROR = 0;
-	public static final byte NON_EXISTENCE = 1;
-	public static final byte EXISTING = 2;
-
 	// This method check whether a location id or location name is existing or not.
 	public byte isExisting(String field, Object value) {
 		Connection connection = SingletonDBConnection.getInstance().getConnection();
@@ -259,6 +309,41 @@ public class LocationDAO implements DAO<Location, Integer> {
 				}
 
 				state = (resultSet.next()) ? EXISTING : NON_EXISTENCE;
+			} catch (SQLException e) {
+				System.out.println(">>> LocationDAO.java - line 263 <<<");
+				e.printStackTrace();
+				state = CONNECTION_ERROR;
+			} finally {
+				if (preparedStatement != null) {
+					try {
+						preparedStatement.close();
+					} catch (SQLException e) {
+						System.out.println(">>> LocationDAO.java - line 271 <<<");
+						state = CONNECTION_ERROR;
+					}
+				}
+			}
+		}
+
+		return state;
+	}
+
+	public byte hasEnoughOneSlot(Integer id) {
+		Connection connection = SingletonDBConnection.getInstance().getConnection();
+		byte state = CONNECTION_ERROR;
+
+		if (connection != null) {
+			PreparedStatement preparedStatement = null;
+
+			try {
+				String sqlStatement = "SELECT * FROM COVID_MANAGEMENT.Location " +
+						"WHERE locationId = ? AND capacity - currentSlots > 0";
+				preparedStatement = connection.prepareStatement(sqlStatement);
+
+				preparedStatement.setInt(1, id);
+				ResultSet resultSet = preparedStatement.executeQuery();
+
+				state = (resultSet.next()) ? ENOUGH_ONE_SLOT : NOT_ENOUGH_ONE_SLOT;
 			} catch (SQLException e) {
 				System.out.println(">>> LocationDAO.java - line 263 <<<");
 				e.printStackTrace();

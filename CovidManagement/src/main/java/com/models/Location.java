@@ -1,10 +1,10 @@
 package com.models;
 
+import com.utilities.UtilityFunctions;
+
 public class Location {
 	// An object to check whether connection of the database is unavailable or not.
-	public static final Location emptyLocation = new Location(
-			-1, "empty", (short) -1, (short) -1
-	);
+	public static final Location emptyInstance = new Location(-1, "", (short) -1, (short) -1);
 
 	private int locationId;
 	private String locationName;
@@ -35,12 +35,12 @@ public class Location {
 	}
 
 	public boolean isEmpty() {
-		return equals(Location.emptyLocation);
+		return equals(Location.emptyInstance);
 	}
 
 	public boolean equals(Location location) {
 		return locationId == location.locationId &&
-				locationName.equals(location.locationName) &&
+				UtilityFunctions.compareTwoStrings(locationName, location.locationName) &&
 				capacity == location.capacity &&
 				currentSlots == location.currentSlots;
 	}

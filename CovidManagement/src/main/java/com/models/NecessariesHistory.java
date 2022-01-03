@@ -1,10 +1,12 @@
 package com.models;
 
+import com.utilities.UtilityFunctions;
+
 import java.sql.Timestamp;
 
 public class NecessariesHistory {
-	public static final NecessariesHistory emptyNecessariesHistory = new NecessariesHistory(
-			-1, "empty", null, "empty", (byte) -1
+	public static final NecessariesHistory emptyInstance = new NecessariesHistory(
+			-1, "", null, "", (byte) -1
 	);  // An object to check whether connection of the database is unavailable or not.
 	// Using at the login view.
 
@@ -49,14 +51,14 @@ public class NecessariesHistory {
 	}
 
 	public boolean isEmpty() {
-		return equals(NecessariesHistory.emptyNecessariesHistory);
+		return equals(NecessariesHistory.emptyInstance);
 	}
 
 	public boolean equals(NecessariesHistory necessariesHistory) {
 		return historyId == necessariesHistory.historyId &&
-				managerUsername.equals(necessariesHistory.managerUsername) &&
-				date == necessariesHistory.date &&
-				description.equals(necessariesHistory.description) &&
+				UtilityFunctions.compareTwoStrings(managerUsername, necessariesHistory.managerUsername) &&
+				UtilityFunctions.compareTwoTimestamps(date, necessariesHistory.date) &&
+				UtilityFunctions.compareTwoStrings(description, necessariesHistory.description) &&
 				operationType == necessariesHistory.operationType;
 	}
 

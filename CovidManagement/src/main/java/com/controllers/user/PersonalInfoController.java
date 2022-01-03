@@ -14,6 +14,8 @@ import com.views.user.tabbed_panes.PersonalInfoTabbed;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -38,9 +40,17 @@ public class PersonalInfoController implements ChangeListener {
 			preprocessOf(currentTabIndex);
 		});
 
-		basicInfoAction();
-
 		this.personalInfoTabbed.addChangeListener(this);
+
+		// Add component listener
+		this.personalInfoTabbed.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				personalInfoTabbed.setSelectedIndex(PersonalInfoTabbed.BASIC_INFORMATION_INDEX);
+			}
+		});
+
+		basicInfoAction();
 	}
 
 	@Override
@@ -54,50 +64,27 @@ public class PersonalInfoController implements ChangeListener {
 	private void basicInfoAction() {
 		UserDAO daoModel = new UserDAO();
 		Optional<User> userOptional = daoModel.get(userId);
-		if (userOptional.isEmpty()) {
+		User user = userOptional.get();
+		user.logToScreen();  // Testing
+		if (user.isEmpty()) {
 			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 			return;
 		}
-
-		// User
-		User user = userOptional.get();
-		user.logToScreen();  // Testing
-
-		// Province name
-		ProvinceDAO provinceDAOModel = new ProvinceDAO();
-		Optional<String> provinceName = provinceDAOModel.getProvinceName(user.getProvinceId());
-
-		// District name
-		DistrictDAO districtDAOModel = new DistrictDAO();
-		Optional<Object> districtName = districtDAOModel.getOneField(user.getDistrictId(), "districtName");
-
-		// Ward name
-		WardDAO wardDAOModel = new WardDAO();
-		Optional<Object> wardName = wardDAOModel.getOneField(user.getWardId(), "wardName");
 
 		// Quarantine location name
 		LocationDAO locationDAOModel = new LocationDAO();
 		Optional<Object> locationName = locationDAOModel.getOneField(user.getLocationId(), "locationName");
 
 		// Infectious person full name
-		Optional<Object> infectiousPersonFullName = Optional.of("Không xác định");
-		if (user.getUserInvolvedId() != 0) {  // when using jdbc's getInt() method, if null then value is 0.
-			infectiousPersonFullName = daoModel.getOneField(user.getUserInvolvedId(), "fullname");
+		Optional<Object> infectiousPersonFullName = Optional.of("Unknown");
+		if (user.getInfectiousUserId() != 0) {  // when using jdbc's getInt() method, if null then value is 0.
+			infectiousPersonFullName = daoModel.getOneField(user.getInfectiousUserId(), "fullname");
 		}
 
-		if (
-				provinceName.isEmpty() ||
-						districtName.isEmpty() ||
-						wardName.isEmpty() ||
-						locationName.isEmpty() ||
-						(infectiousPersonFullName.isEmpty() && user.getUserInvolvedId() != 0)
-		) { // when the connection of the database is unavailable
+		// connection is unavailable
+		if (locationName.isEmpty() || (infectiousPersonFullName.isEmpty() && user.getInfectiousUserId() != 0)) {
 			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 		} else {
-			// Create full address.
-			final String addressWithoutStreet = "%s, %s, %s".formatted(wardName.get(), districtName.get(), provinceName.get());
-			final String fullAddress = ((user.getStreet() == null) ? addressWithoutStreet : (user.getStreet() + ", " + addressWithoutStreet));
-
 			// Display values
 			BasicInfoPanel basicInfoPanel = personalInfoTabbed.getBasicInfoPanel();
 			basicInfoPanel.getFullnameTextField()
@@ -107,7 +94,7 @@ public class PersonalInfoController implements ChangeListener {
 			basicInfoPanel.getYearBirthTextField()
 					.setText(" " + user.getYearOfBirth());
 			basicInfoPanel.getAddressTextField()
-					.setText(" " + fullAddress);
+					.setText(" " + user.getAddress());
 			basicInfoPanel.getCurrentStatusTextField()
 					.setText(" " + User.STATUS_NAMES[user.getStatus()]);  // Because a user always has a non-null value of status field.
 			basicInfoPanel.getQuarantineTextField()
@@ -132,12 +119,11 @@ public class PersonalInfoController implements ChangeListener {
 
 			for (UserHistory userHistory: userHistoryList) {
 				String description = userHistory.getDescription();
-				int index = description.indexOf("của người dùng");
-				// Because the suffix always is "của người dùng " + id card.
-				// And all descriptions are filtered, therefor index is always not equal to -1.
+				// And all descriptions are filtered (remove "Thêm mới người dùng").
+				// Because the string always contains " của người dùng <ID Card>".
 
 				tableModel.addRow(new Object[] {
-						description.substring(0, index - 1),  // 1 is space.
+						description.replaceFirst(" của người dùng \\d{9}|\\d{12}", ""),
 						UtilityFunctions.formatTimestamp(Constants.TIMESTAMP_WITHOUT_NANOSECOND, userHistory.getDate())
 				});
 			}
@@ -240,9 +226,5 @@ public class PersonalInfoController implements ChangeListener {
 				paymentHistoryAction();
 			}
 		}
-	}
-
-	public void runFirstTab() {
-		basicInfoAction();
 	}
 }

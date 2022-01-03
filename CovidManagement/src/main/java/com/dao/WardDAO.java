@@ -3,17 +3,49 @@ package com.dao;
 import com.models.Ward;
 import com.utilities.SingletonDBConnection;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class WardDAO implements DAO<Ward, Integer> {
 	@Override
 	public List<Ward> getAll() {
-		return null;
+		Connection connection = SingletonDBConnection.getInstance().getConnection();
+		ArrayList<Ward> wardList = new ArrayList<>();
+
+		if (connection != null) {
+			Statement statement = null;
+
+			try {
+				String sqlStatement = "SELECT * FROM COVID_MANAGEMENT.Ward;";
+				statement = connection.createStatement();
+				ResultSet resultSet = statement.executeQuery(sqlStatement);
+
+				while (resultSet.next()) {
+					wardList.add(new Ward(
+							resultSet.getInt("wardId"),
+							resultSet.getNString("wardName"),
+							resultSet.getInt("districtId")
+					));
+				}
+			} catch (SQLException e) {
+				System.out.println(">>> WardDAO.java - getAll() method - catch block <<<");
+				e.printStackTrace();
+				wardList.clear();
+			} finally {
+				if (statement != null) {
+					try {
+						statement.close();
+					} catch (SQLException e) {
+						System.out.println(">>> WardDAO.java - getAll() method - finally block <<<");
+						wardList.clear();
+					}
+				}
+			}
+		}
+
+		return wardList;
 	}
 
 	@Override

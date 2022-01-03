@@ -44,7 +44,7 @@ public class PaymentHistoryDAO implements DAO<PaymentHistory, Integer> {
 				e.printStackTrace();
 
 				paymentHistoryList.clear();
-				paymentHistoryList.add(PaymentHistory.emptyPaymentHistory);
+				paymentHistoryList.add(PaymentHistory.emptyInstance);
 			} finally {
 				if (preparedStatement != null) {
 					try {
@@ -53,12 +53,12 @@ public class PaymentHistoryDAO implements DAO<PaymentHistory, Integer> {
 						System.out.println(">>> PaymentHistoryDAO.java - line 53 <<<");
 
 						paymentHistoryList.clear();
-						paymentHistoryList.add(PaymentHistory.emptyPaymentHistory);
+						paymentHistoryList.add(PaymentHistory.emptyInstance);
 					}
 				}
 			}
 		} else {
-			paymentHistoryList.add(PaymentHistory.emptyPaymentHistory);
+			paymentHistoryList.add(PaymentHistory.emptyInstance);
 		}
 
 		return paymentHistoryList;

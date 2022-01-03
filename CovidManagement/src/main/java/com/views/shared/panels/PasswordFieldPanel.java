@@ -15,28 +15,30 @@ public class PasswordFieldPanel extends JPanel {
 	private JPasswordField passwordField;
 	private JToggleButton visibilityPasswordToggle;
 
-	public PasswordFieldPanel() {
+	public PasswordFieldPanel(int width) {
 		super();
 
 		setLayout(null);
-		setPreferredSize(new Dimension(250, 30));
+		setPreferredSize(new Dimension(width, Constants.TEXT_HEIGHT));
 
-		initComponents();
+		initComponents(width);
 
 		setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
 		setBackground(passwordField.getBackground());
 		passwordField.setBorder(null);
 	}
 
-	private void initComponents() {
+	private void initComponents(int width) {
+		final int passwordFieldWidth = width - 33;
+
 		// password text field
 		passwordField = new JPasswordField();
-		passwordField.setBounds(1, 1, 217, Constants.TEXT_HEIGHT - 2);
+		passwordField.setBounds(1, 1, passwordFieldWidth, Constants.TEXT_HEIGHT - 2);
 		add(passwordField);
 
 		// Visibility password toggle
 		visibilityPasswordToggle = new JToggleButton(HIDE_PASSWORD_ICON, false);
-		visibilityPasswordToggle.setBounds(223, 3, 24, 24);
+		visibilityPasswordToggle.setBounds(passwordFieldWidth + 6, 3, 24, 24);
 		visibilityPasswordToggle.setOpaque(false);
 		visibilityPasswordToggle.setContentAreaFilled(false);
 		visibilityPasswordToggle.setBorderPainted(false);
@@ -50,6 +52,10 @@ public class PasswordFieldPanel extends JPanel {
 
 	public JPasswordField getPasswordField() {
 		return passwordField;
+	}
+
+	public String getPasswordValue() {
+		return String.valueOf(passwordField.getPassword());
 	}
 
 	public void setPasswordVisible(boolean isVisible) {

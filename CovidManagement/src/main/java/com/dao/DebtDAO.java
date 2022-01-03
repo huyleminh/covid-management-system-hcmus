@@ -44,7 +44,7 @@ public class DebtDAO implements DAO<Debt, Integer> {
 				e.printStackTrace();
 
 				debtList.clear();
-				debtList.add(Debt.emptyDebt);
+				debtList.add(Debt.emptyInstance);
 			} finally {
 				if (preparedStatement != null) {
 					try {
@@ -53,12 +53,12 @@ public class DebtDAO implements DAO<Debt, Integer> {
 						System.out.println(">>> DebtDAO.java - line 53 <<<");
 
 						debtList.clear();
-						debtList.add(Debt.emptyDebt);
+						debtList.add(Debt.emptyInstance);
 					}
 				}
 			}
 		} else {
-			debtList.add(Debt.emptyDebt);
+			debtList.add(Debt.emptyInstance);
 		}
 
 		return debtList;

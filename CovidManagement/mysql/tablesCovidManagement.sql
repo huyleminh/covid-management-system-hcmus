@@ -31,11 +31,8 @@ CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.`User` (
     yearOfBirth SMALLINT,
     locationId INT,
     `status` TINYINT,
-    userInvolvedId INT,
-    street NVARCHAR(50),
-    wardId INT,
-    districtId INT,
-    provinceId INT,
+    infectiousUserId INT,
+    address NVARCHAR(94),  -- 30*3 + 2*2  (2 is length of ', ')
 
     CONSTRAINT PK_User PRIMARY KEY (userId),
     FULLTEXT FT_User (fullname)
@@ -147,31 +144,6 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 DEFAULT COLLATE = utf8mb4_bin;
 
--- Table: PaymentAccount
-CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.PaymentAccount (
-    paymentId INT NOT NULL AUTO_INCREMENT,
-    balance INT NOT NULL,
-    userId INT NOT NULL,
-
-    CONSTRAINT PK_PaymentAccount PRIMARY KEY (paymentId)
-)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-DEFAULT COLLATE = utf8mb4_bin;
-
--- Table: Transaction
-CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.`Transaction` (
-    transactionId INT NOT NULL AUTO_INCREMENT,
-    sourceAccount INT NOT NULL,
-    transactionDate TIMESTAMP NOT NULL,
-    paymentAmount INT NOT NULL,
-
-    CONSTRAINT PK_Transaction PRIMARY KEY (transactionId)
-)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-DEFAULT COLLATE = utf8mb4_bin;
-
 -- Table: Order
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.`Order` (
     orderId INT NOT NULL AUTO_INCREMENT,
@@ -219,8 +191,6 @@ DEFAULT COLLATE = utf8mb4_bin;
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.SystemInfo (
     id INT NOT NULL AUTO_INCREMENT,
     firstLoggedIn TINYINT NOT NULL,
-    bankAccountNumber CHAR(12) NOT NULL,
-    balance INT NOT NULL,
 
     CONSTRAINT PK_SystemInfo PRIMARY KEY (id)
 )
@@ -248,32 +218,11 @@ FOREIGN KEY (locationId)
 REFERENCES COVID_MANAGEMENT.Location(locationId);
 
 -- Table: User
--- User(userInvolvedId) ==> User(userId)
+-- User(infectiousUserId) ==> User(userId)
 ALTER TABLE COVID_MANAGEMENT.`User`
 ADD CONSTRAINT FK_User_User
-FOREIGN KEY (userInvolvedId)
+FOREIGN KEY (infectiousUserId)
 REFERENCES COVID_MANAGEMENT.`User`(userId);
-
--- Table: User
--- User(wardId) ==> Ward(wardId)
-ALTER TABLE COVID_MANAGEMENT.`User`
-ADD CONSTRAINT FK_User_Ward
-FOREIGN KEY (wardId)
-REFERENCES COVID_MANAGEMENT.`Ward`(wardId);
-
--- Table: User
--- User(districtId) ==> District(districtId)
-ALTER TABLE COVID_MANAGEMENT.`User`
-ADD CONSTRAINT FK_User_District
-FOREIGN KEY (districtId)
-REFERENCES COVID_MANAGEMENT.District(districtId);
-
--- Table: User
--- User(provinceId) ==> Province(provinceId)
-ALTER TABLE COVID_MANAGEMENT.`User`
-ADD CONSTRAINT FK_User_Province
-FOREIGN KEY (provinceId)
-REFERENCES COVID_MANAGEMENT.Province(provinceId);
 
 -- Table: District
 -- District(provinceId) ==> Province(provinceId)
@@ -323,20 +272,6 @@ ALTER TABLE COVID_MANAGEMENT.Debt
 ADD CONSTRAINT FK_Debt_User
 FOREIGN KEY (userId)
 REFERENCES COVID_MANAGEMENT.`User`(userId);
-
--- Table: PaymentAccount
--- PaymentAccount(userId) ==> User(userId)
-ALTER TABLE COVID_MANAGEMENT.PaymentAccount
-ADD CONSTRAINT FK_PaymentAccount_User
-FOREIGN KEY (userId)
-REFERENCES COVID_MANAGEMENT.`User`(userId);
-
--- Table: Transaction
--- Transaction(sourceAccount) ==> PaymentAccount(paymentId)
-ALTER TABLE COVID_MANAGEMENT.`Transaction`
-ADD CONSTRAINT FK_Transaction_PaymentAccount
-FOREIGN KEY (sourceAccount)
-REFERENCES COVID_MANAGEMENT.PaymentAccount(paymentId);
 
 -- Table: Order
 -- Order(userId) ==> User(userId)

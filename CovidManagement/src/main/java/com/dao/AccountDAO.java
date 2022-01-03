@@ -35,7 +35,7 @@ public class AccountDAO implements DAO<Account, String> {
 				e.printStackTrace();
 
 				accountList.clear();
-				accountList.add(Account.emptyAccount);
+				accountList.add(Account.emptyInstance);
 			} finally {
 				if (statement != null) {
 					try {
@@ -44,12 +44,12 @@ public class AccountDAO implements DAO<Account, String> {
 						System.out.println(">>> AccountDAO.java - line 44 <<<");
 
 						accountList.clear();
-						accountList.add(Account.emptyAccount);
+						accountList.add(Account.emptyInstance);
 					}
 				}
 			}
 		} else {
-			accountList.add(Account.emptyAccount);
+			accountList.add(Account.emptyInstance);
 		}
 
 		return accountList;
@@ -83,7 +83,7 @@ public class AccountDAO implements DAO<Account, String> {
 				e.printStackTrace();
 
 				accountList.clear();
-				accountList.add(Account.emptyAccount);
+				accountList.add(Account.emptyInstance);
 			} finally {
 				if (preparedStatement != null) {
 					try {
@@ -92,12 +92,12 @@ public class AccountDAO implements DAO<Account, String> {
 						System.out.println(">>> AccountDAO.java - line 92 <<<");
 
 						accountList.clear();
-						accountList.add(Account.emptyAccount);
+						accountList.add(Account.emptyInstance);
 					}
 				}
 			}
 		} else {
-			accountList.add(Account.emptyAccount);
+			accountList.add(Account.emptyInstance);
 		}
 
 		return accountList;
@@ -106,7 +106,7 @@ public class AccountDAO implements DAO<Account, String> {
 	@Override
 	public Optional<Account> get(String username) {
 		Connection connection = SingletonDBConnection.getInstance().getConnection();
-		Optional<Account> accountOptional = Optional.of(Account.emptyAccount);
+		Optional<Account> accountOptional = Optional.of(Account.emptyInstance);
 
 		if (connection != null) {
 			PreparedStatement preparedStatement = null;
@@ -138,7 +138,7 @@ public class AccountDAO implements DAO<Account, String> {
 						preparedStatement.close();
 					} catch (SQLException e) {
 						System.out.println(">>> AccountDAO.java - line 140 <<<");
-						accountOptional = Optional.of(Account.emptyAccount);
+						accountOptional = Optional.of(Account.emptyInstance);
 					}
 				}
 			}

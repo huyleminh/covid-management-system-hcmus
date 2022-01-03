@@ -53,7 +53,7 @@ public class CreateAdminFirstLoginDialog extends JDialog {
 		passwordLabel.setBounds(LEFT_PADDING, 60, MIN_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(passwordLabel);
 
-		passwordFieldPanel = new PasswordFieldPanel();
+		passwordFieldPanel = new PasswordFieldPanel(MAX_WIDTH);
 		passwordFieldPanel.getPasswordField().setText("admin123456");
 		passwordFieldPanel.setBounds(155, 60, MAX_WIDTH, Constants.TEXT_HEIGHT);
 		passwordFieldPanel.setVisible(true);
@@ -64,7 +64,7 @@ public class CreateAdminFirstLoginDialog extends JDialog {
 		confirmPasswordLabel.setBounds(LEFT_PADDING, 100, MIN_WIDTH, Constants.TEXT_HEIGHT);
 		panel.add(confirmPasswordLabel);
 
-		confirmPasswordFieldPanel = new PasswordFieldPanel();
+		confirmPasswordFieldPanel = new PasswordFieldPanel(MAX_WIDTH);
 		confirmPasswordFieldPanel.getPasswordField().setText("admin123456");
 		confirmPasswordFieldPanel.setBounds(155, 100, MAX_WIDTH, Constants.TEXT_HEIGHT);
 		confirmPasswordFieldPanel.setVisible(true);

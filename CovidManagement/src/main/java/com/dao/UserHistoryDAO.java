@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserHistoryDAO implements DAO<UserHistory, Integer> {
+
+
 	@Override
 	public List<UserHistory> getAll() {
 		return null;
@@ -46,7 +48,7 @@ public class UserHistoryDAO implements DAO<UserHistory, Integer> {
 				e.printStackTrace();
 
 				userHistoryList.clear();
-				userHistoryList.add(UserHistory.emptyUserHistory);
+				userHistoryList.add(UserHistory.emptyInstance);
 			} finally {
 				if (preparedStatement != null) {
 					try {
@@ -55,12 +57,12 @@ public class UserHistoryDAO implements DAO<UserHistory, Integer> {
 						System.out.println(">>> UserHistoryDAO.java - line 55 <<<");
 
 						userHistoryList.clear();
-						userHistoryList.add(UserHistory.emptyUserHistory);
+						userHistoryList.add(UserHistory.emptyInstance);
 					}
 				}
 			}
 		} else {
-			userHistoryList.add(UserHistory.emptyUserHistory);
+			userHistoryList.add(UserHistory.emptyInstance);
 		}
 
 		return userHistoryList;
@@ -79,7 +81,7 @@ public class UserHistoryDAO implements DAO<UserHistory, Integer> {
 				preparedStatement = connection.prepareStatement(sqlStatement);
 
 				preparedStatement.setInt(1, userId);
-				preparedStatement.setByte(2, UserHistory.CHANGE_STATUS);
+				preparedStatement.setByte(2, UserHistory.DIRECTLY_CHANGE_STATUS);
 				preparedStatement.setByte(3, UserHistory.CHANGE_QUARANTINE);
 				ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -98,7 +100,7 @@ public class UserHistoryDAO implements DAO<UserHistory, Integer> {
 				e.printStackTrace();
 
 				userHistoryList.clear();
-				userHistoryList.add(UserHistory.emptyUserHistory);
+				userHistoryList.add(UserHistory.emptyInstance);
 			} finally {
 				if (preparedStatement != null) {
 					try {
@@ -107,12 +109,12 @@ public class UserHistoryDAO implements DAO<UserHistory, Integer> {
 						System.out.println(">>> UserHistoryDAO.java - line 107 <<<");
 
 						userHistoryList.clear();
-						userHistoryList.add(UserHistory.emptyUserHistory);
+						userHistoryList.add(UserHistory.emptyInstance);
 					}
 				}
 			}
 		} else {
-			userHistoryList.add(UserHistory.emptyUserHistory);
+			userHistoryList.add(UserHistory.emptyInstance);
 		}
 
 		return userHistoryList;
