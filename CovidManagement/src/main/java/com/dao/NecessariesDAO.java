@@ -29,10 +29,11 @@ public class NecessariesDAO implements DAO<Necessaries, Integer> {
                         " FROM COVID_MANAGEMENT.Necessaries n LEFT JOIN COVID_MANAGEMENT.OrderDetail od ON od.necessariesId = n.necessariesId" +
                         " JOIN COVID_MANAGEMENT.Order o ON od.orderId = o.orderId" +
                         " WHERE o.userId = ? AND n.startDate <= od.purchasedAt AND od.purchasedAt <= n.expiredDate" +
-                        " GROUP BY n.necessariesId) AS pnc ON n1.necessariesId = pnc.necessariesId";
+                        " GROUP BY n.necessariesId) AS pnc ON n1.necessariesId = pnc.necessariesId" +
+                        " WHERE current_timestamp <= n1.expiredDate";
 
                 if (necessariesName != null && !necessariesName.isBlank()) {
-                    sqlStatement += " WHERE n1.necessariesName LIKE N'%" + necessariesName + "%'";
+                    sqlStatement += " AND n1.necessariesName LIKE N'%" + necessariesName + "%'";
                 }
 
                 preparedStatement = connection.prepareStatement(sqlStatement);
@@ -112,6 +113,7 @@ public class NecessariesDAO implements DAO<Necessaries, Integer> {
                         " JOIN COVID_MANAGEMENT.Order o ON od.orderId = o.orderId" +
                         " WHERE o.userId = ? AND n.startDate <= od.purchasedAt AND od.purchasedAt <= n.expiredDate" +
                         " GROUP BY n.necessariesId) AS pnc ON n1.necessariesId = pnc.necessariesId" +
+                        " WHERE current_timestamp <= n1.expiredDate" +
                         " ORDER BY n1." + field + " " + orderType;
 
                 preparedStatement = connection.prepareStatement(sqlStatement);
@@ -174,30 +176,26 @@ public class NecessariesDAO implements DAO<Necessaries, Integer> {
                         " FROM COVID_MANAGEMENT.Necessaries n LEFT JOIN COVID_MANAGEMENT.OrderDetail od ON od.necessariesId = n.necessariesId" +
                         " JOIN COVID_MANAGEMENT.Order o ON od.orderId = o.orderId" +
                         " WHERE o.userId = ? AND n.startDate <= od.purchasedAt AND od.purchasedAt <= n.expiredDate" +
-                        " GROUP BY n.necessariesId) AS pnc ON n1.necessariesId = pnc.necessariesId";
+                        " GROUP BY n.necessariesId) AS pnc ON n1.necessariesId = pnc.necessariesId" +
+                        " WHERE current_timestamp <= n1.expiredDate";
 
                 if (!fields.isEmpty()) {
-                    StringBuilder whereStatement = new StringBuilder(" WHERE");
-                    boolean isAddAndStatement = false;
+                    StringBuilder extraWhereStatement = new StringBuilder();
 
                     for (String field : fields) {
-                        if (isAddAndStatement)
-                            whereStatement.append(" AND");
-
                         if (field.equals("date")) {
-                            whereStatement.append(" ? <= n1.startDate AND n1.expiredDate <= ?");
-                            isAddAndStatement = true;
+                            extraWhereStatement.append(" AND ? <= n1.startDate AND n1.expiredDate <= ?");
                         } else {
-                            whereStatement.append(" ? <= n1." + field + " AND n1." + field + " <= ?");
-                            isAddAndStatement = true;
+                            extraWhereStatement.append(" AND ? <= n1." + field + " AND n1." + field + " <= ?");
                         }
                     }
 
-                    sqlStatement += whereStatement.toString();
+                    sqlStatement += extraWhereStatement.toString();
                 }
 
                 preparedStatement = connection.prepareStatement(sqlStatement);
                 preparedStatement.setInt(1, userId);
+
                 if (!fields.isEmpty()) {
                     int parameterIndex = 2;
 

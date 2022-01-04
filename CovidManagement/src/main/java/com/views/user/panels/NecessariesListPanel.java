@@ -119,8 +119,4 @@ public class NecessariesListPanel extends JPanel {
 	public JButton getFilterButton() {
 		return filterButton;
 	}
-
-	public void clearDataShowing() {
-		((NonEditableTableModel) scrollableTable.getTableModel()).removeAllRows();
-	}
 }

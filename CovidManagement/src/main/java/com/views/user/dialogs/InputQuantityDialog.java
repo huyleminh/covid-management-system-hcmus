@@ -10,7 +10,7 @@ public class InputQuantityDialog extends JDialog {
 	// Components
 	private NumberFieldWithButton quantityField;
 	private JButton cancelButton;
-	private JButton addButton;
+	private JButton okButton;
 
 	public InputQuantityDialog(JFrame frame, int min, int max) {
 		super(frame, "Input Quantity", true);
@@ -45,20 +45,20 @@ public class InputQuantityDialog extends JDialog {
 		panel.add(cancelButton);
 
 		// Add button
-		addButton = new JButton("Add");
-		addButton.setBounds(120, 60, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
-		addButton.setHorizontalTextPosition(JButton.CENTER);
-		addButton.setBackground(Constants.LIGHT_BLUE);
-		addButton.setForeground(Color.WHITE);
-		panel.add(addButton);
+		okButton = new JButton("Ok");
+		okButton.setBounds(120, 60, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
+		okButton.setHorizontalTextPosition(JButton.CENTER);
+		okButton.setBackground(Constants.LIGHT_BLUE);
+		okButton.setForeground(Color.WHITE);
+		panel.add(okButton);
 	}
 
 	public JButton getCancelButton() {
 		return cancelButton;
 	}
 
-	public JButton getAddButton() {
-		return addButton;
+	public JButton getOkButton() {
+		return okButton;
 	}
 
 	public int getQuantity() {

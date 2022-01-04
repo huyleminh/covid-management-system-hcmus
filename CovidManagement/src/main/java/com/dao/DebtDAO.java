@@ -83,4 +83,41 @@ public class DebtDAO implements DAO<Debt, Integer> {
 	public boolean delete(Debt entity) {
 		return false;
 	}
+
+	public int getTotalDebtByUsedId(Integer userId) {
+		Connection connection = SingletonDBConnection.getInstance().getConnection();
+		int totalDebt = -1;
+
+		if (connection != null) {
+			PreparedStatement preparedStatement = null;
+
+			try {
+				final String sqlStatement = "SELECT SUM(totalDebt) AS 'totalDebt' " +
+						"FROM COVID_MANAGEMENT.Debt WHERE userId = ?";
+
+				preparedStatement = connection.prepareStatement(sqlStatement);
+
+				preparedStatement.setInt(1, userId);
+				ResultSet resultSet = preparedStatement.executeQuery();
+
+				if (resultSet.next())
+					totalDebt = resultSet.getInt(1);
+				else
+					totalDebt = 0;
+			} catch (SQLException e) {
+				System.out.println(">>> DebtDAO.java - getTotalDebtByUsedId(Integer) - catch block <<<");
+				e.printStackTrace();
+			} finally {
+				if (preparedStatement != null) {
+					try {
+						preparedStatement.close();
+					} catch (SQLException e) {
+						System.out.println(">>> DebtDAO.java - getTotalDebtByUsedId(Integer) - finally block <<<");
+					}
+				}
+			}
+		}
+
+		return totalDebt;
+	}
 }

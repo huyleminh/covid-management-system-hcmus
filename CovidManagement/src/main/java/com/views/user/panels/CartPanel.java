@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
-public class OrderDetailPanel extends JPanel {
+public class CartPanel extends JPanel {
 	// Components
 	private JButton changeQuantityButton;
 	private JButton removeButton;
@@ -16,7 +16,7 @@ public class OrderDetailPanel extends JPanel {
 	private JLabel totalAmountValueLabel;
 	private JButton checkoutButton;
 
-	public OrderDetailPanel() {
+	public CartPanel() {
 		super();
 		setLayout(null);
 
@@ -39,13 +39,15 @@ public class OrderDetailPanel extends JPanel {
 		// Scrollable table
 		final String[] columnNames = {
 				"necessariesId",
+				"maxQuantity",
 				"Necessaries Name",
 				"Quantity",
 				"Price (VND)",
 				"Total Amount (VND)"
 		};
-		final int [] columnWidths = {0, 454, 62, 95, 130}; // 745 - 3
+		final int [] columnWidths = {0, 0, 453, 62, 95, 130}; // 745 - 3
 		final int[] columnHorizontalAlignments = {
+				DefaultTableCellRenderer.LEFT,
 				DefaultTableCellRenderer.LEFT,
 				DefaultTableCellRenderer.LEFT,
 				DefaultTableCellRenderer.RIGHT,
@@ -110,6 +112,12 @@ public class OrderDetailPanel extends JPanel {
 
 	public JLabel getTotalAmountValueLabel() {
 		return totalAmountValueLabel;
+	}
+
+	public int getTotalAmountValue() {
+		int length = totalAmountValueLabel.getText().length();
+		String valueFormatted = totalAmountValueLabel.getText().substring(0, length - 4);
+		return Integer.parseInt(valueFormatted.replaceAll("\\.", ""));
 	}
 
 	public JButton getCheckoutButton() {

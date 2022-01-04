@@ -11,8 +11,8 @@ import javax.swing.event.ChangeListener;
 public class PurchaseNecessariesController implements ChangeListener {
 	final private PurchaseNecessariesTabbed purchaseNecessariesTabbed;
 	final private NecessariesListController necessariesListController;
+	final private CartController cartController;
 	final private ConnectionErrorDialog connectionErrorDialog;
-	final private int userId;
 	private int currentTabIndex;
 
 	public PurchaseNecessariesController(
@@ -21,13 +21,18 @@ public class PurchaseNecessariesController implements ChangeListener {
 			int userId
 	) {
 		this.purchaseNecessariesTabbed = purchaseNecessariesTabbed;
+		this.cartController = new CartController(
+				mainFrame,
+				purchaseNecessariesTabbed.getCartPanel(),
+				userId
+		);
 		this.necessariesListController = new NecessariesListController(
 				mainFrame,
 				purchaseNecessariesTabbed.getNecessariesListPanel(),
+				cartController,
 				userId
 		);
 		this.connectionErrorDialog = new ConnectionErrorDialog(mainFrame);
-		this.userId = userId;
 		this.currentTabIndex = PurchaseNecessariesTabbed.LIST_OF_NECESSARIES_INDEX;
 
 		this.connectionErrorDialog.getReconnectButton().addActionListener((event) -> {
@@ -42,7 +47,11 @@ public class PurchaseNecessariesController implements ChangeListener {
 	}
 
 	public void preprocessAndDisplayUI() {
-		preprocessOf(PurchaseNecessariesTabbed.LIST_OF_NECESSARIES_INDEX);
+		if (purchaseNecessariesTabbed.getSelectedIndex() == PurchaseNecessariesTabbed.LIST_OF_NECESSARIES_INDEX)
+			preprocessOf(PurchaseNecessariesTabbed.LIST_OF_NECESSARIES_INDEX);
+		else
+			purchaseNecessariesTabbed.setSelectedIndex(PurchaseNecessariesTabbed.LIST_OF_NECESSARIES_INDEX);
+
 		purchaseNecessariesTabbed.setVisible(true);
 	}
 
@@ -58,8 +67,11 @@ public class PurchaseNecessariesController implements ChangeListener {
 	private void preprocessOf(int tabIndex) {
 		switch (tabIndex) {
 			case PurchaseNecessariesTabbed.LIST_OF_NECESSARIES_INDEX -> {
-				purchaseNecessariesTabbed.getNecessariesListPanel().clearDataShowing();
-				necessariesListController.preprocessAndDisplayUI();
+				necessariesListController.preprocess();
+			}
+			case PurchaseNecessariesTabbed.CART_INDEX -> {
+				necessariesListController.preprocess();
+				cartController.preprocess();
 			}
 		}
 	}

@@ -4,7 +4,6 @@ import com.dao.*;
 import com.models.*;
 import com.models.table.NonEditableTableModel;
 import com.utilities.Constants;
-import com.utilities.Pair;
 import com.utilities.SingletonDBConnection;
 import com.utilities.UtilityFunctions;
 import com.views.shared.dialogs.ConnectionErrorDialog;
@@ -14,9 +13,6 @@ import com.views.user.tabbed_panes.PersonalInfoTabbed;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -41,16 +37,6 @@ public class PersonalInfoController implements ChangeListener {
 		});
 
 		this.personalInfoTabbed.addChangeListener(this);
-
-		// Add component listener
-		this.personalInfoTabbed.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(ComponentEvent e) {
-				personalInfoTabbed.setSelectedIndex(PersonalInfoTabbed.BASIC_INFORMATION_INDEX);
-			}
-		});
-
-		basicInfoAction();
 	}
 
 	@Override
@@ -61,7 +47,17 @@ public class PersonalInfoController implements ChangeListener {
 		preprocessOf(index);
 	}
 
+	public void preprocessAndDisplayUI() {
+		if (personalInfoTabbed.getSelectedIndex() == PersonalInfoTabbed.BASIC_INFORMATION_INDEX)
+			preprocessOf(PersonalInfoTabbed.BASIC_INFORMATION_INDEX);
+		else
+			personalInfoTabbed.setSelectedIndex(PersonalInfoTabbed.BASIC_INFORMATION_INDEX);
+
+		personalInfoTabbed.setVisible(true);
+	}
+
 	private void basicInfoAction() {
+		System.out.println(1);
 		UserDAO daoModel = new UserDAO();
 		Optional<User> userOptional = daoModel.get(userId);
 		User user = userOptional.get();
