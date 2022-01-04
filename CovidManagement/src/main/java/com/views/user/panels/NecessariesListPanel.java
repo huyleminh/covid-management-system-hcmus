@@ -12,7 +12,7 @@ public class NecessariesListPanel extends JPanel {
 	// Components
 	private JTextField searchValueTextField;
 	private JButton searchButton;
-	private JButton addToOrderButton;
+	private JButton addToCartButton;
 	private ScrollableTablePanel scrollableTable;
 	private JButton sortButton;
 	private JButton filterButton;
@@ -36,17 +36,25 @@ public class NecessariesListPanel extends JPanel {
 		add(searchButton);
 
 		// Add to order button
-		addToOrderButton = new JButton("Add To Order");
-		addToOrderButton.setBounds(630, 10, 140, 30);
-		addToOrderButton.setBackground(Constants.GREEN);
-		addToOrderButton.setHorizontalTextPosition(JButton.CENTER);
-		addToOrderButton.setForeground(Color.WHITE);
-		add(addToOrderButton);
+		addToCartButton = new JButton("Add To Cart");
+		addToCartButton.setBounds(630, 10, 140, 30);
+		addToCartButton.setBackground(Constants.GREEN);
+		addToCartButton.setHorizontalTextPosition(JButton.CENTER);
+		addToCartButton.setForeground(Color.WHITE);
+		add(addToCartButton);
 
 		// Scrollable table
-		final String[] columnNames = {"Necessaries Name", "Limited Quantity", "Start Date", "End Date", "Price (VND)"};
-		final int [] columnWidths = {350, 106, 95, 95, 95}; // 745 - 4
+		final String[] columnNames = {
+				"necessariesId",
+				"Necessaries Name",
+				"Quantity",
+				"Start Date",
+				"End Date",
+				"Price (VND)"
+		};
+		final int [] columnWidths = {0, 300, 60, 150, 150, 80}; // 745 - 5
 		final int[] columnHorizontalAlignments = {
+				DefaultTableCellRenderer.LEFT,
 				DefaultTableCellRenderer.LEFT,
 				DefaultTableCellRenderer.RIGHT,
 				DefaultTableCellRenderer.LEFT,
@@ -96,8 +104,8 @@ public class NecessariesListPanel extends JPanel {
 		return searchButton;
 	}
 
-	public JButton getAddToOrderButton() {
-		return addToOrderButton;
+	public JButton getAddToCartButton() {
+		return addToCartButton;
 	}
 
 	public ScrollableTablePanel getScrollableTable() {
@@ -110,5 +118,9 @@ public class NecessariesListPanel extends JPanel {
 
 	public JButton getFilterButton() {
 		return filterButton;
+	}
+
+	public void clearDataShowing() {
+		((NonEditableTableModel) scrollableTable.getTableModel()).removeAllRows();
 	}
 }

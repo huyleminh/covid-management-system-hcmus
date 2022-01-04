@@ -133,26 +133,22 @@ public class PersonalInfoController implements ChangeListener {
 	private void purchasedNecessariesAction() {
 		// Load all necessaries belong to this user, which contains necessaries name, price, quantity and created date.
 		OrderDetailDAO daoModel = new OrderDetailDAO();
-		ArrayList<Pair<Timestamp, OrderDetail>> orderDetailList = (ArrayList<Pair<Timestamp, OrderDetail>>) daoModel.getAllByUserId(userId);
+		ArrayList<OrderDetail> orderDetailList = (ArrayList<OrderDetail>) daoModel.getAllByUserId(userId);
 
-
-		if (  // Check connection
-				orderDetailList.size() == 1 &&
-						orderDetailList.get(0).getLeftValue() == null &&
-						orderDetailList.get(0).getRightValue().isEmpty()
-		) {
+		// Check connection
+		if (orderDetailList.size() == 1 && orderDetailList.get(0).isEmpty()) {
 			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
 		} else if (!orderDetailList.isEmpty()) {  // Add those data into the table.
 			NonEditableTableModel tableModel = (NonEditableTableModel) personalInfoTabbed.getPurchasedNecessariesPanel()
 					.getScrollableTable()
 					.getTableModel();
 
-			for (Pair<Timestamp, OrderDetail> item : orderDetailList) {
+			for (OrderDetail orderDetail : orderDetailList) {
 				tableModel.addRow(new Object[] {
-						item.getRightValue().getNecessariesName(),
-						item.getRightValue().getQuantity(),
-						UtilityFunctions.formatMoneyVND(item.getRightValue().getPrice()),
-						UtilityFunctions.formatTimestamp(Constants.TIMESTAMP_WITHOUT_NANOSECOND, item.getLeftValue())
+						orderDetail.getNecessariesName(),
+						orderDetail.getQuantity(),
+						UtilityFunctions.formatMoneyVND(orderDetail.getPrice()),
+						UtilityFunctions.formatTimestamp(Constants.TIMESTAMP_WITHOUT_NANOSECOND, orderDetail.getPurchasedAt())
 				});
 			}
 		}

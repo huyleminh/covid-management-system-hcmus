@@ -53,4 +53,6 @@ public class Constants {
 	// Format
 	public static final String TIMESTAMP_WITHOUT_NANOSECOND = "yyyy-MM-dd hh:mm:ss";
 	public static final Locale VN_LOCALE = new Locale("vi", "VN");
+
+	public static final int MAX_DEBT = 2000000;
 }
