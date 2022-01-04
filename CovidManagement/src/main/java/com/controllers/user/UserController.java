@@ -4,7 +4,6 @@ import com.utilities.Constants;
 import com.utilities.UtilityFunctions;
 import com.views.login.LoginView;
 import com.views.user.UserView;
-import com.views.user.tabbed_panes.PurchaseNecessariesTabbed;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,13 +13,10 @@ public class UserController implements ActionListener {
 	private LoginView loginView;
 	private PersonalInfoController personalInfoController;
 	private PurchaseNecessariesController purchaseNecessariesController;
-	private int userId;
-
 
 	public UserController(UserView userView, LoginView loginView, int userId, String username) {
 		this.userView = userView;
 		this.loginView = loginView;
-		this.userId = userId;
 		this.personalInfoController = new PersonalInfoController(
 				this.userView.getMainFrame(),
 				this.userView.getPersonalInfoTabbed(),
@@ -39,6 +35,8 @@ public class UserController implements ActionListener {
 		this.userView.getDebtPaymentButton().addActionListener(this);
 		this.userView.getLogoutButton().addActionListener(this);
 		this.userView.getQuitButton().addActionListener(this);
+
+		personalInfoController.preprocessAndDisplayUI();
 	}
 
 	@Override
@@ -68,7 +66,7 @@ public class UserController implements ActionListener {
 		userView.getPersonalInfoButton().setIcon(Constants.RIGHT_CHEVRON_ICON);
 		userView.setSelectingFeature(UserView.PERSONAL_INFO);
 
-		userView.getPersonalInfoTabbed().setVisible(true);
+		personalInfoController.preprocessAndDisplayUI();
 	}
 
 	private void purchaseNecessariesNavigateAction() {

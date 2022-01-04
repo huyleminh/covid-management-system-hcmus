@@ -250,11 +250,11 @@ VALUES
 
 INSERT INTO COVID_MANAGEMENT.Necessaries (necessariesName, `limit`, startDate, expiredDate, price)
 VALUES
-    (N'Combo 1 (Thịt, Rau củ, Nước uống)', 8, '2021-12-08', '2021-12-09 23:59:59', 150000),
-    (N'Combo 2 (Cá, Rau củ, Nước uống)', 15, '2021-12-08', '2021-12-10 23:59:59', 150000),
-    (N'Combo 3 (Thịt, Cá, Trứng, Nước uống)', 20, '2021-12-07', '2021-12-09 23:59:59', 200000),
-    (N'Combo 4 (Thịt, Cá, Rau Củ, Nước uống)', 4, '2021-12-09', '2021-12-09 23:59:59', 180000),
-    (N'Combo 5 (Thịt, Cá, Trứng, Rau củ, Nước uống)', 12, '2021-12-10', '2021-12-12 23:59:59', 250000);
+    (N'Combo 1 (Thịt, Rau củ, Nước uống)', 8, '2021-12-08', '2022-01-12 23:59:59', 150000),
+    (N'Combo 2 (Cá, Rau củ, Nước uống)', 15, '2021-12-08', '2022-01-13 23:59:59', 150000),
+    (N'Combo 3 (Thịt, Cá, Trứng, Nước uống)', 20, '2021-12-07', '2022-01-12 23:59:59', 200000),
+    (N'Combo 4 (Thịt, Cá, Rau Củ, Nước uống)', 4, '2021-12-09', '2022-01-12 23:59:59', 180000),
+    (N'Combo 5 (Thịt, Cá, Trứng, Rau củ, Nước uống)', 12, '2021-12-10', '2022-01-15 23:59:59', 250000);
 
 INSERT INTO COVID_MANAGEMENT.`Order` (userId, createdDate, totalPrice)
 VALUES

@@ -1,5 +1,6 @@
 package com.controllers.user;
 
+import com.dao.DebtDAO;
 import com.dao.NecessariesDAO;
 import com.models.Necessaries;
 import com.models.table.NonEditableTableModel;
@@ -22,6 +23,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class NecessariesListController implements ActionListener {
 	final private NecessariesListPanel necessariesListPanel;
@@ -31,7 +33,14 @@ public class NecessariesListController implements ActionListener {
 	final private ConnectionErrorDialog connectionErrorDialog;
 	final private int userId;
 
-	public NecessariesListController(JFrame mainFrame, NecessariesListPanel necessariesListPanel, int userId) {
+	final private CartController cartController;
+
+	public NecessariesListController(
+			JFrame mainFrame,
+			NecessariesListPanel necessariesListPanel,
+			CartController cartController,
+			int userId
+	) {
 		this.necessariesListPanel = necessariesListPanel;
 		this.sortDialog = new SortDialog(
 				mainFrame,
@@ -41,6 +50,7 @@ public class NecessariesListController implements ActionListener {
 		this.filterDialog = new FilterNecessariesDialog(mainFrame, "Filter Necessaries");
 		this.inputQuantityDialog = new InputQuantityDialog(mainFrame, 0, 0);
 		this.connectionErrorDialog = new ConnectionErrorDialog(mainFrame);
+		this.cartController = cartController;
 		this.userId = userId;
 
 
@@ -60,7 +70,7 @@ public class NecessariesListController implements ActionListener {
 		this.sortDialog.getCancelButton().addActionListener(this);
 		this.filterDialog.getFilterButton().addActionListener(this);
 		this.filterDialog.getCancelButton().addActionListener(this);
-		this.inputQuantityDialog.getAddButton().addActionListener(this);
+		this.inputQuantityDialog.getOkButton().addActionListener(this);
 		this.inputQuantityDialog.getCancelButton().addActionListener(this);
 
 		// Add item listeners
@@ -96,14 +106,14 @@ public class NecessariesListController implements ActionListener {
 			filterActionOfFilterDialog();
 		} else if (event.getSource() == filterDialog.getCancelButton()) {
 			filterDialog.setVisible(false);
-		} else if (event.getSource() == inputQuantityDialog.getAddButton()) {
-			addActionOfInputQuantityDialog();
+		} else if (event.getSource() == inputQuantityDialog.getOkButton()) {
+			okActionOfInputQuantityDialog();
 		} else if (event.getSource() == inputQuantityDialog.getCancelButton()) {
 			inputQuantityDialog.setVisible(false);
 		}
 	}
 
-	public void preprocessAndDisplayUI() {
+	public void preprocess() {
 		getAllNecessariesBy("");
 	}
 
@@ -268,7 +278,7 @@ public class NecessariesListController implements ActionListener {
 		}
 	}
 
-	private void addActionOfInputQuantityDialog() {
+	private void okActionOfInputQuantityDialog() {
 		JTable table = necessariesListPanel.getScrollableTable().getTable();
 		int selectedRow = table.getSelectedRow();
 
@@ -276,30 +286,51 @@ public class NecessariesListController implements ActionListener {
 		int price = (int) table.getValueAt(selectedRow, 5);
 		int totalPrice = quantity * price;
 
-		if (totalPrice /*+ cart.getTotalPrice()*/ > Constants.MAX_DEBT) {
+		if (quantity == 0) {
 			showErrorMessage(
 					inputQuantityDialog,
 					"Input Quantity",
-					"You can not add these items because you will reach the maximum debt if you add"
+					"Quantity is invalid"
+			);
+			return;
+		}
+
+		DebtDAO daoModel = new DebtDAO();
+		int totalDebt = daoModel.getTotalDebtByUsedId(userId);
+
+		if (totalDebt == -1)
+			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
+		else if (totalPrice + cartController.getTotalAmount() + totalDebt > Constants.MAX_DEBT) {
+			showErrorMessage(
+					inputQuantityDialog,
+					"Input Quantity",
+					"You can not add these items because you will reach the maximum debt if you add."
 			);
 		} else {
-//			Vector<Object> rowValue = new Vector<>(5);
-//			rowValue.add(table.getValueAt(selectedRow, 0));
-//			rowValue.add(table.getValueAt(selectedRow, 1));
-//			rowValue.add(quantity);
-//			rowValue.add(price);
-//			rowValue.add(totalPrice);
-
-//			cart.add(rowValue);
-
 			int currentQuantity = (byte) table.getValueAt(selectedRow, 2);
+
+			Vector<Object> item = new Vector<>(5);
+			item.add(table.getValueAt(selectedRow, 0));
+			item.add((byte) currentQuantity);
+			item.add(table.getValueAt(selectedRow, 1));
+			item.add((byte) quantity);
+			item.add(price);
+			item.add(totalPrice);
+			cartController.addCartItem(item);
+
 			byte newQuantity = (byte) (currentQuantity - quantity);
 			table.setValueAt(newQuantity, selectedRow, 2);
+//			if (newQuantity == 0) {
+//				NonEditableTableModel tableModel = (NonEditableTableModel) table.getModel();
+//				tableModel.removeRow(selectedRow);
+//			} else {
+//				table.setValueAt(newQuantity, selectedRow, 2);
+//			}
 
 			JOptionPane.showMessageDialog(
 					inputQuantityDialog,
-					"Add To Cart",
 					"Add successfully",
+					"Add To Cart",
 					JOptionPane.INFORMATION_MESSAGE
 			);
 			inputQuantityDialog.setVisible(false);
@@ -318,13 +349,40 @@ public class NecessariesListController implements ActionListener {
 	private void addNecessariesListIntoTable(ArrayList<Necessaries> necessariesList) {
 		NonEditableTableModel tableModel = (NonEditableTableModel) necessariesListPanel.getScrollableTable()
 																					   .getTableModel();
-		tableModel.removeAllRows();
 
+		tableModel.removeAllRows();
 		for (Necessaries necessaries : necessariesList) {
+			int necessariesId = necessaries.getNecessariesId();
+			byte limit = necessaries.getLimit();
+			int price = necessaries.getPrice();
+
+			if (cartController.getNumberOfItems() != 0) {
+				Vector<Object> item = cartController.getCartItem(necessariesId);
+
+				if (item != null) {
+					int maxQuantity = (byte) item.get(1);
+					int cartItemPrice = (int) item.get(4);
+
+					// If this item has been changed its price, this item will be removed out of the cart.
+					if (price != cartItemPrice)
+						cartController.removeCartItem(necessariesId);
+					else {
+						byte newCartItemQuantity = (byte) item.get(3);
+
+						if (limit != maxQuantity) {
+							cartController.setMaxQuantityOf(necessariesId, limit);
+							newCartItemQuantity = (byte) Math.min(limit, newCartItemQuantity);
+						}
+
+						limit -= newCartItemQuantity;  // Subtracts the quantity of this item in the cart.
+					}
+				}
+			}
+
 			tableModel.addRow(new Object[]{
-					necessaries.getNecessariesId(),
+					necessariesId,
 					necessaries.getNecessariesName(),
-					necessaries.getLimit(),
+					limit,
 					UtilityFunctions.formatTimestamp(
 							Constants.TIMESTAMP_WITHOUT_NANOSECOND,
 							necessaries.getStartDate()
@@ -333,7 +391,7 @@ public class NecessariesListController implements ActionListener {
 							Constants.TIMESTAMP_WITHOUT_NANOSECOND,
 							necessaries.getExpiredDate()
 					),
-					necessaries.getPrice()
+					price
 			});
 		}
 	}
