@@ -37,9 +37,16 @@ public class OrderDetailPanel extends JPanel {
 		add(removeButton);
 
 		// Scrollable table
-		final String[] columnNames = {"Necessaries Name", "Quantity", "Price (VND)", "Total Amount (VND)"};
-		final int [] columnWidths = {455, 62, 95, 130}; // 745 - 3
+		final String[] columnNames = {
+				"necessariesId",
+				"Necessaries Name",
+				"Quantity",
+				"Price (VND)",
+				"Total Amount (VND)"
+		};
+		final int [] columnWidths = {0, 454, 62, 95, 130}; // 745 - 3
 		final int[] columnHorizontalAlignments = {
+				DefaultTableCellRenderer.LEFT,
 				DefaultTableCellRenderer.LEFT,
 				DefaultTableCellRenderer.RIGHT,
 				DefaultTableCellRenderer.RIGHT,

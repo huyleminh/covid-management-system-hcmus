@@ -148,7 +148,7 @@ DEFAULT COLLATE = utf8mb4_bin;
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.`Order` (
     orderId INT NOT NULL AUTO_INCREMENT,
     userId INT NOT NULL,
-    createdDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- auto init
+    createdDate TIMESTAMP,
     totalPrice INT NOT NULL,
 
     CONSTRAINT PK_Order PRIMARY KEY (orderId)
@@ -161,9 +161,11 @@ DEFAULT COLLATE = utf8mb4_bin;
 CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.OrderDetail (
     detailNo INT NOT NULL AUTO_INCREMENT,
     orderId INT NOT NULL,
+    necessariesId INT,
     necessariesName NVARCHAR(50) NOT NULL,
     price MEDIUMINT NOT NULL,
     quantity TINYINT NOT NULL,
+    purchasedAt TIMESTAMP,
 
     CONSTRAINT PK_OrderDetail PRIMARY KEY (detailNo)
 )
@@ -176,8 +178,8 @@ CREATE TABLE IF NOT EXISTS COVID_MANAGEMENT.Necessaries (
     necessariesId INT NOT NULL AUTO_INCREMENT,
     necessariesName NVARCHAR(50) NOT NULL,
     `limit` TINYINT,
-    expiredDate DATE,
-    duration TINYINT,
+    startDate TIMESTAMP,
+    expiredDate TIMESTAMP,
     price MEDIUMINT NOT NULL,
 
     CONSTRAINT PK_Necessaries PRIMARY KEY (necessariesId),
@@ -286,3 +288,10 @@ ALTER TABLE COVID_MANAGEMENT.OrderDetail
 ADD CONSTRAINT FK_OrderDetail_User
 FOREIGN KEY (orderId)
 REFERENCES COVID_MANAGEMENT.`Order`(orderId);
+
+-- Table: OrderDetail
+-- OrderDetail(necessariesId) ==> Necessaries(necessariesId)
+ALTER TABLE COVID_MANAGEMENT.OrderDetail
+ADD CONSTRAINT FK_OrderDetail_Necessaries
+FOREIGN KEY (necessariesId)
+REFERENCES COVID_MANAGEMENT.Necessaries(necessariesId);

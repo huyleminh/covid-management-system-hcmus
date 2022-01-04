@@ -16,47 +16,40 @@ public class OrderDetailDAO implements DAO<OrderDetail, Integer> {
 		return null;
 	}
 
-	public List<Pair<Timestamp, OrderDetail>> getAllByUserId(Integer userId) {
+	public List<OrderDetail> getAllByUserId(Integer userId) {
 		Connection connection = SingletonDBConnection.getInstance().getConnection();
-		ArrayList<Pair<Timestamp, OrderDetail>> orderDetailList = new ArrayList<>();
+		ArrayList<OrderDetail> orderDetailList = new ArrayList<>();
 
 		if (connection != null) {
 			PreparedStatement preparedStatement = null;
 
 			try {
-				StringBuilder sqlStatement = new StringBuilder().append("SELECT ")
-																.append("o.createdDate AS 'createdDate', ")
-																.append("od.*")
-//														 		.append("od.necessariesName AS 'necessariesName', ")
-//														 		.append("od.price AS 'price', ")
-//														 		.append("od.quantity AS 'quantity' ")
-																.append("FROM COVID_MANAGEMENT.Order o JOIN COVID_MANAGEMENT.OrderDetail od ")
-																.append("ON o.orderId = od.orderId ")
-																.append("WHERE o.userId = ?;");
-
-				preparedStatement = connection.prepareStatement(sqlStatement.toString());
+				String sqlStatement = "SELECT od.* FROM COVID_MANAGEMENT.OrderDetail od " +
+						"JOIN COVID_MANAGEMENT.Order o ON od.orderId = o.orderId WHERE o.userId = ?";
+				preparedStatement = connection.prepareStatement(sqlStatement);
 
 				preparedStatement.setInt(1, userId);
 				ResultSet resultSet = preparedStatement.executeQuery();
 
 				while (resultSet.next()) {
-					orderDetailList.add(new Pair<>(
-							resultSet.getTimestamp("createdDate"),
+					orderDetailList.add(
 							new OrderDetail(
 									resultSet.getInt("detailNo"),
 									resultSet.getInt("orderId"),
+									resultSet.getInt("necessariesId"),
 									resultSet.getNString("necessariesName"),
 									resultSet.getInt("price"),
-									resultSet.getByte("quantity")
+									resultSet.getByte("quantity"),
+									resultSet.getTimestamp("purchasedAt")
 							)
-					));
+					);
 				}
 			} catch (SQLException e) {
 				System.out.println(">>> OrderDetailDAO.java - line 55 <<<");
 				e.printStackTrace();
 
 				orderDetailList.clear();
-				orderDetailList.add(new Pair<>(null, OrderDetail.emptyInstance));
+				orderDetailList.add(OrderDetail.emptyInstance);
 			} finally {
 				if (preparedStatement != null) {
 					try {
@@ -65,12 +58,12 @@ public class OrderDetailDAO implements DAO<OrderDetail, Integer> {
 						System.out.println(">>> OrderDetailDAO.java - line 65 <<<");
 
 						orderDetailList.clear();
-						orderDetailList.add(new Pair<>(null, OrderDetail.emptyInstance));
+						orderDetailList.add(OrderDetail.emptyInstance);
 					}
 				}
 			}
 		} else {
-			orderDetailList.add(new Pair<>(null, OrderDetail.emptyInstance));
+			orderDetailList.add(OrderDetail.emptyInstance);
 		}
 
 		return orderDetailList;

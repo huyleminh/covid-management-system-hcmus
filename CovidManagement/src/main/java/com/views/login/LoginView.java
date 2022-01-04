@@ -73,7 +73,6 @@ public class LoginView extends JPanel {
 		loginButton.setText("Next");
 		loginButton.setActionCommand("Next");
 		loginButton.setBounds(LEFT_PADDING, 100, MAX_WIDTH, Constants.BUTTON_HEIGHT);
-		loginButton.setBackground(Constants.LIGHT_BLUE);
 	}
 
 	public void displayAfterValidatingUsername() {
@@ -86,7 +85,6 @@ public class LoginView extends JPanel {
 		loginButton.setText("Login");
 		loginButton.setActionCommand("Login");
 		loginButton.setBounds(LEFT_PADDING, 180, MAX_WIDTH, Constants.BUTTON_HEIGHT);
-		loginButton.setBackground(Color.BLACK);
 	}
 
 	public void display() {

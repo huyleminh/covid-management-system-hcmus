@@ -29,7 +29,7 @@ public class DateChooserPanel extends JPanel {
 		resetRangeDay();
 
 		// -------------------------------------------------
-		yearOptions.addActionListener((event) -> resetRangeDay());
+		yearOptions.addActionListener((event) -> monthOptions.setSelectedIndex(0));
 		monthOptions.addActionListener((event) -> resetRangeDay());
 		// -------------------------------------------------
 	}
@@ -102,6 +102,17 @@ public class DateChooserPanel extends JPanel {
 	private void resetRangeDay() {
 		short year = (short) yearOptions.getSelectedItem();
 		byte month = (byte) monthOptions.getSelectedItem();
+
 		dayOptions.setModel(new DefaultComboBoxModel<>(getRangeDay(year, month)));
+	}
+
+	public void makeDefaultSelectedItem() {
+		yearOptions.setSelectedIndex(0);
+	}
+
+	public void setEnabledSelection(boolean enabled) {
+		yearOptions.setEnabled(enabled);
+		monthOptions.setEnabled(enabled);
+		dayOptions.setEnabled(enabled);
 	}
 }
