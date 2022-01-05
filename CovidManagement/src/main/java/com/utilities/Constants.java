@@ -51,7 +51,7 @@ public class Constants {
 	public static final Icon RIGHT_CHEVRON_ICON = new ImageIcon(RIGHT_CHEVRON_ICON_FILE_PATH);
 
 	// Format
-	public static final String TIMESTAMP_WITHOUT_NANOSECOND = "yyyy-MM-dd hh:mm:ss";
+	public static final String TIMESTAMP_WITHOUT_NANOSECOND = "yyyy-MM-dd HH:mm:ss";
 	public static final Locale VN_LOCALE = new Locale("vi", "VN");
 
 	public static final int MAX_DEBT = 2000000;

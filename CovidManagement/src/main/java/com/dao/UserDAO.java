@@ -453,7 +453,7 @@ public class UserDAO implements DAO<User, Integer> {
 						preparedStatementInsertInvolvedUserHistories.setInt(2, involvedUserList.get(i).get(j).getUserId());
 						preparedStatementInsertInvolvedUserHistories.setTimestamp(3, currentTimestamp);
 						preparedStatementInsertInvolvedUserHistories.setNString(4, descriptionList.get(i).get(j));
-						preparedStatementInsertInvolvedUserHistories.setByte(5, UserHistory.DIRECTLY_CHANGE_STATUS);
+						preparedStatementInsertInvolvedUserHistories.setByte(5, UserHistory.INDIRECTLY_CHANGE_STATUS);
 						preparedStatementInsertInvolvedUserHistories.addBatch();
 					}
 				}

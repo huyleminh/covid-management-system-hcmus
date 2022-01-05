@@ -1,5 +1,6 @@
 package com.controllers.admin;
 
+import com.controllers.ValidationHandler;
 import com.dao.AccountDAO;
 import com.dao.NecessariesHistoryDAO;
 import com.dao.UserHistoryDAO;
@@ -7,9 +8,9 @@ import com.models.Account;
 import com.models.NecessariesHistory;
 import com.models.UserHistory;
 import com.models.table.NonEditableTableModel;
+import com.utilities.Constants;
 import com.utilities.SingletonDBConnection;
 import com.utilities.UtilityFunctions;
-import com.controllers.ValidationHandler;
 import com.views.admin.dialogs.CreateAccountDialog;
 import com.views.admin.dialogs.ViewActivityDialog;
 import com.views.admin.panels.ManagerManagementPanel;
@@ -203,7 +204,10 @@ public class ManagerManagementController implements ActionListener {
 					for (UserHistory userHistory : userHistoryList) {
 						viewActivityTableModel.addRow(new Object[] {
 								userHistory.getDescription(),
-								userHistory.getDate().toString()
+								UtilityFunctions.formatTimestamp(
+										Constants.TIMESTAMP_WITHOUT_NANOSECOND,
+										userHistory.getDate()
+								)
 						});
 					}
 				}
@@ -213,7 +217,10 @@ public class ManagerManagementController implements ActionListener {
 					for (NecessariesHistory necessariesHistory : necessariesHistoryList) {
 						viewActivityTableModel.addRow(new Object[] {
 								necessariesHistory.getDescription(),
-								necessariesHistory.getDate().toString()
+								UtilityFunctions.formatTimestamp(
+										Constants.TIMESTAMP_WITHOUT_NANOSECOND,
+										necessariesHistory.getDate()
+								)
 						});
 					}
 				}
