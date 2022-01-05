@@ -1,7 +1,6 @@
 package com.dao;
 
 import com.models.OrderDetail;
-import com.utilities.Pair;
 import com.utilities.SingletonDBConnection;
 
 import java.sql.*;
@@ -67,6 +66,132 @@ public class OrderDetailDAO implements DAO<OrderDetail, Integer> {
 		}
 
 		return orderDetailList;
+	}
+
+	public ArrayList<String> getAllNecessariesNamesByMonthAndYear(int month, int year) {
+		Connection connection = SingletonDBConnection.getInstance().getConnection();
+		ArrayList<String> necessariesNameList = new ArrayList<>();
+
+		if (connection != null) {
+			PreparedStatement preparedStatement = null;
+
+			try {
+				String sqlStatement = "SELECT DISTINCT necessariesName FROM COVID_MANAGEMENT.OrderDetail" +
+						" WHERE YEAR(purchasedAt) = ? AND MONTH(purchasedAt) = ?" +
+						" ORDER BY necessariesName";
+
+				preparedStatement = connection.prepareStatement(sqlStatement);
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, month);
+				ResultSet resultSet = preparedStatement.executeQuery();
+
+				while (resultSet.next())
+					necessariesNameList.add(resultSet.getNString(1));
+			} catch (SQLException e) {
+				System.out.println(">>> OrderDetailDAO.java getAllNecessariesNamesByMonthAndYear(int, int) - catch block <<<");
+				e.printStackTrace();
+
+				necessariesNameList.clear();
+				necessariesNameList.add("empty");
+			} finally {
+				if (preparedStatement != null) {
+					try {
+						preparedStatement.close();
+					} catch (SQLException e) {
+						System.out.println(">>> OrderDetailDAO.java getAllNecessariesNamesByMonthAndYear(int, int) - finally block <<<");
+
+						necessariesNameList.clear();
+						necessariesNameList.add("empty");
+					}
+				}
+			}
+		} else {
+			necessariesNameList.add("empty");
+		}
+
+		return necessariesNameList;
+	}
+
+	public ArrayList<Number> getAllQuantityOfSoldNecessariesByMonthAndYear(int month, int year) {
+		Connection connection = SingletonDBConnection.getInstance().getConnection();
+		ArrayList<Number> statsValue = new ArrayList<>();
+
+		if (connection != null) {
+			PreparedStatement preparedStatement = null;
+
+			try {
+				String sqlStatement = "SELECT COUNT(*) AS 'count' FROM COVID_MANAGEMENT.OrderDetail" +
+						" WHERE YEAR(purchasedAt) = ? AND MONTH(purchasedAt) = ? " +
+						" GROUP BY necessariesName ORDER BY necessariesName";
+
+				preparedStatement = connection.prepareStatement(sqlStatement);
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, month);
+
+				ResultSet resultSet = preparedStatement.executeQuery();
+				while (resultSet.next())
+					statsValue.add(resultSet.getInt(1));
+
+				if (statsValue.isEmpty())
+					statsValue.add(0);
+			} catch (SQLException e) {
+				System.out.println(">>> OrderDetailDAO.java getAllQuantityOfSoldNecessariesByMonthAndYear(int, int) - catch block <<<");
+				e.printStackTrace();
+				statsValue.clear();
+			} finally {
+				if (preparedStatement != null) {
+					try {
+						preparedStatement.close();
+					} catch (SQLException e) {
+						System.out.println(">>> OrderDetailDAO.java getAllQuantityOfSoldNecessariesByMonthAndYear(int, int) - finally block <<<");
+						statsValue.clear();
+					}
+				}
+			}
+		}
+
+		return statsValue;
+	}
+
+	public ArrayList<Number> getTotalPriceOfSoldNecessariesByMonthAndYear(int month, int year) {
+		Connection connection = SingletonDBConnection.getInstance().getConnection();
+		ArrayList<Number> statsValue = new ArrayList<>();
+
+		if (connection != null) {
+			PreparedStatement preparedStatement = null;
+
+			try {
+				String sqlStatement = "SELECT SUM(price) AS 'totalPrice' FROM COVID_MANAGEMENT.OrderDetail" +
+						" WHERE YEAR(purchasedAt) = ? AND MONTH(purchasedAt) = ? " +
+						" GROUP BY necessariesName ORDER BY necessariesName";
+
+				preparedStatement = connection.prepareStatement(sqlStatement);
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, month);
+
+				ResultSet resultSet = preparedStatement.executeQuery();
+				while (resultSet.next())
+					statsValue.add(resultSet.getInt(1));
+
+				if (statsValue.isEmpty())
+					statsValue.add(0);
+			} catch (SQLException e) {
+				System.out.println(">>> OrderDetailDAO.java getTotalPriceOfSoldNecessariesByMonthAndYear(int, int) - catch block <<<");
+				e.printStackTrace();
+				statsValue.clear();
+			} finally {
+				if (preparedStatement != null) {
+					try {
+						preparedStatement.close();
+					} catch (SQLException e) {
+						System.out.println(">>> OrderDetailDAO.java getTotalPriceOfSoldNecessariesByMonthAndYear(int, int) - finally block <<<");
+						statsValue.clear();
+					}
+				}
+			}
+		}
+
+		return statsValue;
 	}
 
 	@Override

@@ -9,9 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ManagerController implements ActionListener {
-	private ManagerView managerView;
-	private LoginView loginView;
-	private ManageUserController manageUserController;
+	final private ManagerView managerView;
+	final private LoginView loginView;
+	final private ManageUserController manageUserController;
+	final private StatisticController statisticController;
 
 	public ManagerController(ManagerView managerView, LoginView loginView, String username) {
 		this.managerView = managerView;
@@ -21,6 +22,10 @@ public class ManagerController implements ActionListener {
 				managerView.getManageUserPanel(),
 				username
 		);
+		this.statisticController = new StatisticController(
+				loginView.getMainFrame(),
+				managerView.getStatisticPanel()
+		);
 
 		this.managerView.getNameLabel().setText(username);
 
@@ -29,6 +34,8 @@ public class ManagerController implements ActionListener {
 		this.managerView.getStatisticButton().addActionListener(this);
 		this.managerView.getLogoutButton().addActionListener(this);
 		this.managerView.getQuitButton().addActionListener(this);
+
+		manageUserController.preprocessAndDisplayUI();
 	}
 
 	@Override
@@ -58,7 +65,7 @@ public class ManagerController implements ActionListener {
 		managerView.getManageUserButton().setIcon(Constants.RIGHT_CHEVRON_ICON);
 		managerView.setSelectingFeature(ManagerView.MANAGE_USER);
 
-		managerView.getManageUserPanel().setVisible(true);
+		manageUserController.preprocessAndDisplayUI();
 	}
 
 	private void manageNecessariesNavigateAction() {
@@ -88,6 +95,6 @@ public class ManagerController implements ActionListener {
 		managerView.getStatisticButton().setIcon(Constants.RIGHT_CHEVRON_ICON);
 		managerView.setSelectingFeature(ManagerView.STATISTIC);
 
-		managerView.getStatisticPanel().setVisible(true);
+		statisticController.preprocessAndDisplayUI();
 	}
 }

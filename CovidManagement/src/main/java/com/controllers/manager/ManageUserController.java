@@ -22,15 +22,15 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class ManageUserController implements ActionListener {
-	private JFrame mainFrame;
-	private ManageUserPanel manageUserPanel;
-	private EditUserDialog editUserDialog;
-	private CreateUserDialog createUserDialog;
-	private SortDialog sortDialog;
-	private ConnectionErrorDialog connectionErrorDialog;
-	private String managerUsername;
-	private EditUserController editUserController;
-	private CreateUserController createUserController;
+	final private JFrame mainFrame;
+	final private ManageUserPanel manageUserPanel;
+	final private EditUserDialog editUserDialog;
+	final private CreateUserDialog createUserDialog;
+	final private SortDialog sortDialog;
+	final private ConnectionErrorDialog connectionErrorDialog;
+	final private String managerUsername;
+	final private EditUserController editUserController;
+	final private CreateUserController createUserController;
 
 	public ManageUserController(JFrame mainFrame, ManageUserPanel manageUserPanel, String username) {
 		this.mainFrame = mainFrame;
@@ -75,12 +75,6 @@ public class ManageUserController implements ActionListener {
 		this.sortDialog.getCancelButton().addActionListener(this);
 
 		// Add component listener
-		manageUserPanel.addComponentListener(new ComponentAdapter() {
-			@Override
-			public void componentShown(ComponentEvent event) {
-				loadUserList();
-			}
-		});
 		editUserDialog.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentHidden(ComponentEvent e) {
@@ -95,8 +89,6 @@ public class ManageUserController implements ActionListener {
 					loadUserList();
 			}
 		});
-
-		loadUserList();
 	}
 
 	@Override
@@ -116,6 +108,11 @@ public class ManageUserController implements ActionListener {
 		} else if (event.getSource() == sortDialog.getCancelButton()) {
 			cancelActionOfSortDialog();
 		}
+	}
+
+	public void preprocessAndDisplayUI() {
+		loadUserList();
+		manageUserPanel.setVisible(true);
 	}
 
 	private void loadUserList() {

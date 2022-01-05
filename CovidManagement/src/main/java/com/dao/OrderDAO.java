@@ -133,4 +133,45 @@ public class OrderDAO implements DAO<Order, Integer> {
 	public boolean delete(Order entity) {
 		return false;
 	}
+
+	public ArrayList<Number> getTotalPriceByMonthAndYear(int month, int year) {
+		Connection connection = SingletonDBConnection.getInstance().getConnection();
+		ArrayList<Number> statsValues = new ArrayList<>();
+
+		if (connection != null) {
+			PreparedStatement preparedStatement = null;
+
+			try {
+				String sqlStatement = "SELECT totalPrice FROM COVID_MANAGEMENT.Order" +
+						" WHERE YEAR(createdDate) = ? AND MONTH(createdDate) = ?";
+
+				preparedStatement = connection.prepareStatement(sqlStatement);
+				preparedStatement.setInt(1, year);
+				preparedStatement.setInt(2, month);
+
+				ResultSet resultSet = preparedStatement.executeQuery();
+				int totalPrice = 0;
+
+				while (resultSet.next())
+					totalPrice += resultSet.getInt("totalPrice");
+
+				statsValues.add(totalPrice);
+			} catch (SQLException e) {
+				System.out.println(">>> UserHistoryDAO.java - getNumberOfRecoveryPeopleByRangeMonth(int, int) - catch block <<<");
+				e.printStackTrace();
+				statsValues.clear();
+			} finally {
+				if (preparedStatement != null) {
+					try {
+						preparedStatement.close();
+					} catch (SQLException e) {
+						System.out.println(">>> UserHistoryDAO.java - getNumberOfRecoveryPeopleByRangeMonth(int, int) - finally block <<<");
+						statsValues.clear();
+					}
+				}
+			}
+		}
+
+		return statsValues;
+	}
 }
