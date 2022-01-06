@@ -19,9 +19,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -223,35 +220,28 @@ public class NecessariesListController implements ActionListener {
 
 		if (filterDialog.getDateEditableButton().isSelected()) {
 			Timestamp startDate = Timestamp.valueOf(
-					LocalDateTime.of(
-							LocalDate.of(
-									filterDialog.getStartDateChooser().getSelectedYear(),
-									filterDialog.getStartDateChooser().getSelectedMonth(),
-									filterDialog.getStartDateChooser().getSelectedDay()
-							),
-							LocalTime.MIN
+					"%04d-%02d-%02d 00:00:00".formatted(
+							filterDialog.getStartDateChooser().getSelectedYear(),
+							filterDialog.getStartDateChooser().getSelectedMonth(),
+							filterDialog.getStartDateChooser().getSelectedDay()
 					)
 			);
-
-			Timestamp endDate = Timestamp.valueOf(
-					LocalDateTime.of (
-							LocalDate.of(
-									filterDialog.getEndDateChooser().getSelectedYear(),
-									filterDialog.getEndDateChooser().getSelectedMonth(),
-									filterDialog.getEndDateChooser().getSelectedDay()
-							),
-							LocalTime.MAX
+			Timestamp expiredDate = Timestamp.valueOf(
+					"%04d-%02d-%02d 23:59:59".formatted(
+							filterDialog.getEndDateChooser().getSelectedYear(),
+							filterDialog.getEndDateChooser().getSelectedMonth(),
+							filterDialog.getEndDateChooser().getSelectedDay()
 					)
 			);
 
 			// The startDate is after the endDate
-			if (startDate.compareTo(endDate) > 0) {
+			if (startDate.compareTo(expiredDate) > 0) {
 				showErrorMessage(filterDialog, "Filter Necessaries", "Invalid start and end date");
 				return;
 			}
 
 			fields.add("date");
-			values.add(new Pair<>(startDate, endDate));
+			values.add(new Pair<>(startDate, expiredDate));
 		}
 
 		if (fields.isEmpty()) {

@@ -117,7 +117,7 @@ public class EditNecessariesDialog extends JDialog {
 		startDatePanel.setBorder(BorderFactory.createTitledBorder(lineBorder, "Start date"));
 		panel.add(startDatePanel);
 
-		startDateChooser = new DateChooserPanel((short) 1930, (short) 2021);
+		startDateChooser = new DateChooserPanel((short) 2019, (short) 2022);
 		startDateChooser.setBounds(10, 20, 330, 30);
 		startDatePanel.add(startDateChooser);
 	}
@@ -129,7 +129,7 @@ public class EditNecessariesDialog extends JDialog {
 		endDatePanel.setBorder(BorderFactory.createTitledBorder(lineBorder, "End date"));
 		panel.add(endDatePanel);
 
-		endDateChooser = new DateChooserPanel((short) 1930, (short) 2022);
+		endDateChooser = new DateChooserPanel((short) 2019, (short) 2022);
 		endDateChooser.setBounds(10, 20, 330, 30);
 		endDatePanel.add(endDateChooser);
 	}
@@ -142,15 +142,6 @@ public class EditNecessariesDialog extends JDialog {
 		cancelButton.setBackground(new Color(229, 229, 229));
 		cancelButton.setForeground(Color.BLACK);
 		panel.add(cancelButton);
-		cancelButton.addActionListener((event) -> {
-			int option = JOptionPane.showConfirmDialog(this, "Are you sure to close?", null, JOptionPane.YES_NO_OPTION);
-			if (option == JOptionPane.YES_OPTION) {
-				System.out.println("Cancel: Yes");
-				this.setVisible(false);
-			}
-			else
-				System.out.println("Cancel: No");
-		});
 
 		// Save button.
 		saveButton = new JButton("Save");
@@ -159,15 +150,6 @@ public class EditNecessariesDialog extends JDialog {
 		saveButton.setBackground(Constants.GREEN);
 		saveButton.setForeground(Color.WHITE);
 		panel.add(saveButton);
-		saveButton.addActionListener((event) -> {
-			int option = JOptionPane.showConfirmDialog(this, "Are you sure to save this information?", null, JOptionPane.YES_NO_OPTION);
-			if (option == JOptionPane.YES_OPTION) {
-				System.out.println("Save: Yes");
-				this.setVisible(false);
-			}
-			else
-				System.out.println("Save: No");
-		});
 	}
 
 	public JTextField getNecessariesNameTextField() {

@@ -2,10 +2,6 @@ package com.views.manager.panels;
 
 import com.models.table.NonEditableTableModel;
 import com.utilities.Constants;
-import com.views.manager.dialogs.CreateNecessariesDialog;
-import com.views.manager.dialogs.EditNecessariesDialog;
-import com.views.shared.dialogs.FilterNecessariesDialog;
-import com.views.shared.dialogs.SortDialog;
 import com.views.shared.panels.ScrollableTablePanel;
 
 import javax.swing.*;
@@ -53,11 +49,6 @@ public class ManageNecessariesPanel extends JPanel {
 		editButton.setForeground(Color.BLACK);
 		add(editButton);
 
-		// ---------------------------------------------------------
-		EditNecessariesDialog editNecessariesDialog = new EditNecessariesDialog(null);
-		editButton.addActionListener((event) -> editNecessariesDialog.setVisible(true));
-		// ---------------------------------------------------------
-
 		// View detail button
 		removeButton = new JButton("Remove");
 		removeButton.setBounds(670, 0, Constants.BUTTON_WIDTH, Constants.BUTTON_HEIGHT);
@@ -67,8 +58,15 @@ public class ManageNecessariesPanel extends JPanel {
 		add(removeButton);
 
 		// Scrollable table
-		final String[] columnNames = {"id", "Necessaries Name", "Limited Quantity", "Start Date", "End Date", "Price (VND)"};
-		final int [] columnWidths = {0, 370, 105, 95, 95, 95}; // 780 - 15 - 3
+		final String[] columnNames = {
+				"necessariesId",
+				"Necessaries Name",
+				"Quantity",
+				"Start Date",
+				"End Date",
+				"Price (VND)"
+		};
+		final int [] columnWidths = {0, 320, 60, 150, 150, 80}; // 780 - 15 - 5
 		final int[] columnHorizontalAlignments = {
 				DefaultTableCellRenderer.LEFT,
 				DefaultTableCellRenderer.LEFT,
@@ -103,11 +101,6 @@ public class ManageNecessariesPanel extends JPanel {
 		sortButton.setForeground(Color.BLACK);
 		add(sortButton);
 
-		// ---------------------------------------------------------
-		SortDialog sortDialog = new SortDialog(null, "Sort Necessaries");
-		sortButton.addActionListener((event) -> sortDialog.setVisible(true));
-		// ---------------------------------------------------------
-
 		// Filter button
 		filterButton = new JButton("Filter");
 		filterButton.setBounds(90, 550, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
@@ -116,11 +109,6 @@ public class ManageNecessariesPanel extends JPanel {
 		filterButton.setForeground(Color.BLACK);
 		add(filterButton);
 
-		// ---------------------------------------------------------
-		FilterNecessariesDialog filterNecessariesDialog = new FilterNecessariesDialog(null, "Filter Necessaries");
-		filterButton.addActionListener((event) -> filterNecessariesDialog.setVisible(true));
-		// ---------------------------------------------------------
-
 		// Create button
 		createButton = new JButton("Create");
 		createButton.setBounds(700, 550, Constants.BUTTON_SMALL_WIDTH, Constants.BUTTON_HEIGHT);
@@ -128,20 +116,7 @@ public class ManageNecessariesPanel extends JPanel {
 		createButton.setHorizontalTextPosition(JButton.CENTER);
 		createButton.setForeground(Color.WHITE);
 		add(createButton);
-
-		// ---------------------------------------------------------
-		CreateNecessariesDialog createNecessariesDialog = new CreateNecessariesDialog(null);
-		createButton.addActionListener((event) -> createNecessariesDialog.setVisible(true));
-		// ---------------------------------------------------------
-
-//		NonEditableTableModel tableModel = (NonEditableTableModel) scrollableTable.getTable().getModel();
-//		tableModel.addRow(new String[] {"1", "Combo 1 (Thịt, Rau củ, Nước uống)", "8", "2021-12-08", "2021-12-09", "150.000"});
-//		tableModel.addRow(new String[] {"2", "Combo 2 (Cá, Rau củ, Nước uống)", "15", "2021-12-08", "2021-12-10", "150.000"});
-//		tableModel.addRow(new String[] {"3", "Combo 3 (Thịt, Cá, Trứng, Nước uống)", "20", "2021-12-06", "2021-12-09", "200.000"});
-//		tableModel.addRow(new String[] {"4", "Combo 4 (Thịt, Cá, Rau Củ, Nước uống)", "4", "2021-12-09", "2021-12-09", "180.000"});
-//		tableModel.addRow(new String[] {"5", "Combo 5 (Thịt, Cá, Trứng, Rau củ, Nước uống)", "12", "2021-12-10", "2021-12-12", "250.000"});
 	}
-
 
 	public JTextField getSearchValueTextField() {
 		return searchValueTextField;

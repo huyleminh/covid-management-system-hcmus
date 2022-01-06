@@ -12,6 +12,7 @@ public class ManagerController implements ActionListener {
 	final private ManagerView managerView;
 	final private LoginView loginView;
 	final private ManageUserController manageUserController;
+	final private ManageNecessariesController manageNecessariesController;
 	final private StatisticController statisticController;
 
 	public ManagerController(ManagerView managerView, LoginView loginView, String username) {
@@ -25,6 +26,11 @@ public class ManagerController implements ActionListener {
 		this.statisticController = new StatisticController(
 				loginView.getMainFrame(),
 				managerView.getStatisticPanel()
+		);
+		this.manageNecessariesController = new ManageNecessariesController(
+				loginView.getMainFrame(),
+				managerView.getManageNecessariesPanel(),
+				username
 		);
 
 		this.managerView.getNameLabel().setText(username);
@@ -80,7 +86,7 @@ public class ManagerController implements ActionListener {
 		managerView.getManageNecessariesButton().setIcon(Constants.RIGHT_CHEVRON_ICON);
 		managerView.setSelectingFeature(ManagerView.MANAGE_NECESSARIES);
 
-		managerView.getManageNecessariesPanel().setVisible(true);
+		manageNecessariesController.preprocessAndDisplayUI();
 	}
 
 	private void manageStatisticNavigateAction() {

@@ -48,6 +48,7 @@ public class EditUserController implements ActionListener {
 		this.connectionErrorDialog = connectionErrorDialog;
 		this.managerUsername = managerUsername;
 		this.table = table;
+		this.isSuccess = false;
 
 		this.editUserDialog.getSaveButton().addActionListener(this);
 		this.editUserDialog.getCancelButton().addActionListener(this);
@@ -386,7 +387,7 @@ public class EditUserController implements ActionListener {
 			} else {
 				boolean removeInfectiousUser = !currentStatus.equals("F0");
 				Integer newInfectiousUserId = this.selectedUserId;
-				String description = UserHistory.generateDescriptionWithoutFormattedString(UserHistory.DIRECTLY_CHANGE_STATUS)
+				String description = UserHistory.generateDescriptionWithoutFormatting(UserHistory.DIRECTLY_CHANGE_STATUS)
 												.formatted(currentStatus, selectedStatus, identifierNumber);
 
 				UserDAO userDAOModel = new UserDAO();
@@ -452,7 +453,7 @@ public class EditUserController implements ActionListener {
 			// Create a list of descriptions for list of current involved user
 			int lastIndex = descriptionList.size() - 1;
 			for (User involvedUser : userList) {
-				String description = UserHistory.generateDescriptionWithoutFormattedString(UserHistory.INDIRECTLY_CHANGE_STATUS)
+				String description = UserHistory.generateDescriptionWithoutFormatting(UserHistory.INDIRECTLY_CHANGE_STATUS)
 												.formatted(
 														User.STATUS_NAMES[involvedUser.getStatus()],
 														User.STATUS_NAMES[newStatus + 1],
@@ -516,7 +517,7 @@ public class EditUserController implements ActionListener {
 				final int selectedRow = table.getSelectedRow();
 				final int userId = (int) table.getValueAt(selectedRow, 0);
 				final String identifierNumber = String.valueOf(table.getValueAt(selectedRow, 1));
-				String description = UserHistory.generateDescriptionWithoutFormattedString(UserHistory.CHANGE_QUARANTINE)
+				String description = UserHistory.generateDescriptionWithoutFormatting(UserHistory.CHANGE_QUARANTINE)
 												.formatted(currentQuarantine, selectedQuarantine, identifierNumber);
 
 				// Manipulates database
