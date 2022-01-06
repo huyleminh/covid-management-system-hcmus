@@ -155,7 +155,7 @@ public class FilterNecessariesDialog extends JDialog {
 		startDatePanel.setBorder(BorderFactory.createTitledBorder(lineBorder, "Start date"));
 		panel.add(startDatePanel);
 
-		startDateChooser = new DateChooserPanel((short) 1930, (short) 2021);
+		startDateChooser = new DateChooserPanel((short) 2019, (short) 2022);
 		startDateChooser.setBounds(10, 20, 330, 30);
 		startDatePanel.add(startDateChooser);
 	}
@@ -167,7 +167,7 @@ public class FilterNecessariesDialog extends JDialog {
 		endDatePanel.setBorder(BorderFactory.createTitledBorder(lineBorder, "End date"));
 		panel.add(endDatePanel);
 
-		endDateChooser = new DateChooserPanel((short) 1930, (short) 2022);
+		endDateChooser = new DateChooserPanel((short) 2019, (short) 2022);
 		endDateChooser.setBounds(10, 20, 330, 30);
 		endDatePanel.add(endDateChooser);
 	}

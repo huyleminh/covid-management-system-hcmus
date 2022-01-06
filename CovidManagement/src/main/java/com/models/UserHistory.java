@@ -74,7 +74,7 @@ public class UserHistory {
 				operationType == userHistory.operationType;
 	}
 
-	public static String generateDescriptionWithoutFormattedString(byte operationType) {
+	public static String generateDescriptionWithoutFormatting(byte operationType) {
 		String description = "";
 
 		switch (operationType) {

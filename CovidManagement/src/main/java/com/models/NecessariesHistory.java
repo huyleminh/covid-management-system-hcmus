@@ -5,6 +5,12 @@ import com.utilities.UtilityFunctions;
 import java.sql.Timestamp;
 
 public class NecessariesHistory {
+	public static final byte ADD_NEW_NECESSARIES = 1;
+	public static final byte REMOVE_NECESSARIES = 2;
+	public static final byte CHANGE_NECESSARIES_NAME = 3;
+	public static final byte CHANGE_LIMIT_QUANTITY = 4;
+	public static final byte CHANGE_DATE = 5;
+	public static final byte CHANGE_PRICE = 6;
 	public static final NecessariesHistory emptyInstance = new NecessariesHistory(
 			-1, "", null, "", (byte) -1
 	);  // An object to check whether connection of the database is unavailable or not.
@@ -60,6 +66,21 @@ public class NecessariesHistory {
 				UtilityFunctions.compareTwoTimestamps(date, necessariesHistory.date) &&
 				UtilityFunctions.compareTwoStrings(description, necessariesHistory.description) &&
 				operationType == necessariesHistory.operationType;
+	}
+
+	public static String generateDescriptionWithoutFormatting(byte operationType) {
+		String description = "";
+
+		switch (operationType) {
+			case ADD_NEW_NECESSARIES -> description = "Thêm mới gói %s";
+			case REMOVE_NECESSARIES -> description = "Xóa gói %s";
+			case CHANGE_NECESSARIES_NAME -> description = "Thay đổi tên gói từ %s thành %s";
+			case CHANGE_LIMIT_QUANTITY -> description = "Thay đổi mức giới hạn từ %d thành %d";
+			case CHANGE_DATE -> description = "Thay đổi thời gian gới hạn từ (%s -> %s) thành (%s -> %s)";
+			case CHANGE_PRICE -> description = "Thay đổi đơn giá từ %d thành %d";
+		}
+
+		return description;
 	}
 
 	// Testing

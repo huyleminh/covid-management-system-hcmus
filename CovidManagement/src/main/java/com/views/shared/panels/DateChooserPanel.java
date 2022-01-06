@@ -5,6 +5,7 @@ import com.utilities.UtilityFunctions;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Timestamp;
 
 public class DateChooserPanel extends JPanel {
 	// Constants
@@ -70,6 +71,25 @@ public class DateChooserPanel extends JPanel {
 			yearOptions.setModel(new DefaultComboBoxModel<>(years));
 			resetRangeDay();
 		}
+	}
+
+	public void setSelectedDate(short year, byte month, byte day) {
+		yearOptions.setSelectedItem(year);
+		monthOptions.setSelectedItem(month);
+		dayOptions.setSelectedItem(day);
+	}
+
+	public void setSelectedDate(Timestamp timestamp) {
+		String timestampAsString = UtilityFunctions.formatTimestamp(
+				Constants.TIMESTAMP_WITHOUT_NANOSECOND,
+				timestamp
+		);
+
+		setSelectedDate(
+				Short.parseShort(timestampAsString.substring(0, 4)),
+				Byte.parseByte(timestampAsString.substring(5, 7)),
+				Byte.parseByte(timestampAsString.substring(8, 10))
+		);
 	}
 
 	public short getSelectedYear() {

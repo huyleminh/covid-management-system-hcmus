@@ -438,7 +438,7 @@ public class CreateUserController implements ActionListener {
 				address
 		);
 		newUser.logToScreen();
-		final String description = UserHistory.generateDescriptionWithoutFormattedString(UserHistory.ADD_NEW_USER)
+		final String description = UserHistory.generateDescriptionWithoutFormatting(UserHistory.ADD_NEW_USER)
 											  .formatted(identifierNumber);
 
 		// TODO insert: PAYMENT_SYSTEM: paymentAccount
