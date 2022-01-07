@@ -46,6 +46,7 @@ public class Constants {
 	public static final String HIDE_PASSWORD_ICON_FILE_PATH = "src/main/resources/images/hidden-24x24.png";
 	public static final String SHOW_PASSWORD_ICON_FILE_PATH = "src/main/resources/images/view-24x24.png";
 	public static final String ERROR_MESSAGE_ICON_FILE_PATH = "src/main/resources/images/error-message-icon-64x64.png";
+	public static final String PROCESSING_ICON_FILE_PATH = "src/main/resources/images/sand-clock-64x64.png";
 
 	// Icon
 	public static final Icon RIGHT_CHEVRON_ICON = new ImageIcon(RIGHT_CHEVRON_ICON_FILE_PATH);
@@ -55,4 +56,14 @@ public class Constants {
 	public static final Locale VN_LOCALE = new Locale("vi", "VN");
 
 	public static final int MAX_DEBT = 2000000;
+
+	public static final int CREATE_NEW_PAYMENT_ACCOUNT = 0;
+	public static final int PAY_DEBT = 1;
+
+	// Responses json
+	public static final String SUCCESS_RESPONSE = "{ status: 201 }";
+	public static final String FORBIDDEN_RESPONSE = "{ status: 403 }";
+	public static final String DB_CONNECTION_ERROR_RESPONSE = "{ status: 500 }";
+	public static final String SERVER_CLOSING_RESPONSE = "{ status: 500, message: \"Server is closing\" }";
+	public static final String NOT_ENOUGH_BALANCE_RESPONSE = "{ status: 400, message: \"Not enough balance\" }";
 }

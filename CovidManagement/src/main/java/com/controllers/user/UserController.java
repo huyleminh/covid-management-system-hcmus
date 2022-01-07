@@ -13,6 +13,7 @@ public class UserController implements ActionListener {
 	private LoginView loginView;
 	private PersonalInfoController personalInfoController;
 	private PurchaseNecessariesController purchaseNecessariesController;
+	private DebtPaymentController debtPaymentController;
 
 	public UserController(UserView userView, LoginView loginView, int userId, String username) {
 		this.userView = userView;
@@ -25,6 +26,11 @@ public class UserController implements ActionListener {
 		this.purchaseNecessariesController = new PurchaseNecessariesController(
 				this.userView.getMainFrame(),
 				this.userView.getPurchaseNecessariesTabbed(),
+				userId
+		);
+		this.debtPaymentController = new DebtPaymentController(
+				this.userView.getMainFrame(),
+				this.userView.getDebtPaymentPanel(),
 				userId
 		);
 
@@ -96,6 +102,6 @@ public class UserController implements ActionListener {
 		userView.getDebtPaymentButton().setIcon(Constants.RIGHT_CHEVRON_ICON);
 		userView.setSelectingFeature(UserView.DEBT_PAYMENT);
 
-		userView.getDebtPaymentPanel().setVisible(true);
+		debtPaymentController.preprocessAndDisplayUI();
 	}
 }

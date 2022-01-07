@@ -6,19 +6,19 @@ import com.views.shared.panels.NumberFieldWithButton;
 import javax.swing.*;
 import java.awt.*;
 
-public class InputQuantityDialog extends JDialog {
+public class InputNumberDialog extends JDialog {
 	// Components
-	private NumberFieldWithButton quantityField;
+	private NumberFieldWithButton numberField;
 	private JButton cancelButton;
 	private JButton okButton;
 
-	public InputQuantityDialog(JFrame frame, int min, int max) {
-		super(frame, "Input Quantity", true);
+	public InputNumberDialog(JFrame frame, String title, String label, int min, int max) {
+		super(frame, title, true);
 
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
 		panel.setPreferredSize(new Dimension(230, 100));
-		initComponents(panel, min, max);
+		initComponents(panel, label, min, max);
 
 		setAlwaysOnTop(true);
 		setResizable(false);
@@ -27,14 +27,14 @@ public class InputQuantityDialog extends JDialog {
 		setLocationRelativeTo(null);
 	}
 
-	private void initComponents(JPanel panel, int min, int max) {
-		JLabel quantityLabel = new JLabel("Quantity");
-		quantityLabel.setBounds(20, 20, 80, 30);
-		panel.add(quantityLabel);
+	private void initComponents(JPanel panel, String label, int min, int max) {
+		JLabel numberLabel = new JLabel(label);
+		numberLabel.setBounds(20, 20, 80, 30);
+		panel.add(numberLabel);
 
-		quantityField = new NumberFieldWithButton(min, max, 110);
-		quantityField.setBounds(100, 20, 110, 30);
-		panel.add(quantityField);
+		numberField = new NumberFieldWithButton(min, max, 110);
+		numberField.setBounds(100, 20, 110, 30);
+		panel.add(numberField);
 
 		// Cancel button
 		cancelButton = new JButton("Cancel");
@@ -61,11 +61,15 @@ public class InputQuantityDialog extends JDialog {
 		return okButton;
 	}
 
-	public int getQuantity() {
-		return quantityField.getValue();
+	public int getNumber() {
+		return numberField.getValue();
+	}
+
+	public void setNumber(int number) {
+		numberField.setValue(number);
 	}
 
 	public void setRange(int min, int max) {
-		quantityField.setRange(min, max);
+		numberField.setRange(min, max);
 	}
 }
