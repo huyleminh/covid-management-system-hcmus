@@ -6,7 +6,7 @@ import com.utilities.Constants;
 import com.utilities.SingletonDBConnection;
 import com.utilities.UtilityFunctions;
 import com.views.shared.dialogs.ConnectionErrorDialog;
-import com.views.user.dialogs.InputQuantityDialog;
+import com.views.user.dialogs.InputNumberDialog;
 import com.views.user.panels.CartPanel;
 
 import javax.swing.*;
@@ -17,7 +17,7 @@ import java.util.Vector;
 
 public class CartController implements ActionListener {
 	final private CartPanel cartPanel;
-	final private InputQuantityDialog inputQuantityDialog;
+	final private InputNumberDialog inputQuantityDialog;
 	final private ConnectionErrorDialog connectionErrorDialog;
 	final private int userId;
 
@@ -26,7 +26,9 @@ public class CartController implements ActionListener {
 
 	public CartController(JFrame mainFrame, CartPanel cartPanel, int userId) {
 		this.cartPanel = cartPanel;
-		this.inputQuantityDialog = new InputQuantityDialog(mainFrame, 0, 0);
+		this.inputQuantityDialog = new InputNumberDialog(
+				mainFrame, "Input Quantity", "Quantity", 0, 0
+		);
 		this.connectionErrorDialog = new ConnectionErrorDialog(mainFrame);
 		this.userId = userId;
 		this.cartItems = new Vector<>();
@@ -56,7 +58,7 @@ public class CartController implements ActionListener {
 		} else if (event.getSource() == cartPanel.getCheckoutButton()) {
 			checkoutAction();
 		} else if (event.getSource() == inputQuantityDialog.getOkButton()) {
-			okActionOfInputQuantityDialog();
+			okActionOfInputNumberDialog();
 		} else if (event.getSource() == inputQuantityDialog.getCancelButton()) {
 			inputQuantityDialog.setVisible(false);
 		}
@@ -170,13 +172,13 @@ public class CartController implements ActionListener {
 		}
 	}
 
-	private void okActionOfInputQuantityDialog() {
+	private void okActionOfInputNumberDialog() {
 		JTable table = cartPanel.getScrollableTable().getTable();
 		NonEditableTableModel tableModel = (NonEditableTableModel) table.getModel();
 		int selectedRow = table.getSelectedRow();
 
 		int oldQuantity = (byte) table.getValueAt(selectedRow, 3);
-		int newQuantity = inputQuantityDialog.getQuantity();
+		int newQuantity = inputQuantityDialog.getNumber();
 
 		if (oldQuantity == newQuantity) {
 			int option = JOptionPane.showConfirmDialog(

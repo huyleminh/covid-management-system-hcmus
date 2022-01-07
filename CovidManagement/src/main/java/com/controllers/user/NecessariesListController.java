@@ -11,7 +11,7 @@ import com.utilities.UtilityFunctions;
 import com.views.shared.dialogs.ConnectionErrorDialog;
 import com.views.shared.dialogs.FilterNecessariesDialog;
 import com.views.shared.dialogs.SortDialog;
-import com.views.user.dialogs.InputQuantityDialog;
+import com.views.user.dialogs.InputNumberDialog;
 import com.views.user.panels.NecessariesListPanel;
 
 import javax.swing.*;
@@ -26,7 +26,7 @@ public class NecessariesListController implements ActionListener {
 	final private NecessariesListPanel necessariesListPanel;
 	final private SortDialog sortDialog;
 	final private FilterNecessariesDialog filterDialog;
-	final private InputQuantityDialog inputQuantityDialog;
+	final private InputNumberDialog inputQuantityDialog;
 	final private ConnectionErrorDialog connectionErrorDialog;
 	final private int userId;
 
@@ -45,7 +45,9 @@ public class NecessariesListController implements ActionListener {
 				new String[] { "Necessaries Name", "Limited Quantity", "Start Date", "End Date", "Price" }
 		);
 		this.filterDialog = new FilterNecessariesDialog(mainFrame, "Filter Necessaries");
-		this.inputQuantityDialog = new InputQuantityDialog(mainFrame, 0, 0);
+		this.inputQuantityDialog = new InputNumberDialog(
+				mainFrame, "Input Quantity", "Quantity", 0, 0
+		);
 		this.connectionErrorDialog = new ConnectionErrorDialog(mainFrame);
 		this.cartController = cartController;
 		this.userId = userId;
@@ -104,7 +106,7 @@ public class NecessariesListController implements ActionListener {
 		} else if (event.getSource() == filterDialog.getCancelButton()) {
 			filterDialog.setVisible(false);
 		} else if (event.getSource() == inputQuantityDialog.getOkButton()) {
-			okActionOfInputQuantityDialog();
+			okActionOfInputNumberDialog();
 		} else if (event.getSource() == inputQuantityDialog.getCancelButton()) {
 			inputQuantityDialog.setVisible(false);
 		}
@@ -268,11 +270,11 @@ public class NecessariesListController implements ActionListener {
 		}
 	}
 
-	private void okActionOfInputQuantityDialog() {
+	private void okActionOfInputNumberDialog() {
 		JTable table = necessariesListPanel.getScrollableTable().getTable();
 		int selectedRow = table.getSelectedRow();
 
-		int quantity = inputQuantityDialog.getQuantity();
+		int quantity = inputQuantityDialog.getNumber();
 		int price = (int) table.getValueAt(selectedRow, 5);
 		int totalPrice = quantity * price;
 
@@ -402,6 +404,5 @@ public class NecessariesListController implements ActionListener {
 
 	private void showErrorMessage(Component component, String title, String message) {
 		JOptionPane.showMessageDialog(component, message, title, JOptionPane.ERROR_MESSAGE);
-
 	}
 }
