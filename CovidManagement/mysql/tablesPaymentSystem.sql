@@ -13,7 +13,7 @@ USE PAYMENT_SYSTEM;
 CREATE TABLE IF NOT EXISTS PAYMENT_SYSTEM.PaymentAccount (
     paymentId INT NOT NULL AUTO_INCREMENT,
     balance INT NOT NULL,
-    userId INT NOT NULL,
+    fullname NVARCHAR(50) NOT NULL,
     userIdentifierNumber VARCHAR(12) NOT NULL,
 
     CONSTRAINT PK_PaymentAccount PRIMARY KEY (paymentId)
@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS PAYMENT_SYSTEM.SystemInfo (
     firstLoggedIn TINYINT NOT NULL,
     bankAccountNumber CHAR(12) NOT NULL,
     balance INT NOT NULL,
+    defaultBalanceOfNewAccount INT NOT NULL,
 
     CONSTRAINT PK_SystemInfo PRIMARY KEY (id)
 )

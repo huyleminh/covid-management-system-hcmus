@@ -1,23 +1,27 @@
 USE PAYMENT_SYSTEM;
 
-INSERT INTO PAYMENT_SYSTEM.PaymentAccount (balance, userId, userIdentifierNumber)
+INSERT INTO PAYMENT_SYSTEM.PaymentAccount (balance, fullname, userIdentifierNumber)
 VALUES
-    (3750000, 1, '021234569'),
-    (4350000, 2, '011234568'),
-    (2700000, 3, '011234569'),
-    (5610000, 4, '011234570'),
-    (4820000, 5, '011234571');
+    (10000000, N'Hoàng Minh Đức', '319127121'),
+    (9500000, N'Phan Minh Hiếu', '319127141'),
+    (10000000, N'Nguyễn Hứa Hùng', '319127150'),
+    (10000000, N'Lê Minh Huy', '319127157'),
+    (10000000, N'Bạch Minh Khôi', '319127181'),
+    (10000000, N'Nguyễn Cao Thiên Long', '341119127203'),
+    (10000000, N'Nguyễn Hữu Hoàng An', '341219127325'),
+    (10000000, N'Lê Hoàng Anh', '341219127329'),
+    (10000000, N'Trần Lê Quốc Bảo', '341119127340'),
+    (10000000, N'Lâm Quốc Cường', '352219127345'),
+    (10000000, N'Nguyễn Nhật Cường', '419127346'),
+    (10000000, N'Lê Thành Đạt', '419127354'),
+    (10000000, N'Nguyễn Huỳnh Khánh Duy', '519127377'),
+    (10000000, N'Phạm Đức Duy', '567819127379'),
+    (10000000, N'Đinh Hải Giang', '319127382');
 
 INSERT INTO PAYMENT_SYSTEM.`Transaction` (sourceAccount, transactionDate, paymentAmount)
 VALUES
-    (1, '2020-10-14 12:31:20', 250000),
-    (2, '2020-12-01 07:33:43', 150000),
-    (3, '2021-03-12 16:22:56', 300000),
-    (2, '2021-05-21 18:20:15', 500000),
-    (5, '2021-06-10 12:31:20', 180000),
-    (4, '2021-11-11 07:15:22', 150000),
-    (4, '2021-11-15 06:30:39', 240000);
+    (2, '2021-05-21 18:20:15', 500000);
 
-INSERT INTO PAYMENT_SYSTEM.SystemInfo (id, firstLoggedIn, bankAccountNumber, balance)
+INSERT INTO PAYMENT_SYSTEM.SystemInfo (id, firstLoggedIn, bankAccountNumber, balance, defaultBalanceOfNewAccount)
 VALUES
-    (1, 1, '129029974556', 500000);
+    (1, 1, '129029974556', 500000, 10000000);

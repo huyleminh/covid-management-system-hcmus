@@ -171,7 +171,7 @@ VALUES
     (N'Bệnh viện dã chiến trung tâm Sài Gòn', 4500, 0),
     (N'Khu điều trị thu dung số 2', 950, 5),
     (N'Khu điều trị thu dung số 3', 1500, 2),
-    ('None', 0, 0);
+    ('Không có', 0, 0);
 
 INSERT INTO COVID_MANAGEMENT.`User` (userId, identifierNumber, fullname, yearOfBirth, locationId, `status`, infectiousUserId, address)
 VALUES
@@ -212,7 +212,7 @@ VALUES
     ('519127377', null, 2, 0, 13),
     ('567819127379', null, 2, 0, 14),
     ('319127382', null, 2, 0, 15);
-    
+
 INSERT INTO COVID_MANAGEMENT.UserHistory (managerUsername, userId, `date`, `description`, operationType)
 VALUES
     ('manager1', 1, '2020-9-10 10:05:10', N'Thêm mới người dùng 319127121', 1),
@@ -233,17 +233,18 @@ VALUES
 
 INSERT INTO COVID_MANAGEMENT.NecessariesHistory (managerUsername, `date`, `description`, operationType)
 VALUES
-    ('manager1', '2020-10-10 8:00:19', N'Thêm mới gói Combo 1 (Thịt, Rau củ, Nước uống)', 1),
-    ('manager1', '2020-10-10 8:05:23', N'Thêm mới gói Combo 2 (Cá, Rau củ, Nước uống)', 1),
-    ('manager1', '2020-10-10 8:10:50', N'Thêm mới gói Combo 3 (Thịt, Cá, Trứng, Nước uống)', 1),
-    ('manager1', '2020-10-12 9:20:33', N'Thêm mới gói Combo 4 (Thịt, Cá, Rau Củ, Nước uống)', 1),
-    ('manager1', '2020-10-13 8:00:15', N'Thêm mới gói Combo 5 (Thịt, Cá, Trứng, Rau củ, Nước uống)', 1);
+    ('manager1', '2020-10-10 8:00:19', N'Thêm mới gói "Combo 1 (Thịt, Rau củ, Nước uống)"', 1),
+    ('manager1', '2020-10-10 8:05:23', N'Thêm mới gói "Combo 2 (Cá, Rau củ, Nước uống)"', 1),
+    ('manager1', '2020-10-10 8:10:50', N'Thêm mới gói "Combo 3 (Thịt, Cá, Trứng, Nước uống)"', 1),
+    ('manager1', '2020-10-12 9:20:33', N'Thêm mới gói "Combo 4 (Thịt, Cá, Rau Củ, Nước uống)"', 1),
+    ('manager1', '2020-10-13 8:00:15', N'Thêm mới gói "Combo 5 (Thịt, Cá, Trứng, Rau củ, Nước uống)"', 1);
 
 INSERT INTO COVID_MANAGEMENT.Debt (debtId, userId, debtDate, totalDebt)
 VALUES
     (1, 1, '2020-10-14 12:31:20', 300000),
     (2, 2, '2020-12-01 07:33:43', 150000),
     (3, 3, '2021-03-12 16:22:56', 330000),
+    (4, 2, '2021-05-21 18:20:15', 500000),
     (5, 5, '2021-06-10 12:31:20', 200000),
     (6, 4, '2021-11-11 07:15:22', 250000),
     (7, 4, '2021-11-15 06:30:39', 300000);
@@ -280,7 +281,7 @@ VALUES
 
 INSERT INTO COVID_MANAGEMENT.PaymentHistory (userId, `date`, paymentAmount)
 VALUES
-    (2, '2021-05-21 18:20:15', 500000);
+    (2, '2021-05-21 20:20:15', 500000);
 
 INSERT INTO COVID_MANAGEMENT.SystemInfo (id, firstLoggedIn)
 VALUES
