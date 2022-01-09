@@ -113,11 +113,8 @@ public class CartController implements ActionListener {
 			);
 		} else {
 			int currentQuantity = (byte) table.getValueAt(selectedRow, 3);
-			int remainingTotalAmountCanBuy = Constants.MAX_DEBT - cartPanel.getTotalAmountValue();
-			int price = (int) table.getValueAt(selectedRow, 4);
-			int remainingQuantityCanBuy = remainingTotalAmountCanBuy / price;
 
-			inputQuantityDialog.setRange(0, currentQuantity + remainingQuantityCanBuy);
+			inputQuantityDialog.setRange(0, currentQuantity);
 			inputQuantityDialog.setVisible(true);
 		}
 	}
