@@ -72,8 +72,8 @@ public class NecessariesDAO implements DAO<Necessaries, Integer> {
         try {
             String sqlStatement = "SELECT n1.*, pnc.purchasedCount" +
                     " FROM COVID_MANAGEMENT.Necessaries n1 LEFT JOIN" +
-                    " (SELECT n.necessariesId , count(*) AS purchasedCount" +
-                    " FROM COVID_MANAGEMENT.Necessaries n LEFT JOIN COVID_MANAGEMENT.OrderDetail od ON od.necessariesId = n.necessariesId" +
+                    " (SELECT n.necessariesId , SUM(od.quantity) AS purchasedCount" +
+                    " FROM COVID_MANAGEMENT.Necessaries n LEFT JOIN COVID_MANAGEMENT.OrderDetail od ON n.necessariesId = od.necessariesId" +
                     " JOIN COVID_MANAGEMENT.Order o ON od.orderId = o.orderId" +
                     " WHERE o.userId = ? AND n.startDate <= od.purchasedAt AND od.purchasedAt <= n.expiredDate" +
                     " GROUP BY n.necessariesId) AS pnc ON n1.necessariesId = pnc.necessariesId" +
