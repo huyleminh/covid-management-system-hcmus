@@ -102,14 +102,14 @@ public class ViewUserDetailDialog extends JDialog {
 		basicInfoPanel.add(addressLabel);
 
 		// Address text field
-		addressTextField = new JTextField("MMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM");
+		addressTextField = new JTextField();
 		addressTextField.setBounds(160, 140, INFO_TEXT_FIELD_WIDTH, Constants.TEXT_HEIGHT);
 		addressTextField.setBorder(lineBorder);
 		addressTextField.setEditable(false);
 		basicInfoPanel.add(addressTextField);
 
 		// Current status label
-		JLabel currentStatusLabel = new JLabel();
+		JLabel currentStatusLabel = new JLabel("Current status");
 		currentStatusLabel.setBounds(LEFT_PADDING, 180, INFO_LABEL_WIDTH, Constants.TEXT_HEIGHT);
 		basicInfoPanel.add(currentStatusLabel);
 

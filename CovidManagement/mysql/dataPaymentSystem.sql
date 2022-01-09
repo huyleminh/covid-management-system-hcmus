@@ -16,7 +16,17 @@ VALUES
     (10000000, N'Lê Thành Đạt', '419127354'),
     (10000000, N'Nguyễn Huỳnh Khánh Duy', '519127377'),
     (10000000, N'Phạm Đức Duy', '567819127379'),
-    (10000000, N'Đinh Hải Giang', '319127382');
+    (10000000, N'Đinh Hải Giang', '319127382'),
+    (10000000, N'Tô Vũ Thái Hào', '319127391'),
+    (10000000, N'Nguyễn Hữu Hiển', '341119127394'),
+    (10000000, N'Trần Minh Hiếu', '319127405'),
+    (10000000, N'Nguyễn Huy Hoàng', '319127407'),
+    (10000000, N'Đặng Duy Khang', '353219127431'),
+    (10000000, N'Hồng Kiện Khang', '567819127434'),
+    (10000000, N'Huỳnh Nhật Khang', '319127434'),
+    (10000000, N'Nguyễn Trần Gia Khang', '441219127435'),
+    (10000000, N'Tăng Tường Khang', '319127436'),
+    (10000000, N'Hồ Đăng Khoa', '319127443');
 
 INSERT INTO PAYMENT_SYSTEM.`Transaction` (sourceAccount, transactionDate, paymentAmount)
 VALUES
