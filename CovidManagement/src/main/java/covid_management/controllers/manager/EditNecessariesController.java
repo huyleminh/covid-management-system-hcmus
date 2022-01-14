@@ -94,7 +94,10 @@ public class EditNecessariesController implements ActionListener {
 
 		try {
 			// Validation of necessaries name
-			boolean isValidNecessariesName = validateAndAddNecessariesNameWillChange(
+			// This function returns 0 if necessaries name is valid.
+			// 						 1 if necessaries name is invalid.
+			// 						 2 if necessaries name is existing.
+			int isValidNecessariesName = validateAndAddNecessariesNameWillChange(
 					fields,
 					values,
 					descriptionList,
@@ -102,7 +105,7 @@ public class EditNecessariesController implements ActionListener {
 					newNecessariesName
 			);
 
-			if (!isValidNecessariesName) {
+			if (isValidNecessariesName == 1) {
 				showErrorMessage(editNecessariesDialog, "Edit Necessaries", "Invalid necessaries name");
 				return;
 			}
@@ -169,7 +172,7 @@ public class EditNecessariesController implements ActionListener {
 		return startDate.compareTo(endDate) <= 0;
 	}
 
-	private boolean validateAndAddNecessariesNameWillChange(
+	private int validateAndAddNecessariesNameWillChange(
 			ArrayList<String> fields,
 			ArrayList<Object> values,
 			ArrayList<String> descriptionList,
@@ -177,9 +180,9 @@ public class EditNecessariesController implements ActionListener {
 			String newNecessariesName
 	) throws DBConnectionException {
 		if (newNecessariesName.isEmpty() || newNecessariesName.length() > 50)
-			return false;
+			return 1;
 		if (originalNecessaries.getNecessariesName().equals(newNecessariesName))
-			return true;
+			return 0;
 
 		NecessariesDAO daoModel = new NecessariesDAO();
 		boolean isExisting = daoModel.isExistingNecessariesName(newNecessariesName);
@@ -190,7 +193,7 @@ public class EditNecessariesController implements ActionListener {
 					"Edit Necessaries",
 					"This necessaries name is existing"
 			);
-			return false;
+			return 2;
 		}
 
 		String description = NecessariesHistory.generateDescriptionWithoutFormatting(
@@ -206,7 +209,7 @@ public class EditNecessariesController implements ActionListener {
 		descriptionList.add(description);
 		operationTypes.add(NecessariesHistory.CHANGE_NECESSARIES_NAME);
 
-		return true;
+		return 0;
 	}
 
 	private void addChangedQuantity(

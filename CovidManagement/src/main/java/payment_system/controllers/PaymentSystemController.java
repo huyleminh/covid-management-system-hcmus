@@ -155,50 +155,6 @@ public class PaymentSystemController implements ActionListener {
 		return response;
 	}
 
-	public String addNewTransaction(JSONObject data) {
-		String response = Constants.DB_CONNECTION_ERROR_RESPONSE;
-
-		try {
-			PaymentAccountDAO paymentAccountDAOModel = new PaymentAccountDAO();
-			Optional<PaymentAccount> optionalPaymentAccount = paymentAccountDAOModel.getByUserIdentifierNumber(
-					data.getString("identifierNumber")
-			);
-
-			if (optionalPaymentAccount.isPresent()) {
-				PaymentAccount paymentAccount = optionalPaymentAccount.get();
-				TransactionDAO transactionDAOModel = new TransactionDAO();
-				transactionDAOModel.create(
-						new Transaction(
-								-1,
-								paymentAccount.getPaymentId(),
-								Timestamp.valueOf(data.getString("paidAt")),
-								data.getInt("debtAmount")
-						)
-				);
-
-				SwingUtilities.invokeLater(() -> {
-					int currentBalance = paymentSystemView.getBalanceValue();
-					paymentSystemView.setBalanceValue(currentBalance + data.getInt("debtAmount"));
-
-					NonEditableTableModel tableModel = (NonEditableTableModel) paymentSystemView.getTable().getModel();
-					tableModel.insertRow(0, new Object[] {
-							paymentAccount.getUserIdentifierNumber(),
-							paymentAccount.getFullname(),
-							data.getInt("debtAmount"),
-							data.getString("paidAt")
-					});
-				});
-
-				response = Constants.SUCCESS_RESPONSE;
-			}
-		} catch (DBConnectionException e) {
-			response = Constants.DB_CONNECTION_ERROR_RESPONSE;
-			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
-		}
-
-		return response;
-	}
-
 //	public String addNewTransaction(JSONObject data) {
 //		String response = Constants.DB_CONNECTION_ERROR_RESPONSE;
 //
@@ -210,36 +166,30 @@ public class PaymentSystemController implements ActionListener {
 //
 //			if (optionalPaymentAccount.isPresent()) {
 //				PaymentAccount paymentAccount = optionalPaymentAccount.get();
+//				TransactionDAO transactionDAOModel = new TransactionDAO();
+//				transactionDAOModel.create(
+//						new Transaction(
+//								-1,
+//								paymentAccount.getPaymentId(),
+//								Timestamp.valueOf(data.getString("paidAt")),
+//								data.getInt("debtAmount")
+//						)
+//				);
 //
-//				if (paymentAccount.getBalance() < data.getInt("debtAmount")) {
-//					response = Constants.NOT_ENOUGH_BALANCE_RESPONSE;
-//				} else {
-//					TransactionDAO transactionDAOModel = new TransactionDAO();
-//					transactionDAOModel.create(
-//							new Transaction(
-//									-1,
-//									paymentAccount.getPaymentId(),
-//									Timestamp.valueOf(data.getString("paidAt")),
-//									data.getInt("debtAmount")
-//							)
-//					);
+//				SwingUtilities.invokeLater(() -> {
+//					int currentBalance = paymentSystemView.getBalanceValue();
+//					paymentSystemView.setBalanceValue(currentBalance + data.getInt("debtAmount"));
 //
-//					SwingUtilities.invokeLater(() -> {
-//						int currentBalance = paymentSystemView.getBalanceValue();
-//						paymentSystemView.setBalanceValue(currentBalance + data.getInt("debtAmount"));
-//
-//						NonEditableTableModel tableModel = (NonEditableTableModel) paymentSystemView.getTable()
-//																									.getModel();
-//						tableModel.insertRow(0, new Object[]{
-//								paymentAccount.getUserIdentifierNumber(),
-//								paymentAccount.getFullname(),
-//								data.getInt("debtAmount"),
-//								data.getString("paidAt")
-//						});
+//					NonEditableTableModel tableModel = (NonEditableTableModel) paymentSystemView.getTable().getModel();
+//					tableModel.insertRow(0, new Object[] {
+//							paymentAccount.getUserIdentifierNumber(),
+//							paymentAccount.getFullname(),
+//							data.getInt("debtAmount"),
+//							data.getString("paidAt")
 //					});
+//				});
 //
-//					response = Constants.SUCCESS_RESPONSE;
-//				}
+//				response = Constants.SUCCESS_RESPONSE;
 //			}
 //		} catch (DBConnectionException e) {
 //			response = Constants.DB_CONNECTION_ERROR_RESPONSE;
@@ -248,4 +198,54 @@ public class PaymentSystemController implements ActionListener {
 //
 //		return response;
 //	}
+
+	public String addNewTransaction(JSONObject data) {
+		String response = Constants.DB_CONNECTION_ERROR_RESPONSE;
+
+		try {
+			PaymentAccountDAO paymentAccountDAOModel = new PaymentAccountDAO();
+			Optional<PaymentAccount> optionalPaymentAccount = paymentAccountDAOModel.getByUserIdentifierNumber(
+					data.getString("identifierNumber")
+			);
+
+			if (optionalPaymentAccount.isPresent()) {
+				PaymentAccount paymentAccount = optionalPaymentAccount.get();
+
+				if (paymentAccount.getBalance() < data.getInt("debtAmount")) {
+					response = Constants.NOT_ENOUGH_BALANCE_RESPONSE;
+				} else {
+					TransactionDAO transactionDAOModel = new TransactionDAO();
+					transactionDAOModel.create(
+							new Transaction(
+									-1,
+									paymentAccount.getPaymentId(),
+									Timestamp.valueOf(data.getString("paidAt")),
+									data.getInt("debtAmount")
+							)
+					);
+
+					SwingUtilities.invokeLater(() -> {
+						int currentBalance = paymentSystemView.getBalanceValue();
+						paymentSystemView.setBalanceValue(currentBalance + data.getInt("debtAmount"));
+
+						NonEditableTableModel tableModel = (NonEditableTableModel) paymentSystemView.getTable()
+																									.getModel();
+						tableModel.insertRow(0, new Object[]{
+								paymentAccount.getUserIdentifierNumber(),
+								paymentAccount.getFullname(),
+								data.getInt("debtAmount"),
+								data.getString("paidAt")
+						});
+					});
+
+					response = Constants.SUCCESS_RESPONSE;
+				}
+			}
+		} catch (DBConnectionException e) {
+			response = Constants.DB_CONNECTION_ERROR_RESPONSE;
+			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
+		}
+
+		return response;
+	}
 }
