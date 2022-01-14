@@ -212,11 +212,11 @@ public class DebtPaymentController implements ActionListener {
 					processingDialog.setVisible(false);
 					showErrorMessage(mainFrame, "Pay Debt", "Pay unsuccessfully");
 				}
-//				case Constants.NOT_ENOUGH_BALANCE_RESPONSE -> {
-//					processingDialog.setExitOnCloseButton(true);
-//					processingDialog.setVisible(false);
-//					showErrorMessage(mainFrame, "Pay Debt", "Your account have not enough balance");
-//				}
+				case Constants.NOT_ENOUGH_BALANCE_RESPONSE -> {
+					processingDialog.setExitOnCloseButton(true);
+					processingDialog.setVisible(false);
+					showErrorMessage(mainFrame, "Pay Debt", "Your account have not enough balance");
+				}
 			}
 		} catch (DBConnectionException e) {
 			SwingUtilities.invokeLater(() -> connectionErrorDialog.setVisible(true));
